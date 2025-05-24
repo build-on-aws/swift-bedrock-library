@@ -32,9 +32,9 @@ Package.resolved
 *.yml
 *.json
 *.gif
-frontend/*
+**/frontend/*
 .DS_Store
-backend/.vscode/hummingbird.code-snippets
-backend/img/image.png
+**/backend/.vscode/hummingbird.code-snippets
+**/backend/img/image.png
 LICENSE
 .licenseignore
