@@ -1,15 +1,15 @@
-name: Build And Soundness checks
+name: Build, tests & soundness checks
 
 on: [push, pull_request]
 
 jobs:
-  build:
+  playground-backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Run tests
-        working-directory: backend
+      - name: Web playground backend tests
+        working-directory: web-playground/backend
         run: swift build
 
   soundness:

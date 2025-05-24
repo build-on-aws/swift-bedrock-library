@@ -14,46 +14,40 @@ Package.resolved
 .env
 Makefile
 
-# backend
-backend/.DS_Store
-backend/.build
-backend/.swiftpm
-backend/.devContainer
-backend/Packages
-backend/*.xcodeproj
-backend/xcuserdata/
-backend/.vscode/*
-backend/!/.vscode/hummingbird.code-snippets
-backend/.env.*
-backend/.env
-backend/img/generated_images
-backend/.vscode
-backend/Makefile
+node_modules
 
-# frontend
-frontend/node_modules
-frontend/.pnp
-frontend/.pnp.js
-frontend/.yarn/install-state.gz
+# **/backend
+**/backend/.DS_Store
+**/backend/.build
+**/backend/.swiftpm
+**/backend/.devContainer
+**/backend/Packages
+**/backend/*.xcodeproj
+**/backend/xcuserdata/
+**/backend/.vscode/*
+**/backend/!/.vscode/hummingbird.code-snippets
+**/backend/.env.*
+**/backend/.env
+**/backend/img/generated_images
+**/backend/.vscode
+**/backend/Makefile
 
-frontend/coverage
-
-frontend/.next/
-frontend/out/
-
-frontend/build
-
-frontend/.DS_Store
-frontend/*.pem
-
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
-
-frontend/.env*.local
-
-frontend/.vercel
-
-frontend/*.tsbuildinfo
-frontend/next-env.d.ts
-frontend/Makefile
+# **/frontend
+**/frontend/node_modules
+**/frontend/.pnp
+**/frontend/.pnp.js
+**/frontend/.yarn/install-state.gz
+**/frontend/coverage
+**/frontend/.next/
+**/frontend/out/
+**/frontend/build
+**/frontend/.DS_Store
+**/frontend/*.pem
+**/frontend/npm-debug.log*
+**/frontend/yarn-debug.log*
+**/frontend/yarn-error.log*
+**/frontend/.env*.local
+**/frontend/.vercel
+**/frontend/*.tsbuildinfo
+**/frontend/next-env.d.ts
+**/frontend/Makefile
