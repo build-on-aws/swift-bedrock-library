@@ -32,6 +32,15 @@ Each project has its own README with specific setup instructions:
 - AWS account with access to Amazon Bedrock
 - [AWS credentials configured locally](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) or [SSO configured with AWS Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/manage-your-accounts.html) configured
 
+## Acknowledgment 
+
+This library and playground have been written by [Mona Diericks](https://www.linkedin.com/in/mona-dierickx/), during her last year of studies at [HoGent](https://www.hogent.be/), Belgium.
+
+Thank you for your enthousiasm and positive attitude during the three months we worked together. (February 2025 - May 2025).
+
+Thank for Professor Steven Van Impe for allowing us to work with these young talents.
+
+
 ## License
 
 These projects are licensed under the Apache License 2.0. See the LICENSE files in each project for details.
