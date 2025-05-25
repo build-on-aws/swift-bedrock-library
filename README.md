@@ -1,33 +1,46 @@
-# Swift FM Playground
+# Amazon Bedrock Swift Library and web playground
 
-Welcome to the Swift Foundation Model (FM) Playground, an example app to explore how to use **Amazon Bedrock** with the AWS SDK for Swift.
+This repository contains projects demonstrating how to use [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) with Swift.
 
-> 🚨 **Important:** This application is for educational purposes and not intended for production use.
+## Projects
 
-## Overview
+### 1. Swift Bedrock Library
 
-> 🚧 Under construction 🚧
+A tiny layer on top of the [AWS SDK for Swift](https://github.com/awslabs/aws-sdk-swift) for interacting with Amazon Bedrock foundation models. This library provides a convenient way to access Amazon Bedrock's capabilities from Swift applications.
+
+[Go to Swift Bedrock Library →](swift-bedrock-library/README.md)
+
+### 2. Swift FM Playground
+
+An interactive web application that demonstrates the capabilities of Amazon Bedrock foundation models using the Swift Bedrock Library. The playground includes:
+
+- A Swift "backend for frontend" that interfaces with Amazon Bedrock
+- A React frontend for interacting with the models through a user-friendly interface
+
+[Go to Swift FM Playground →](swift-fm-playground/web-playground/README.md)
+
+## Getting Started
+
+Each project has its own README with specific setup instructions:
+
+- For the Swift Bedrock Library, see the [library README](swift-bedrock-library/README.md)
+- For the Swift FM Playground, see the [playground README](swift-fm-playground/web-playground/README.md)
 
 ## Prerequisites
 
-> 🚧 Under construction 🚧
+- Swift 6.0 or later
+- AWS account with access to Amazon Bedrock
+- [AWS credentials configured locally](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) or [SSO configured with AWS Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/manage-your-accounts.html) configured
 
-## Running the Application
+## Acknowledgment 
 
-> 🚧 Under construction 🚧
+This library and playground have been written by [Mona Dierickx](https://www.linkedin.com/in/mona-dierickx/), during her last year of studies at [HoGent](https://www.hogent.be/), Belgium.
 
-## Accessing the Application
+Thank you for your enthousiasm and positive attitude during the three months we worked together. (February 2025 - May 2025).
 
-To access the application, open `http://localhost:3000` in your web browser.
+Thank for Professor Steven Van Impe for allowing us to work with these young talents.
 
-## Stopping the Application
 
-To halt the application, you will need to stop both the backend and frontend processes.
+## License
 
-### Stopping the Frontend
-
-In the terminal where the frontend is running, press `Ctrl + C` to terminate the process.
-
-### Stopping the Backend
-
-Similarly, in the backend terminal, use the `Ctrl + C` shortcut to stop the server.
+These projects are licensed under the Apache License 2.0. See the LICENSE files in each project for details.

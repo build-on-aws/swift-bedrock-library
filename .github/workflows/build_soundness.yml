@@ -1,15 +1,24 @@
-name: Build And Soundness checks
+name: Build, tests & soundness checks
 
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
-  build:
+  swift-bedrock-library:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Run tests
-        working-directory: backend
+        working-directory: swift-bedrock-library
+        run: swift test
+
+  playground-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Web playground backend tests
+        working-directory: web-playground/backend
         run: swift build
 
   soundness:
