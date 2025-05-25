@@ -34,7 +34,7 @@ Each project has its own README with specific setup instructions:
 
 ## Acknowledgment 
 
-This library and playground have been written by [Mona Diericks](https://www.linkedin.com/in/mona-dierickx/), during her last year of studies at [HoGent](https://www.hogent.be/), Belgium.
+This library and playground have been written by [Mona Dierickx](https://www.linkedin.com/in/mona-dierickx/), during her last year of studies at [HoGent](https://www.hogent.be/), Belgium.
 
 Thank you for your enthousiasm and positive attitude during the three months we worked together. (February 2025 - May 2025).
 
