@@ -29,7 +29,7 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "AwsCommonRuntimeKit", package: "aws-crt-swift"),
             ],
-            path: "Sources/BedrockService"
+            path: "swift-bedrock-library/Sources/BedrockService"
         ),
         .target(
             name: "BedrockTypes",
@@ -38,7 +38,7 @@ let package = Package(
                 .product(name: "AWSBedrock", package: "aws-sdk-swift"),
                 .product(name: "Smithy", package: "smithy-swift"),
             ],
-            path: "Sources/BedrockTypes"
+            path: "swift-bedrock-library/Sources/BedrockTypes"
         ),
         .testTarget(
             name: "BedrockServiceTests",
@@ -46,14 +46,14 @@ let package = Package(
                 .target(name: "BedrockService"),
                 .target(name: "BedrockTypes"),
             ],
-            path: "Tests/BedrockServiceTests"
+            path: "swift-bedrock-library/Tests/BedrockServiceTests"
         ),
         .testTarget(
             name: "BedrockTypesTests",
             dependencies: [
                 .target(name: "BedrockTypes")
             ],
-            path: "Tests/BedrockTypesTests"
+            path: "swift-bedrock-library/Tests/BedrockTypesTests"
         ),
     ]
 )
