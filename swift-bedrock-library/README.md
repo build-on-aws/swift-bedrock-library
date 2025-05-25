@@ -1,6 +1,6 @@
-# BedrockService
+# Swift Bedrock Library
 
-This library is a work in progress, feel free to open an issue, but do not use it in your projects just yet. 
+A tiny layer on top of the [AWS SDK for Swift](https://github.com/awslabs/aws-sdk-swift) for interacting with [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) foundation models. This library provides a convenient way to access Amazon Bedrock's capabilities from Swift applications.
 
 ## Getting started with BedrockService
 
@@ -66,12 +66,11 @@ Use the `listModels()` function to test your set-up. This function will return a
 let models = try await bedrock.listModels()
 ```
 
-
 ## Chatting using the Converse or ConverseStream API
 
 ### Text prompt
 
-To sent a text prompt to a model, first choose a model that supports converse, you can verify this by using the `hasConverseModality` function on the `BedrockModel`. Then use the model to create a `ConverseRequestBuilder`, add your prompt to it with the `.withPormpt` function. Use the builder to sent your request to the Converse API with the `converse` function. You can then easily print the reply and use it to create a new builder with the same model and inference parameters but with an updated history.
+To send a text prompt to a model, first choose a model that supports converse, you can verify this by using the `hasConverseModality` function on the `BedrockModel`. Then use the model to create a `ConverseRequestBuilder`, add your prompt to it with the `.withPrompt` function. Use the builder to send your request to the Converse API with the `converse` function. You can then easily print the reply and use it to create a new builder with the same model and inference parameters but with an updated history.
 
 ```swift
 let model: BedrockModel = .nova_lite
@@ -155,7 +154,7 @@ builder = try ConverseRequestBuilder(from: builder, with: assistantMessage)
 
 ### Vision
 
-To sent an image to a model, first ensure the model suports vision. Next simply add the image to the `ConverseRequestBuilder` with the `withImage` function. The function can either take an `ImageBlock` object or the format and bytes to construct the object.
+To send an image to a model, first ensure the model supports vision. Next simply add the image to the `ConverseRequestBuilder` with the `withImage` function. The function can either take an `ImageBlock` object or the format and bytes to construct the object.
 
 
 ```swift
@@ -205,7 +204,7 @@ To use streaming use the exact same `ConverseRequestBuilder`, but use the `conve
 
 ### Document
 
-To sent an document to a model, first ensure the model suports document. Next simply add the image to the `ConverseRequestBuilder` with the `withDocument` function. The function can either take an `DocumentBlock` object or the name, format and bytes to construct the object.
+To send a document to a model, first ensure the model supports document. Next simply add the document to the `ConverseRequestBuilder` with the `withDocument` function. The function can either take a `DocumentBlock` object or the name, format and bytes to construct the object.
 
 ```swift
 let model: BedrockModel = .nova_lite
@@ -256,7 +255,7 @@ To use streaming use the exact same `ConverseRequestBuilder`, but use the `conve
 
 ### Tools
 
-For tool usage, first ensure the model supports the use of tools. Next define at least one `Tool` and add it to the `ConverseRequestBuilder` with the `withTool` function (or the `withTools` function to add several tools at once). After sending a request the model could now sent back a `ToolUse` asking for specific information from a specific tool. Use this to sent the information back in a `ToolResult`, by using the `withToolResult` function. You will now receive a reply informed by the result from the tool.
+For tool usage, first ensure the model supports the use of tools. Next define at least one `Tool` and add it to the `ConverseRequestBuilder` with the `withTool` function (or the `withTools` function to add several tools at once). After sending a request the model could now send back a `ToolUse` asking for specific information from a specific tool. Use this to send the information back in a `ToolResult`, by using the `withToolResult` function. You will now receive a reply informed by the result from the tool.
 
 
 ```swift
@@ -406,7 +405,7 @@ while true {
 
 ### Reasoning
 
-To not only get a text reply but to also follow the models reasoning, enable reasoning by using the `withReasoning` and optionally set the maximum lenght of the reasoning with `withMaxReasoningTokens`. These functions can be combined using the `withReasoning(maxReasoningTokens: Int)` function.
+To not only get a text reply but to also follow the model's reasoning, enable reasoning by using the `withReasoning` and optionally set the maximum length of the reasoning with `withMaxReasoningTokens`. These functions can be combined using the `withReasoning(maxReasoningTokens: Int)` function.
 
 ```swift
 let model: BedrockModel = .claudev3_7_sonnet
@@ -433,7 +432,7 @@ if let reasoning = try? reply.getReasoningBlock() {
 print("\nAssistant: \(reply)")
 ```
 
-To combine reasoning and streaming, use the same `ConverseRequestBuilder`, but use the `converseStream` function instead of the `converse`function. A `ContentSegment` can then contain `reasoning`.
+To combine reasoning and streaming, use the same `ConverseRequestBuilder`, but use the `converseStream` function instead of the `converse` function. A `ContentSegment` can then contain `reasoning`.
 
 ```swift
 let model: BedrockModel = .claudev3_7_sonnet
@@ -587,7 +586,7 @@ let nonExistent: String? = json["nonExistentKey"]
 print(nonExistent == nil) // Output: true
 ```
 
-Note that the subscript methods is also able to handle nested objects.
+Note that the subscript method is also able to handle nested objects.
 
 ```swift
 let json = JSON([
@@ -651,7 +650,7 @@ let imageGeneration = try await bedrock.generateImage(
 Note that the minimum, maximum and default values for each parameter are model specific and defined when the BedrockModel is created. Some parameters might not be supported by certain models.
 
 ## Generating image variations using the InvokeModel API
-Choose a BedrockModel that supports image variations - you can verify this using the `hasImageVariationModality` and the `hasImageVariationModality` function. The `generateImageVariation` function allows you to create variations of an existing image with these parameters:
+Choose a BedrockModel that supports image variations - you can verify this using the `hasImageModality` and the `hasImageVariationModality` function. The `generateImageVariation` function allows you to create variations of an existing image with these parameters:
 
 - `images`: The base64-encoded source images used to create variations from
 - `negativePrompt`: Text describing what to avoid in the generated image
@@ -700,7 +699,7 @@ Note that the minimum, maximum and default values for each parameter are model s
 
 ## Generating text using the InvokeModel API
 
-Choose a BedrockModel that supports text generation, you can verify this using the `hasTextModality` function. when calling the `completeText` function you can provide some inference parameters: 
+Choose a BedrockModel that supports text generation, you can verify this using the `hasTextModality` function. When calling the `completeText` function you can provide some inference parameters: 
 
 - `maxTokens`: The maximum amount of tokens that the model is allowed to return
 - `temperature`: Controls the randomness of the model's output
@@ -708,7 +707,7 @@ Choose a BedrockModel that supports text generation, you can verify this using t
 - `topK`: Limits the number of tokens the model considers for each step of text generation to the K most likely ones
 - `stopSequences`: An array of strings that will cause the model to stop generating further text when encountered
 
-The function returns a `TextCompletion` object containg the generated text.
+The function returns a `TextCompletion` object containing the generated text.
 
 ```swift
 let model: BedrockModel = .nova_micro
@@ -745,7 +744,7 @@ Note that the minimum, maximum and default values for each parameter are model s
 
 ### Converse
 
-To add a new model that only needs the ConverseModality, simply use the `StandardConverse` and add the correct [inferece parameters](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters.html) and [supported converse features](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-supported-models-features.html).
+To add a new model that only needs the ConverseModality, simply use the `StandardConverse` and add the correct [inference parameters](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters.html) and [supported converse features](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-supported-models-features.html).
 
 ```swift
 extension BedrockModel {
@@ -790,7 +789,7 @@ struct ModelFamilyModality: TextModality, ConverseModality {
 
 ### Text
 
-If you need to add a model from a model family that is not supported at all byt the library, follow these steps:
+If you need to add a model from a model family that is not supported at all by the library, follow these steps:
 
 #### Step 1: Create family-specific request and response struct
 
@@ -847,7 +846,7 @@ struct LlamaResponseBody: ContainsTextCompletion {
 }
 ```
 
-#### Step 2: Create the the Modality
+#### Step 2: Create the Modality
 
 For a text generation create a struct conforming to TextModality. Use the request body and response body you created in  [the previous step](#step-1-create-family-specific-request-and-response-struct). Make sure to check for model(family) specific rules or parameters that are not supported here.
 
@@ -896,7 +895,7 @@ struct LlamaText: TextModality {
 
 #### Step 3: Create BedrockModel instance
 
-You can now create instances for any of the models that follow the request and response structure you defined. Make sure to check the allowed and default values for the inference parameters, especially if some parameters are not supported buy the model. Know that these parameters may differ significantly for model from the same family.
+You can now create instances for any of the models that follow the request and response structure you defined. Make sure to check the allowed and default values for the inference parameters, especially if some parameters are not supported by the model. Know that these parameters may differ significantly for models from the same family.
 
 ```swift
 extension BedrockModel {
@@ -919,7 +918,7 @@ extension BedrockModel {
 
 ### Image
 
-To add an image generation model from a model family that is not supported at all byt the library, the steps are much alike to the text completion models.
+To add an image generation model from a model family that is not supported at all by the library, the steps are much alike to the text completion models.
 
 #### Step 1: Create family-specific request and response struct
 
@@ -993,7 +992,7 @@ public struct AmazonImageResponseBody: ContainsImageGeneration {
 }
 ```
 
-#### Step 2: Create the the Modality
+#### Step 2: Create the Modality
 
 Determine the exact functionality and make sure to comply to the correct modality protocol. In this case we will use `TextToImageModality`.
 Create a struct conforming to `ImageModality` and the specific functionality protocol. Use the request body and response body you created in [the previous step](#step-1-create-family-specific-request-and-response-struct). Make sure to check for model(family) specific rules or parameters that are not supported here.
@@ -1054,7 +1053,7 @@ struct AmazonImage: ImageModality, TextToImageModality {
 
 #### Step 3: Create BedrockModel instance
 
-You can now create instances for any of the models that follow the request and response structure you defined. Make sure to check the allowed and default values for the inference parameters, especially if some parameters are not supported buy the model. Know that these parameters may differ significantly for model from the same family.
+You can now create instances for any of the models that follow the request and response structure you defined. Make sure to check the allowed and default values for the inference parameters, especially if some parameters are not supported by the model. Know that these parameters may differ significantly for models from the same family.
 
 ```swift
 extension BedrockModel {
