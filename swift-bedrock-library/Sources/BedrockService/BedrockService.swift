@@ -151,7 +151,7 @@ public struct BedrockService: Sendable {
         return BedrockRuntimeClient(config: config)
     }
 
-    func handleCommonError(_ error: Error, context: String) throws {
+    func handleCommonError(_ error: Error, context: String) throws -> Never {
         if let commonError = error as? CommonRunTimeError {
             logger.trace("CommonRunTimeError while \(context)", metadata: ["error": "\(error)"])
             switch commonError {
@@ -208,7 +208,6 @@ public struct BedrockService: Sendable {
             return modelsInfo
         } catch {
             try handleCommonError(error, context: "listing foundation models")
-            throw BedrockServiceError.unknownError("\(error)")  // FIXME: handleCommonError will always throw
         }
     }
 }

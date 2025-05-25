@@ -134,7 +134,6 @@ extension BedrockService {
 
         } catch {
             try handleCommonError(error, context: "invoking converse stream")
-            throw BedrockServiceError.unknownError("\(error)")  // FIXME: handleCommonError will always throw
         }
     }
 
