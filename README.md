@@ -1,3 +1,14 @@
+
+[![Build, tests & soundness checks](https://github.com/build-on-aws/swift-fm-playground/actions/workflows/build_soundness.yml/badge.svg)](https://github.com/build-on-aws/swift-fm-playground/actions/workflows/build_soundness.yml)
+
+![language](https://img.shields.io/badge/swift-6.0-orange)
+
+![platform-macos](https://img.shields.io/badge/platform-macOS-blue)
+![platform-ios](https://img.shields.io/badge/platform-iOS-blue)
+![platform-linux](https://img.shields.io/badge/platform-linux-blue)
+
+[![license](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
+
 # Amazon Bedrock Swift Library and web playground
 
 This repository contains projects demonstrating how to use [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) with Swift.
