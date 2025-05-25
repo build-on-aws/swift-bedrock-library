@@ -1,6 +1,6 @@
 # Amazon Bedrock Swift Library and web playground
 
-This repository contains projects demonstrating how to use Amazon Bedrock with Swift.
+This repository contains projects demonstrating how to use [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) with Swift.
 
 ## Projects
 
