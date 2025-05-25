@@ -7,6 +7,7 @@
 **/*.md
 CONTRIBUTORS.txt
 LICENSE.txt
+LICENSE
 NOTICE.txt
 Package.swift
 Package@swift-*.swift
@@ -31,10 +32,9 @@ Package.resolved
 *.yaml
 *.yml
 *.json
-*.gif
+**/*.gif
+**/*.png
 **/frontend/*
+**/*.code-snippets
 .DS_Store
-**/backend/.vscode/hummingbird.code-snippets
-**/backend/img/image.png
-LICENSE
 .licenseignore
