@@ -100,7 +100,6 @@ extension BedrockService {
             return try Message(response)
         } catch {
             try handleCommonError(error, context: "invoking converse")
-            throw BedrockServiceError.unknownError("\(error)")  // FIXME: handleCommonError will always throw
         }
     }
 
