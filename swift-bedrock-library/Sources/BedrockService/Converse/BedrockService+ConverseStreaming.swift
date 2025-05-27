@@ -124,7 +124,7 @@ extension BedrockService {
             let reply = ConverseReplyStream(sdkStream)
 
             // this time, a different stream is created from the previous one, this one has the following elements
-            // - content segment: this contains a ContentSegment, an enum which can currently only be a .text(Int, String),
+            // - content segment: this contains a ContentSegment, an enum which can be a .text(Int, String),
             //   the integer is the id for the content block that the content segment is a part of,
             //   the String is the part of text that is send from the model.
             // - content block complete: this includes the id of the completed content block and the complete content block itself

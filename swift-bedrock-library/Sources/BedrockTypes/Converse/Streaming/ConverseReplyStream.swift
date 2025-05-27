@@ -30,6 +30,8 @@ package struct ConverseReplyStream {
                 do {
                     for try await output in inputStream {
                         switch output {
+                        case .messagestart(_):
+                            continuation.yield(.messageStart)
                         case .contentblockstart(let event):
                             guard let index = event.contentBlockIndex else {
                                 throw BedrockServiceError.invalidSDKType(
@@ -51,7 +53,9 @@ package struct ConverseReplyStream {
                                 )
                             }
                             if !indexes.contains(index) {
+                                //some models do not send ContentBlockStart before ContentBlockDelta
                                 indexes.append(index)
+                                // continuation.yield(.messageStart)
                             }
                             guard let delta = event.delta else {
                                 throw BedrockServiceError.invalidSDKType("No delta found in ContentBlockDelta")

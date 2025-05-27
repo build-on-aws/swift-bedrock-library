@@ -14,6 +14,7 @@
 //===----------------------------------------------------------------------===//
 
 public enum ConverseStreamElement: Sendable {
+    case messageStart
     case contentSegment(ContentSegment)
     case contentBlockComplete(Int, Content)
     case messageComplete(Message)

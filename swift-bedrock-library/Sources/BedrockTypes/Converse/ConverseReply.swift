@@ -32,7 +32,9 @@ public struct ConverseReply: Codable, CustomStringConvertible {
     }
 
     // MARK: Initializers
-
+    public init(withMessage msg: Message) throws {
+        try self.init([msg])
+    }
     public init(_ history: History) throws {
         guard let lastMessage = history.last else {
             throw BedrockServiceError.invalidConverseReply("The provided history is not allowed to be empty.")
