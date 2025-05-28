@@ -1,6 +1,6 @@
 name: Build, tests & soundness checks
 
-on: [pull_request]
+on: [pull_request, workflow_dispatch]
 
 jobs:
   swift-bedrock-library:
