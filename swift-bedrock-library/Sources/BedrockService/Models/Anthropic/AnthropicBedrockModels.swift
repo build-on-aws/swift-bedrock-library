@@ -24,9 +24,12 @@ typealias ClaudeV3_5Haiku = AnthropicText
 typealias ClaudeV3Opus = AnthropicText
 typealias ClaudeV3_5Sonnet = AnthropicText
 typealias ClaudeV3_7Sonnet = AnthropicText
+typealias Claude_Sonnet_v4 = AnthropicText
+typealias Claude_Opus_v4 = AnthropicText
 
 // text
 // https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html
+// https://docs.anthropic.com/en/docs/about-claude/models/overview
 
 extension BedrockModel {
     public static let instant: BedrockModel = BedrockModel(
@@ -170,7 +173,39 @@ extension BedrockModel {
         modality: ClaudeV3_7Sonnet(
             parameters: TextGenerationParameters(
                 temperature: Parameter(.temperature, minValue: 0, maxValue: 1, defaultValue: 1),
-                maxTokens: Parameter(.maxTokens, minValue: 1, maxValue: 8_192, defaultValue: 8_192),
+                maxTokens: Parameter(.maxTokens, minValue: 1, maxValue: 64_000, defaultValue: 8_192),
+                topP: Parameter(.topP, minValue: 0, maxValue: 1, defaultValue: 0.999),
+                topK: Parameter(.topK, minValue: 0, maxValue: 500, defaultValue: 0),
+                stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
+                maxPromptSize: 200_000
+            ),
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning],
+            maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
+        )
+    )
+    public static let claude_sonnet_v4: BedrockModel = BedrockModel(
+        id: "us.anthropic.claude-sonnet-4-20250514-v1:0",
+        name: "Claude Sonnet v4",
+        modality: Claude_Sonnet_v4(
+            parameters: TextGenerationParameters(
+                temperature: Parameter(.temperature, minValue: 0, maxValue: 1, defaultValue: 1),
+                maxTokens: Parameter(.maxTokens, minValue: 1, maxValue: 64_000, defaultValue: 8_192),
+                topP: Parameter(.topP, minValue: 0, maxValue: 1, defaultValue: 0.999),
+                topK: Parameter(.topK, minValue: 0, maxValue: 500, defaultValue: 0),
+                stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
+                maxPromptSize: 200_000
+            ),
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning],
+            maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
+        )
+    )
+    public static let claude_opus_v4: BedrockModel = BedrockModel(
+        id: "us.anthropic.claude-opus-4-20250514-v1:0",
+        name: "Claude Opus v4",
+        modality: Claude_Opus_v4(
+            parameters: TextGenerationParameters(
+                temperature: Parameter(.temperature, minValue: 0, maxValue: 1, defaultValue: 1),
+                maxTokens: Parameter(.maxTokens, minValue: 1, maxValue: 32_000, defaultValue: 8_192),
                 topP: Parameter(.topP, minValue: 0, maxValue: 1, defaultValue: 0.999),
                 topK: Parameter(.topK, minValue: 0, maxValue: 500, defaultValue: 0),
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
