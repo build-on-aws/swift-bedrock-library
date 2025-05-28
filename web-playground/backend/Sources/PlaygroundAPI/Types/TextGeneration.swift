@@ -16,6 +16,8 @@
 import Foundation
 import Hummingbird
 
+import BedrockService
+
 extension TextCompletion: @retroactive ResponseCodable {}
 
 struct TextCompletionInput: Codable {

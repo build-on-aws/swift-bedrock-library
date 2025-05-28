@@ -16,6 +16,8 @@
 import Foundation
 import Hummingbird
 
+import BedrockService
+
 extension ImageGenerationOutput: @retroactive ResponseCodable {}
 
 struct ImageGenerationInput: Codable {

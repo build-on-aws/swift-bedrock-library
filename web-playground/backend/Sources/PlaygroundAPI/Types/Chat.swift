@@ -16,6 +16,8 @@
 import Foundation
 import Hummingbird
 
+import BedrockService
+
 extension Message: @retroactive ResponseCodable {}
 
 struct ChatInput: Codable {
