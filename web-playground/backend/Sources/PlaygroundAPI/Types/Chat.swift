@@ -13,10 +13,9 @@
 //
 //===----------------------------------------------------------------------===//
 
+import BedrockService
 import Foundation
 import Hummingbird
-
-import BedrockService
 
 extension Message: @retroactive ResponseCodable {}
 
