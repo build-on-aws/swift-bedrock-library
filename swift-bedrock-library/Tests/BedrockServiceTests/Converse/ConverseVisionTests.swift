@@ -16,7 +16,6 @@
 import Testing
 
 @testable import BedrockService
-@testable import BedrockTypes
 
 // Converse vision
 
@@ -79,7 +78,7 @@ extension BedrockServiceTests {
     @Test("Converse with vision with invalid model")
     func converseVisionInvalidModel() async throws {
         let source = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-        #expect(throws: BedrockServiceError.self) {
+        #expect(throws: BedrockLibraryError.self) {
             let _ = try ConverseRequestBuilder(with: .nova_micro)
                 .withPrompt("What is this?")
                 .withImage(format: .jpeg, source: source)

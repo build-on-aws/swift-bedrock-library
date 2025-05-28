@@ -16,7 +16,6 @@
 import Testing
 
 @testable import BedrockService
-@testable import BedrockTypes
 
 // Converse document
 
@@ -78,7 +77,7 @@ extension BedrockServiceTests {
     func converseDocumentInvalidModel() async throws {
         let source = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
         let documentBlock = try DocumentBlock(name: "doc", format: .pdf, source: source)
-        #expect(throws: BedrockServiceError.self) {
+        #expect(throws: BedrockLibraryError.self) {
             let _ = try ConverseRequestBuilder(with: .nova_micro)
                 .withPrompt("What is this?")
                 .withDocument(documentBlock)

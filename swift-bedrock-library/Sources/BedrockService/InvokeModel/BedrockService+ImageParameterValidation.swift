@@ -13,7 +13,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import BedrockTypes
+
 import Foundation
 
 extension BedrockService {
@@ -25,7 +25,7 @@ extension BedrockService {
     ///   - cfgScale: Optional classifier free guidance scale
     ///   - resolution: Optional image resolution settings
     ///   - seed: Optional seed for reproducible generation
-    /// - Throws: BedrockServiceError for invalid parameters
+    /// - Throws: BedrockLibraryError for invalid parameters
     private func validateImageGenerationParams(
         model: BedrockModel,
         nrOfImages: Int? = nil,
@@ -65,7 +65,7 @@ extension BedrockService {
     ///   - modality: The text-to-image modality of the model to use
     ///   - prompt: The input text prompt describing the desired image
     ///   - negativePrompt: Optional text describing what to avoid in the generated image
-    /// - Throws: BedrockServiceError if the parameters are invalid or exceed model constraints
+    /// - Throws: BedrockLibraryError if the parameters are invalid or exceed model constraints
     public func validateTextToImageParams(
         model: BedrockModel,
         nrOfImages: Int? = nil,
@@ -105,7 +105,7 @@ extension BedrockService {
     ///   - prompt: Text prompt describing desired variations
     ///   - similarity: Optional parameter controlling variation similarity
     ///   - negativePrompt: Optional text describing what to avoid
-    /// - Throws: BedrockServiceError for invalid parameters
+    /// - Throws: BedrockLibraryError for invalid parameters
     public func validateImageVariationParams(
         model: BedrockModel,
         nrOfImages: Int? = nil,

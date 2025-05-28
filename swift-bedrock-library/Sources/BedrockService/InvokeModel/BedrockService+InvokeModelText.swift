@@ -15,7 +15,7 @@
 
 @preconcurrency import AWSBedrockRuntime
 import AwsCommonRuntimeKit
-import BedrockTypes
+
 import Foundation
 
 extension BedrockService {
@@ -29,12 +29,12 @@ extension BedrockService {
     ///   - topP: Optional top-p parameter for nucleus sampling
     ///   - topK: Optional top-k parameter for filtering
     ///   - stopSequences: Optional array of sequences where generation should stop
-    /// - Throws: BedrockServiceError.notSupported for parameters or functionalities that are not supported
-    ///           BedrockServiceError.invalidParameter for invalid parameters
-    ///           BedrockServiceError.invalidPrompt for a prompt that is empty or too long
-    ///           BedrockServiceError.invalidStopSequences if too many stop sequences were provided
-    ///           BedrockServiceError.invalidModality for invalid modality from the selected model
-    ///           BedrockServiceError.invalidSDKResponse if the response body is missing
+    /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
+    ///           BedrockLibraryError.invalidParameter for invalid parameters
+    ///           BedrockLibraryError.invalidPrompt for a prompt that is empty or too long
+    ///           BedrockLibraryError.invalidStopSequences if too many stop sequences were provided
+    ///           BedrockLibraryError.invalidModality for invalid modality from the selected model
+    ///           BedrockLibraryError.invalidSDKResponse if the response body is missing
     /// - Returns: a TextCompletion object containing the generated text from the model
     public func completeText(
         _ prompt: String,
@@ -110,7 +110,7 @@ extension BedrockService {
                         "hasBody": .stringConvertible(response.body != nil),
                     ]
                 )
-                throw BedrockServiceError.invalidSDKResponse(
+                throw BedrockLibraryError.invalidSDKResponse(
                     "Something went wrong while extracting body from response."
                 )
             }

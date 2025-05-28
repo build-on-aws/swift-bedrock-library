@@ -16,7 +16,7 @@
 import Testing
 
 @testable import BedrockService
-@testable import BedrockTypes
+
 
 // Image variation
 
@@ -44,7 +44,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.textCompletionModels
     )
     func generateImageVariationWithInvalidModel(model: BedrockModel) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let mockBase64Image =
                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
             let _: ImageGenerationOutput = try await bedrock.generateImageVariation(
@@ -78,7 +78,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.ImageGeneration.invalidNrOfImages
     )
     func generateImageVariationWithInvalidNrOfImages(nrOfImages: Int) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let mockBase64Image =
                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
             let _: ImageGenerationOutput = try await bedrock.generateImageVariation(
@@ -113,7 +113,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.ImageVariation.invalidSimilarity
     )
     func generateImageVariationWithInvalidSimilarity(similarity: Double) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let mockBase64Image =
                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
             let _: ImageGenerationOutput = try await bedrock.generateImageVariation(
@@ -148,7 +148,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.ImageVariation.invalidNrOfReferenceImages
     )
     func generateImageVariationWithInvalidNrOfReferenceImages(nrOfReferenceImages: Int) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let mockBase64Image =
                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
             let mockImages = Array(repeating: mockBase64Image, count: nrOfReferenceImages)
@@ -182,7 +182,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.ImageGeneration.invalidImagePrompts
     )
     func generateImageVariationWithInvalidPrompt(prompt: String) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let mockBase64Image =
                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
             let _: ImageGenerationOutput = try await bedrock.generateImageVariation(

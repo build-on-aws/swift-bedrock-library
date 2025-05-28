@@ -8,7 +8,6 @@ let package = Package(
     platforms: [.macOS(.v15), .iOS(.v18), .tvOS(.v18)],
     products: [
         .library(name: "BedrockService", targets: ["BedrockService"]),
-        .library(name: "BedrockTypes", targets: ["BedrockTypes"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.3.0"),
@@ -21,7 +20,6 @@ let package = Package(
         .target(
             name: "BedrockService",
             dependencies: [
-                .target(name: "BedrockTypes"),
                 .product(name: "AWSClientRuntime", package: "aws-sdk-swift"),
                 .product(name: "AWSBedrock", package: "aws-sdk-swift"),
                 .product(name: "AWSBedrockRuntime", package: "aws-sdk-swift"),
@@ -31,29 +29,12 @@ let package = Package(
             ],
             path: "swift-bedrock-library/Sources/BedrockService"
         ),
-        .target(
-            name: "BedrockTypes",
-            dependencies: [
-                .product(name: "AWSBedrockRuntime", package: "aws-sdk-swift"),
-                .product(name: "AWSBedrock", package: "aws-sdk-swift"),
-                .product(name: "Smithy", package: "smithy-swift"),
-            ],
-            path: "swift-bedrock-library/Sources/BedrockTypes"
-        ),
         .testTarget(
             name: "BedrockServiceTests",
             dependencies: [
                 .target(name: "BedrockService"),
-                .target(name: "BedrockTypes"),
             ],
             path: "swift-bedrock-library/Tests/BedrockServiceTests"
-        ),
-        .testTarget(
-            name: "BedrockTypesTests",
-            dependencies: [
-                .target(name: "BedrockTypes")
-            ],
-            path: "swift-bedrock-library/Tests/BedrockTypesTests"
         ),
     ]
 )

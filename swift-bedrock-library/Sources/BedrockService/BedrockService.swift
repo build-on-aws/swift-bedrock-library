@@ -17,7 +17,6 @@
 @preconcurrency import AWSBedrockRuntime
 import AWSClientRuntime
 import AwsCommonRuntimeKit
-import BedrockTypes
 import Foundation
 import Logging
 
@@ -158,15 +157,15 @@ public struct BedrockService: Sendable {
             case .crtError(let crtError):
                 switch crtError.code {
                 case 6153:
-                    throw BedrockServiceError.authenticationFailed(
+                    throw BedrockLibraryError.authenticationFailed(
                         "No valid credentials found: \(crtError.message)"
                     )
                 case 6170:
-                    throw BedrockServiceError.authenticationFailed(
+                    throw BedrockLibraryError.authenticationFailed(
                         "AWS SSO token expired: \(crtError.message)"
                     )
                 default:
-                    throw BedrockServiceError.authenticationFailed(
+                    throw BedrockLibraryError.authenticationFailed(
                         "Authentication failed: \(crtError.message)"
                     )
                 }
@@ -180,7 +179,7 @@ public struct BedrockService: Sendable {
     // MARK: Public Methods
 
     /// Lists all available foundation models from Amazon Bedrock
-    /// - Throws: BedrockServiceError.invalidResponse
+    /// - Throws: BedrockLibraryError.invalidResponse
     /// - Returns: An array of ModelSummary objects containing details about each available model
     public func listModels() async throws -> [ModelSummary] {
         logger.trace("Fetching foundation models")
@@ -190,7 +189,7 @@ public struct BedrockService: Sendable {
             )
             guard let models = response.modelSummaries else {
                 logger.trace("Failed to extract modelSummaries from response")
-                throw BedrockServiceError.invalidSDKResponse(
+                throw BedrockLibraryError.invalidSDKResponse(
                     "Something went wrong while extracting the modelSummaries from the response."
                 )
             }

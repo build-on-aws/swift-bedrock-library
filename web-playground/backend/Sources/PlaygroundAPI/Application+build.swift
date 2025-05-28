@@ -14,7 +14,7 @@
 //===----------------------------------------------------------------------===//
 
 import BedrockService
-import BedrockTypes
+
 import Foundation
 import Hummingbird
 import Logging
@@ -84,10 +84,10 @@ func buildRouter(useSSO: Bool, logger: Logger, profileName: String) async throws
     let bedrock = try await BedrockService(authentication: auth)
 
     // Error handling
-    @Sendable func handleBedrockServiceError(_ error: Error, context: String) throws {
-        if let bedrockServiceError = error as? BedrockServiceError {
-            logger.trace("BedrockServiceError while \(context)", metadata: ["error": "\(error)"])
-            throw HTTPError(.badRequest, message: bedrockServiceError.message)
+    @Sendable func handleBedrockLibraryError(_ error: Error, context: String) throws {
+        if let BedrockLibraryError = error as? BedrockLibraryError {
+            logger.trace("BedrockLibraryError while \(context)", metadata: ["error": "\(error)"])
+            throw HTTPError(.badRequest, message: BedrockLibraryError.message)
         } else {
             logger.trace("Error while \(context)", metadata: ["error": "\(error)"])
             throw HTTPError(.internalServerError, message: "Error: \(error)")
@@ -238,7 +238,7 @@ func buildRouter(useSSO: Bool, logger: Logger, profileName: String) async throws
                 "An error occured while generating chat",
                 metadata: ["url": "/foundation-models/chat/:modelId", "error": "\(error)"]
             )
-            try handleBedrockServiceError(error, context: "/foundation-models/chat/:modelId")
+            try handleBedrockLibraryError(error, context: "/foundation-models/chat/:modelId")
             throw HTTPError(.internalServerError, message: "Error: \(error)")
         }
     }

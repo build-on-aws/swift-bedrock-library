@@ -17,7 +17,6 @@ import AwsCommonRuntimeKit
 import Testing
 
 @testable import BedrockService
-@testable import BedrockTypes
 
 @Suite("BedrockService Tests")
 struct BedrockServiceTests {

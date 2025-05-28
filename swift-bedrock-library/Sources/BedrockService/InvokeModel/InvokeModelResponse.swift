@@ -14,7 +14,7 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
-import BedrockTypes
+
 import Foundation
 
 public struct InvokeModelResponse {
@@ -49,14 +49,14 @@ public struct InvokeModelResponse {
     /// - Parameters:
     ///   - data: The raw response data from the Bedrock service
     ///   - model: The Bedrock model that generated the response
-    /// - Throws: BedrockServiceError.invalidModel if the model is not supported
-    ///          BedrockServiceError.invalidResponseBody if the response cannot be decoded
+    /// - Throws: BedrockLibraryError.invalidModel if the model is not supported
+    ///          BedrockLibraryError.invalidResponseBody if the response cannot be decoded
     static func createTextResponse(body data: Data, model: BedrockModel) throws -> Self {
         do {
             let textModality = try model.getTextModality()
             return self.init(model: model, textCompletionBody: try textModality.getTextResponseBody(from: data))
         } catch {
-            throw BedrockServiceError.invalidSDKResponseBody(data)
+            throw BedrockLibraryError.invalidSDKResponseBody(data)
         }
     }
 
@@ -64,28 +64,28 @@ public struct InvokeModelResponse {
     /// - Parameters:
     ///   - data: The raw response data from the Bedrock service
     ///   - model: The Bedrock model that generated the response
-    /// - Throws: BedrockServiceError.invalidModel if the model is not supported
-    ///          BedrockServiceError.invalidResponseBody if the response cannot be decoded
+    /// - Throws: BedrockLibraryError.invalidModel if the model is not supported
+    ///          BedrockLibraryError.invalidResponseBody if the response cannot be decoded
     static func createImageResponse(body data: Data, model: BedrockModel) throws -> Self {
         do {
             let imageModality = try model.getImageModality()
             return self.init(model: model, imageGenerationBody: try imageModality.getImageResponseBody(from: data))
         } catch {
-            throw BedrockServiceError.invalidSDKResponseBody(data)
+            throw BedrockLibraryError.invalidSDKResponseBody(data)
         }
     }
 
     /// Extracts the text completion from the response body
     /// - Returns: The text completion from the response
-    /// - Throws: BedrockServiceError.decodingError if the completion cannot be extracted
+    /// - Throws: BedrockLibraryError.decodingError if the completion cannot be extracted
     public func getTextCompletion() throws -> TextCompletion {
         do {
             guard let textCompletionBody = textCompletionBody else {
-                throw BedrockServiceError.decodingError("No text completion body found in the response")
+                throw BedrockLibraryError.decodingError("No text completion body found in the response")
             }
             return try textCompletionBody.getTextCompletion()
         } catch {
-            throw BedrockServiceError.decodingError(
+            throw BedrockLibraryError.decodingError(
                 "Something went wrong while decoding the request body to find the completion: \(error)"
             )
         }
@@ -93,15 +93,15 @@ public struct InvokeModelResponse {
 
     /// Extracts the image generation from the response body
     /// - Returns: The image generation from the response
-    /// - Throws: BedrockServiceError.decodingError if the image generation cannot be extracted
+    /// - Throws: BedrockLibraryError.decodingError if the image generation cannot be extracted
     public func getGeneratedImage() throws -> ImageGenerationOutput {
         do {
             guard let imageGenerationBody = imageGenerationBody else {
-                throw BedrockServiceError.decodingError("No image generation body found in the response")
+                throw BedrockLibraryError.decodingError("No image generation body found in the response")
             }
             return imageGenerationBody.getGeneratedImage()
         } catch {
-            throw BedrockServiceError.decodingError(
+            throw BedrockLibraryError.decodingError(
                 "Something went wrong while decoding the request body to find the completion: \(error)"
             )
         }

@@ -17,7 +17,6 @@ import AwsCommonRuntimeKit
 import Testing
 
 @testable import BedrockService
-@testable import BedrockTypes
 
 // MARK: authentication
 extension BedrockServiceTests {
@@ -57,7 +56,7 @@ extension BedrockServiceTests {
     // // Only works when SSO is actually expired
     // @Test("Authentication Error: SSO expired")
     // func authErrorSSOExpired() async throws {
-    //     await #expect(throws: BedrockServiceError.self) {
+    //     await #expect(throws: BedrockLibraryError.self) {
     //         let auth = BedrockAuthentication.sso()
     //         let bedrock = try await BedrockService(authentication: auth)
     //         let _ = try await bedrock.listModels()

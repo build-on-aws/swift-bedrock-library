@@ -16,7 +16,7 @@
 import Testing
 
 @testable import BedrockService
-@testable import BedrockTypes
+
 
 // Text completion
 
@@ -40,7 +40,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.imageGenerationModels
     )
     func completeTextWithInvalidModel(model: BedrockModel) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: TextCompletion = try await bedrock.completeText(
                 "This is a test",
                 with: model,
@@ -69,7 +69,7 @@ extension BedrockServiceTests {
         "Complete text using an implemented model and an invalid combination of parameters"
     )
     func completeTextWithInvalidModelInvalidParameters() async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: TextCompletion = try await bedrock.completeText(
                 "This is a test",
                 with: BedrockModel.nova_lite,
@@ -92,7 +92,7 @@ extension BedrockServiceTests {
 
     @Test("Complete text using an invalid temperature", arguments: NovaTestConstants.TextGeneration.invalidTemperature)
     func completeTextWithInvalidTemperature(temperature: Double) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: TextCompletion = try await bedrock.completeText(
                 "This is a test",
                 with: BedrockModel.nova_micro,
@@ -120,7 +120,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.TextGeneration.invalidMaxTokens
     )
     func completeTextWithInvalidMaxTokens(maxTokens: Int) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: TextCompletion = try await bedrock.completeText(
                 "This is a test",
                 with: BedrockModel.nova_micro,
@@ -148,7 +148,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.TextGeneration.invalidTopP
     )
     func completeTextWithInvalidMaxTokens(topP: Double) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: TextCompletion = try await bedrock.completeText(
                 "This is a test",
                 with: BedrockModel.nova_micro,
@@ -176,7 +176,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.TextGeneration.invalidTopK
     )
     func completeTextWithInvalidTopK(topK: Int) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: TextCompletion = try await bedrock.completeText(
                 "This is a test",
                 with: BedrockModel.nova_micro,
@@ -218,7 +218,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.TextGeneration.invalidPrompts
     )
     func completeTextWithInvalidPrompt(prompt: String) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: TextCompletion = try await bedrock.completeText(
                 prompt,
                 with: BedrockModel.nova_canvas,

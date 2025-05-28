@@ -14,7 +14,6 @@
 //===----------------------------------------------------------------------===//
 
 import AWSSDKIdentity
-import BedrockTypes
 import Logging
 
 #if canImport(FoundationEssentials)
@@ -54,7 +53,7 @@ extension BedrockAuthentication {
         }
 
         guard (try? tokenString.write(to: tokenFileURL, atomically: true, encoding: .utf8)) != nil else {
-            throw BedrockServiceError.authenticationFailed("Failed to write token to file")
+            throw BedrockLibraryError.authenticationFailed("Failed to write token to file")
         }
 
         // Create an identity resolver that uses the JWT token received from an Identity Provider
@@ -83,7 +82,7 @@ extension BedrockAuthentication {
 
         } catch {
             logger.error("Failed to assume role using web identity token: \(error)")
-            throw BedrockServiceError.authenticationFailed(
+            throw BedrockLibraryError.authenticationFailed(
                 "Failed to assume role using web identity token: \(error.localizedDescription)"
             )
         }

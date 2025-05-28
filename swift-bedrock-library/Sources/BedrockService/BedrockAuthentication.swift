@@ -14,7 +14,6 @@
 //===----------------------------------------------------------------------===//
 
 import AWSSDKIdentity
-import BedrockTypes
 import Logging
 import SmithyIdentity
 

@@ -14,7 +14,7 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
-import BedrockTypes
+
 import Foundation
 
 struct InvokeModelRequest {
@@ -43,7 +43,7 @@ struct InvokeModelRequest {
     ///   - maxTokens: Maximum number of tokens to generate (default: 300)
     ///   - temperature: Temperature for text generation (default: 0.6)
     /// - Returns: A configured BedrockRequest for a text request
-    /// - Throws: BedrockServiceError if the model doesn't support text output
+    /// - Throws: BedrockLibraryError if the model doesn't support text output
     static func createTextRequest(
         model: BedrockModel,
         prompt: String,
@@ -92,7 +92,7 @@ struct InvokeModelRequest {
     ///   - prompt: The text description of the image to generate
     ///   - nrOfImages: The number of images to generate
     /// - Returns: A configured BedrockRequest for image generation
-    /// - Throws: BedrockServiceError if the model doesn't support text input or image output
+    /// - Throws: BedrockLibraryError if the model doesn't support text input or image output
     public static func createTextToImageRequest(
         model: BedrockModel,
         prompt: String,
@@ -149,7 +149,7 @@ struct InvokeModelRequest {
     ///   - similarity: A value between 0 and 1 indicating how similar the variations should be to the source image
     ///   - nrOfImages: The number of image variations to generate
     /// - Returns: A configured BedrockRequest for image variation generation
-    /// - Throws: BedrockServiceError if the model doesn't support text and image input, or image output
+    /// - Throws: BedrockLibraryError if the model doesn't support text and image input, or image output
     public static func createImageVariationRequest(
         model: BedrockModel,
         prompt: String,
@@ -205,7 +205,7 @@ struct InvokeModelRequest {
 
     /// Creates an InvokeModelInput instance for making a request to Amazon Bedrock
     /// - Returns: A configured InvokeModelInput containing the model ID, content type, and encoded request body
-    /// - Throws: BedrockServiceError.encodingError if the request body cannot be encoded to JSON
+    /// - Throws: BedrockLibraryError.encodingError if the request body cannot be encoded to JSON
     public func getInvokeModelInput() throws -> InvokeModelInput {
         do {
             let jsonData: Data = try JSONEncoder().encode(self.body)
@@ -216,7 +216,7 @@ struct InvokeModelRequest {
                 modelId: model.id
             )
         } catch {
-            throw BedrockServiceError.encodingError(
+            throw BedrockLibraryError.encodingError(
                 "Something went wrong while encoding the request body to JSON for InvokeModelInput: \(error)"
             )
         }

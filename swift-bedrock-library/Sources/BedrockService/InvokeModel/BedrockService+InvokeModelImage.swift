@@ -15,7 +15,7 @@
 
 @preconcurrency import AWSBedrockRuntime
 import AwsCommonRuntimeKit
-import BedrockTypes
+
 import Foundation
 
 extension BedrockService {
@@ -30,11 +30,11 @@ extension BedrockService {
     ///   - seed: Optional seed for reproducible image generation
     ///   - quality: Optional parameter to control the quality of generated images
     ///   - resolution: Optional parameter to specify the desired image resolution
-    /// - Throws: BedrockServiceError.notSupported for parameters or functionalities that are not supported
-    ///           BedrockServiceError.invalidParameter for invalid parameters
-    ///           BedrockServiceError.invalidPrompt if the prompt is empty or too long
-    ///           BedrockServiceError.invalidModality for invalid modality from the selected model
-    ///           BedrockServiceError.invalidSDKResponse if the response body is missing
+    /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
+    ///           BedrockLibraryError.invalidParameter for invalid parameters
+    ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
+    ///           BedrockLibraryError.invalidModality for invalid modality from the selected model
+    ///           BedrockLibraryError.invalidSDKResponse if the response body is missing
     /// - Returns: An ImageGenerationOutput object containing an array of generated images
     public func generateImage(
         _ prompt: String,
@@ -94,7 +94,7 @@ extension BedrockService {
                         "hasBody": .stringConvertible(response.body != nil),
                     ]
                 )
-                throw BedrockServiceError.invalidSDKResponse(
+                throw BedrockLibraryError.invalidSDKResponse(
                     "Something went wrong while extracting body from response."
                 )
             }
@@ -120,11 +120,11 @@ extension BedrockService {
     ///   - seed: Optional seed for reproducible variation generation
     ///   - quality: Optional parameter to control the quality of generated variations
     ///   - resolution: Optional parameter to specify the desired image resolution
-    /// - Throws: BedrockServiceError.notSupported for parameters or functionalities that are not supported
-    ///           BedrockServiceError.invalidParameter for invalid parameters
-    ///           BedrockServiceError.invalidPrompt if the prompt is empty or too long
-    ///           BedrockServiceError.invalidModality for invalid modality from the selected model
-    ///           BedrockServiceError.invalidSDKResponse if the response body is missing
+    /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
+    ///           BedrockLibraryError.invalidParameter for invalid parameters
+    ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
+    ///           BedrockLibraryError.invalidModality for invalid modality from the selected model
+    ///           BedrockLibraryError.invalidSDKResponse if the response body is missing
     /// - Returns: An ImageGenerationOutput object containing an array of generated image variations
     public func generateImageVariation(
         images: [String],
@@ -191,7 +191,7 @@ extension BedrockService {
                         "hasBody": .stringConvertible(response.body != nil),
                     ]
                 )
-                throw BedrockServiceError.invalidSDKResponse(
+                throw BedrockLibraryError.invalidSDKResponse(
                     "Something went wrong while extracting body from response."
                 )
             }
@@ -217,11 +217,11 @@ extension BedrockService {
     ///   - seed: Optional seed for reproducible variation generation
     ///   - quality: Optional parameter to control the quality of generated variations
     ///   - resolution: Optional parameter to specify the desired image resolution
-    /// - Throws: BedrockServiceError.notSupported for parameters or functionalities that are not supported
-    ///           BedrockServiceError.invalidParameter for invalid parameters
-    ///           BedrockServiceError.invalidPrompt if the prompt is empty or too long
-    ///           BedrockServiceError.invalidModality for invalid modality from the selected model
-    ///           BedrockServiceError.invalidSDKResponse if the response body is missing
+    /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
+    ///           BedrockLibraryError.invalidParameter for invalid parameters
+    ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
+    ///           BedrockLibraryError.invalidModality for invalid modality from the selected model
+    ///           BedrockLibraryError.invalidSDKResponse if the response body is missing
     /// - Returns: An ImageGenerationOutput object containing an array of generated image variations
     public func generateImageVariation(
         image: String,

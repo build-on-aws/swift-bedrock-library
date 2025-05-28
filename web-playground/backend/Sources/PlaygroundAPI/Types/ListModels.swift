@@ -13,7 +13,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-import BedrockTypes
 import Foundation
 import Hummingbird
 

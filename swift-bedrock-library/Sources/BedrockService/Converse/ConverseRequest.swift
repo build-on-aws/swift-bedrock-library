@@ -14,7 +14,7 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
-import BedrockTypes
+
 import Foundation
 import Smithy
 

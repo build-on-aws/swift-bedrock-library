@@ -15,7 +15,7 @@
 
 @preconcurrency import AWSBedrockRuntime
 import AwsCommonRuntimeKit
-import BedrockTypes
+
 import Foundation
 
 extension BedrockService {
@@ -30,11 +30,11 @@ extension BedrockService {
     ///   - stopSequences: Optional array of sequences where generation should stop
     ///   - systemPrompts: Optional array of system prompts to guide the conversation
     ///   - tools: Optional array of tools the model can use
-    /// - Throws: BedrockServiceError.notSupported for parameters or functionalities that are not supported
-    ///           BedrockServiceError.invalidParameter for invalid parameters
-    ///           BedrockServiceError.invalidPrompt if the prompt is empty or too long
-    ///           BedrockServiceError.invalidModality for invalid modality from the selected model
-    ///           BedrockServiceError.invalidSDKResponse if the response body is missing
+    /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
+    ///           BedrockLibraryError.invalidParameter for invalid parameters
+    ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
+    ///           BedrockLibraryError.invalidModality for invalid modality from the selected model
+    ///           BedrockLibraryError.invalidSDKResponse if the response body is missing
     /// - Returns: A stream of ConverseResponseStreaming objects
     public func converseStream(
         with model: BedrockModel,
@@ -50,7 +50,7 @@ extension BedrockService {
     ) async throws -> AsyncThrowingStream<ConverseStreamElement, any Error> {
         do {
             guard model.hasConverseStreamingModality() else {
-                throw BedrockServiceError.invalidModality(
+                throw BedrockLibraryError.invalidModality(
                     model,
                     try model.getConverseModality(),
                     "This model does not support converse streaming."
@@ -106,7 +106,7 @@ extension BedrockService {
             logger.trace("Received response", metadata: ["response": "\(response)"])
 
             guard let sdkStream = response.stream else {
-                throw BedrockServiceError.invalidSDKResponse(
+                throw BedrockLibraryError.invalidSDKResponse(
                     "The response stream is missing. This error should never happen."
                 )
             }
@@ -140,7 +140,7 @@ extension BedrockService {
     /// Use Converse Stream API with the ConverseBuilder
     /// - Parameters:
     ///   - builder: ConverseBuilder object
-    /// - Throws: BedrockServiceError.invalidSDKResponse if the response body is missing
+    /// - Throws: BedrockLibraryError.invalidSDKResponse if the response body is missing
     /// - Returns: A stream of ConverseResponseStreaming objects
     public func converseStream(
         with builder: ConverseRequestBuilder

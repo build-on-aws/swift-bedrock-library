@@ -16,10 +16,8 @@
 import Testing
 
 @testable import BedrockService
-@testable import BedrockTypes
 
 // Converse text
-
 extension BedrockServiceTests {
 
     // Prompt
@@ -39,7 +37,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.TextGeneration.invalidPrompts
     )
     func converseWithInvalidPrompt(prompt: String) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let builder = try ConverseRequestBuilder(with: .nova_micro)
                 .withPrompt(prompt)
             let _ = try await bedrock.converse(with: builder)
@@ -138,7 +136,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.TextGeneration.invalidTemperature
     )
     func converseWithInvalidTemperature(temperature: Double) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let prompt = "This is a test"
             let builder = try ConverseRequestBuilder(with: .nova_micro)
                 .withPrompt(prompt)
@@ -166,7 +164,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.TextGeneration.invalidMaxTokens
     )
     func converseWithInvalidMaxTokens(maxTokens: Int) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let prompt = "This is a test"
             let builder = try ConverseRequestBuilder(with: .nova_micro)
                 .withPrompt(prompt)
@@ -194,7 +192,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.TextGeneration.invalidTopP
     )
     func converseWithInvalidTopP(topP: Double) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let prompt = "This is a test"
             let builder = try ConverseRequestBuilder(with: .nova_micro)
                 .withPrompt(prompt)

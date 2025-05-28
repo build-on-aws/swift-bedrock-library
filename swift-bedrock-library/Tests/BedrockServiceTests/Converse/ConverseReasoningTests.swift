@@ -16,7 +16,6 @@
 import Testing
 
 @testable import BedrockService
-@testable import BedrockTypes
 
 // Converse reasoning
 

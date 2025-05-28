@@ -16,7 +16,7 @@
 import Testing
 
 @testable import BedrockService
-@testable import BedrockTypes
+
 
 // MARK - Streaming converse document input
 

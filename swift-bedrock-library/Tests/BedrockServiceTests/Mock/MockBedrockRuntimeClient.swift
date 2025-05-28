@@ -17,7 +17,7 @@
 import AWSClientRuntime
 import AWSSDKIdentity
 import BedrockService
-import BedrockTypes
+
 import Foundation
 
 public struct MockBedrockRuntimeClient: BedrockRuntimeClientProtocol {

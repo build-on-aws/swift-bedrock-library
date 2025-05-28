@@ -13,7 +13,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import BedrockTypes
+@testable import BedrockService
 
 /// Constants for testing based on the Nova parameters
 enum NovaTestConstants {

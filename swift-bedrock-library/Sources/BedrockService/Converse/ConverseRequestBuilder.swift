@@ -13,7 +13,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import BedrockTypes
+
 import Foundation
 
 public struct ConverseRequestBuilder {
@@ -48,7 +48,7 @@ public struct ConverseRequestBuilder {
 
     public init(with modelId: String) throws {
         guard let model = BedrockModel(rawValue: modelId) else {
-            throw BedrockServiceError.notFound("No model with model id \(modelId) found.")
+            throw BedrockLibraryError.notFound("No model with model id \(modelId) found.")
         }
         self = try .init(with: model)
     }
@@ -89,12 +89,12 @@ public struct ConverseRequestBuilder {
     public func withHistory(_ history: [Message]) throws -> ConverseRequestBuilder {
         if let lastMessage = history.last {
             guard lastMessage.role == .assistant else {
-                throw BedrockServiceError.ConverseRequestBuilder("Last message in history must be from assistant.")
+                throw BedrockLibraryError.ConverseRequestBuilder("Last message in history must be from assistant.")
             }
         }
         if toolResult != nil {
             guard case .toolUse(_) = history.last?.content.last else {
-                throw BedrockServiceError.invalidPrompt("Tool result is defined but last message is not tool use.")
+                throw BedrockLibraryError.invalidPrompt("Tool result is defined but last message is not tool use.")
             }
         }
         var copy = self
@@ -107,18 +107,18 @@ public struct ConverseRequestBuilder {
     public func withTools(_ tools: [Tool]) throws -> ConverseRequestBuilder {
         try validateFeature(.toolUse)
         guard tools.count > 0 else {
-            throw BedrockServiceError.ConverseRequestBuilder("Cannot set tools to empty array.")
+            throw BedrockLibraryError.ConverseRequestBuilder("Cannot set tools to empty array.")
         }
         if case .toolUse(let toolUse) = history.last?.content.last {
             guard tools.contains(where: { $0.name == toolUse.name }) else {
-                throw BedrockServiceError.ConverseRequestBuilder(
+                throw BedrockLibraryError.ConverseRequestBuilder(
                     "Cannot set tools if last message in history contains toolUse and no matching tool is found."
                 )
             }
         }
         let toolNames = tools.map { $0.name }
         guard Set(toolNames).count == tools.count else {
-            throw BedrockServiceError.ConverseRequestBuilder("Cannot set tools with duplicate names.")
+            throw BedrockLibraryError.ConverseRequestBuilder("Cannot set tools with duplicate names.")
         }
         var copy = self
         copy.tools = tools
@@ -145,7 +145,7 @@ public struct ConverseRequestBuilder {
 
     public func withPrompt(_ prompt: String) throws -> ConverseRequestBuilder {
         guard toolResult == nil else {
-            throw BedrockServiceError.ConverseRequestBuilder("Cannot set prompt when tool result is set")
+            throw BedrockLibraryError.ConverseRequestBuilder("Cannot set prompt when tool result is set")
         }
         try parameters.prompt.validateValue(prompt)
         var copy = self
@@ -156,7 +156,7 @@ public struct ConverseRequestBuilder {
     public func withImage(_ image: ImageBlock) throws -> ConverseRequestBuilder {
         try validateFeature(.vision)
         guard toolResult == nil else {
-            throw BedrockServiceError.ConverseRequestBuilder("Cannot set image when tool result is set")
+            throw BedrockLibraryError.ConverseRequestBuilder("Cannot set image when tool result is set")
         }
         var copy = self
         copy.image = image
@@ -170,7 +170,7 @@ public struct ConverseRequestBuilder {
     public func withDocument(_ document: DocumentBlock) throws -> ConverseRequestBuilder {
         try validateFeature(.document)
         guard toolResult == nil else {
-            throw BedrockServiceError.ConverseRequestBuilder("Cannot set document when tool result is set")
+            throw BedrockLibraryError.ConverseRequestBuilder("Cannot set document when tool result is set")
         }
         var copy = self
         copy.document = document
@@ -187,21 +187,21 @@ public struct ConverseRequestBuilder {
 
     public func withToolResult(_ toolResult: ToolResultBlock) throws -> ConverseRequestBuilder {
         guard prompt == nil && image == nil && document == nil else {
-            throw BedrockServiceError.ConverseRequestBuilder(
+            throw BedrockLibraryError.ConverseRequestBuilder(
                 "Cannot set tool result when prompt, image, or document is set"
             )
         }
         guard let _ = tools else {
-            throw BedrockServiceError.ConverseRequestBuilder("Cannot set tool result when tools are not set")
+            throw BedrockLibraryError.ConverseRequestBuilder("Cannot set tool result when tools are not set")
         }
         guard let lastMessage = history.last else {
-            throw BedrockServiceError.ConverseRequestBuilder("Cannot set tool result when history is empty")
+            throw BedrockLibraryError.ConverseRequestBuilder("Cannot set tool result when history is empty")
         }
         guard case .toolUse(let toolUse) = lastMessage.content.last else {
-            throw BedrockServiceError.invalidPrompt("Cannot set tool result when last message is not tool use.")
+            throw BedrockLibraryError.invalidPrompt("Cannot set tool result when last message is not tool use.")
         }
         guard toolUse.id == toolResult.id else {
-            throw BedrockServiceError.invalidPrompt("Tool result name does not match tool use name.")
+            throw BedrockLibraryError.invalidPrompt("Tool result name does not match tool use name.")
         }
         try validateFeature(.toolUse)
         var copy = self
@@ -303,7 +303,7 @@ public struct ConverseRequestBuilder {
             try copy.parameters.maxTokens.validateValue(maxTokens)
             if let maxReasoningTokens {
                 guard maxReasoningTokens < maxTokens else {
-                    throw BedrockServiceError.ConverseRequestBuilder(
+                    throw BedrockLibraryError.ConverseRequestBuilder(
                         "maxTokens must be greater than maxReasoningTokens"
                     )
                 }
@@ -335,7 +335,7 @@ public struct ConverseRequestBuilder {
         var copy = self
         if let stopSequences {
             guard stopSequences != [] else {
-                throw BedrockServiceError.ConverseRequestBuilder("Cannot set stop sequences to empty array.")
+                throw BedrockLibraryError.ConverseRequestBuilder("Cannot set stop sequences to empty array.")
             }
             try copy.parameters.stopSequences.validateValue(stopSequences)
             copy.stopSequences = stopSequences
@@ -355,7 +355,7 @@ public struct ConverseRequestBuilder {
         var copy = self
         if let systemPrompts {
             guard systemPrompts != [] else {
-                throw BedrockServiceError.ConverseRequestBuilder("Cannot set system prompts to empty array.")
+                throw BedrockLibraryError.ConverseRequestBuilder("Cannot set system prompts to empty array.")
             }
             copy.systemPrompts = systemPrompts
         }
@@ -390,13 +390,13 @@ public struct ConverseRequestBuilder {
         if let maxReasoningTokens {
             try validateFeature(.reasoning)
             guard enableReasoning else {
-                throw BedrockServiceError.ConverseRequestBuilder(
+                throw BedrockLibraryError.ConverseRequestBuilder(
                     "Cannot set maxReasoningTokens when reasoning is disabled"
                 )
             }
             if let maxTokens {
                 guard maxReasoningTokens < maxTokens else {
-                    throw BedrockServiceError.ConverseRequestBuilder(
+                    throw BedrockLibraryError.ConverseRequestBuilder(
                         "maxReasoningTokens must be less than maxTokens"
                     )
                 }
@@ -440,24 +440,24 @@ public struct ConverseRequestBuilder {
             content.append(.toolResult(toolResult))
         }
         guard !content.isEmpty else {
-            throw BedrockServiceError.ConverseRequestBuilder("No content defined.")
+            throw BedrockLibraryError.ConverseRequestBuilder("No content defined.")
         }
         return Message(from: .user, content: content)
     }
 
     private func getToolResultId() throws -> String {
         guard let lastMessage = history.last else {
-            throw BedrockServiceError.ConverseRequestBuilder("Cannot set tool result when history is empty")
+            throw BedrockLibraryError.ConverseRequestBuilder("Cannot set tool result when history is empty")
         }
         guard case .toolUse(let toolUse) = lastMessage.content.last else {
-            throw BedrockServiceError.invalidPrompt("Cannot set tool result when last message is not tool use.")
+            throw BedrockLibraryError.invalidPrompt("Cannot set tool result when last message is not tool use.")
         }
         return toolUse.id
     }
 
     private func validateFeature(_ feature: ConverseFeature) throws {
         guard model.hasConverseModality(feature) else {
-            throw BedrockServiceError.invalidModality(
+            throw BedrockLibraryError.invalidModality(
                 model,
                 try model.getConverseModality(),
                 "This model does not support converse feature \(feature)."

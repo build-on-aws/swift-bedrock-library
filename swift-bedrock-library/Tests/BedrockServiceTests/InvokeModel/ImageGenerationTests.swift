@@ -16,7 +16,7 @@
 import Testing
 
 @testable import BedrockService
-@testable import BedrockTypes
+
 
 // Image generation
 
@@ -40,7 +40,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.textCompletionModels
     )
     func generateImageWithInvalidModel(model: BedrockModel) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: ImageGenerationOutput = try await bedrock.generateImage(
                 "This is a test",
                 with: model,
@@ -68,7 +68,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.ImageGeneration.invalidNrOfImages
     )
     func generateImageWithInvalidNrOfImages(nrOfImages: Int) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: ImageGenerationOutput = try await bedrock.generateImage(
                 "This is a test",
                 with: BedrockModel.nova_canvas,
@@ -96,7 +96,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.ImageGeneration.invalidCfgScale
     )
     func generateImageWithInvalidCfgScale(cfgScale: Double) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: ImageGenerationOutput = try await bedrock.generateImage(
                 "This is a test",
                 with: BedrockModel.nova_canvas,
@@ -124,7 +124,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.ImageGeneration.invalidSeed
     )
     func generateImageWithInvalidSeed(seed: Int) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: ImageGenerationOutput = try await bedrock.generateImage(
                 "This is a test",
                 with: BedrockModel.nova_canvas,
@@ -152,7 +152,7 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.ImageGeneration.invalidImagePrompts
     )
     func generateImageWithInvalidPrompt(prompt: String) async throws {
-        await #expect(throws: BedrockServiceError.self) {
+        await #expect(throws: BedrockLibraryError.self) {
             let _: ImageGenerationOutput = try await bedrock.generateImage(
                 prompt,
                 with: BedrockModel.nova_canvas

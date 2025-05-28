@@ -39,11 +39,10 @@ let package = Package(
 )
 ```
 
-2. Import the BedrockService and BedrockTypes
+2. Import the BedrockService
 
 ```swift 
 import BedrockService
-import BedrockTypes
 ```
 
 3. Initialize the BedrockService
@@ -873,10 +872,10 @@ struct LlamaText: TextModality {
         stopSequences: [String]?
     ) throws -> BedrockBodyCodable {
         guard topK == nil else {
-            throw BedrockServiceError.notSupported("TopK is not supported for Llama text completion")
+            throw BedrockLibraryError.notSupported("TopK is not supported for Llama text completion")
         }
         guard stopSequences == nil else {
-            throw BedrockServiceError.notSupported("stopSequences is not supported for Llama text completion")
+            throw BedrockLibraryError.notSupported("stopSequences is not supported for Llama text completion")
         }
         return LlamaRequestBody(
             prompt: prompt,

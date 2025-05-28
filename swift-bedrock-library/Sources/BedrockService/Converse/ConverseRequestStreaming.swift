@@ -14,7 +14,6 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
-import BedrockTypes
 
 public typealias ConverseStreamingRequest = ConverseRequest
 extension ConverseStreamingRequest {

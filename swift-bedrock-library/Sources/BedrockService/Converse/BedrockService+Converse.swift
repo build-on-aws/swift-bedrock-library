@@ -15,7 +15,6 @@
 
 @preconcurrency import AWSBedrockRuntime
 import AwsCommonRuntimeKit
-import BedrockTypes
 import Foundation
 
 extension BedrockService {
@@ -30,11 +29,11 @@ extension BedrockService {
     ///   - stopSequences: Optional array of sequences where generation should stop
     ///   - systemPrompts: Optional array of system prompts to guide the conversation
     ///   - tools: Optional array of tools the model can use
-    /// - Throws: BedrockServiceError.notSupported for parameters or functionalities that are not supported
-    ///           BedrockServiceError.invalidParameter for invalid parameters
-    ///           BedrockServiceError.invalidPrompt if the prompt is empty or too long
-    ///           BedrockServiceError.invalidModality for invalid modality from the selected model
-    ///           BedrockServiceError.invalidSDKResponse if the response body is missing
+    /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
+    ///           BedrockLibraryError.invalidParameter for invalid parameters
+    ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
+    ///           BedrockLibraryError.invalidModality for invalid modality from the selected model
+    ///           BedrockLibraryError.invalidSDKResponse if the response body is missing
     /// - Returns: A Message containing the model's response
     public func converse(
         with model: BedrockModel,
@@ -106,7 +105,7 @@ extension BedrockService {
     /// Use Converse API with the ConverseRequestBuilder
     /// - Parameters:
     ///   - builder: ConverseRequestBuilder object
-    /// - Throws: BedrockServiceError.invalidSDKResponse if the response body is missing
+    /// - Throws: BedrockLibraryError.invalidSDKResponse if the response body is missing
     /// - Returns: A ConverseReply object
     public func converse(with builder: ConverseRequestBuilder) async throws -> ConverseReply {
         logger.trace("Conversing")
