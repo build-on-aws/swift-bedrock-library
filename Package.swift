@@ -7,7 +7,7 @@ let package = Package(
     name: "SwiftBedrockLibrary",
     platforms: [.macOS(.v15), .iOS(.v18), .tvOS(.v18)],
     products: [
-        .library(name: "BedrockService", targets: ["BedrockService"]),
+        .library(name: "BedrockService", targets: ["BedrockService"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.3.0"),
@@ -32,7 +32,7 @@ let package = Package(
         .testTarget(
             name: "BedrockServiceTests",
             dependencies: [
-                .target(name: "BedrockService"),
+                .target(name: "BedrockService")
             ],
             path: "swift-bedrock-library/Tests/BedrockServiceTests"
         ),

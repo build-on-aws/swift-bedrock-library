@@ -14,7 +14,6 @@
 //===----------------------------------------------------------------------===//
 
 import BedrockService
-
 import Foundation
 import Hummingbird
 import Logging

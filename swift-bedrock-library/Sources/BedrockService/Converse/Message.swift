@@ -98,7 +98,7 @@ public struct Message: Codable, CustomStringConvertible, Sendable {
     // MARK - public functions
 
     public func hasToolUse() -> Bool {
-        return content.contains { $0.isToolUse() }
+        content.contains { $0.isToolUse() }
     }
     public func getToolUse() -> ToolUseBlock? {
         let content = content.first(where: { $0.isToolUse() })
@@ -109,22 +109,22 @@ public struct Message: Codable, CustomStringConvertible, Sendable {
         }
     }
     public func hasTextContent() -> Bool {
-        return content.contains { $0.isText() }
+        content.contains { $0.isText() }
     }
     public func hasImageContent() -> Bool {
-        return content.contains { $0.isImage() }
+        content.contains { $0.isImage() }
     }
     public func hasVideoContent() -> Bool {
-        return content.contains { $0.isVideo() }
+        content.contains { $0.isVideo() }
     }
     public func hasReasoningContent() -> Bool {
-        return content.contains { $0.isReasoning() }
+        content.contains { $0.isReasoning() }
     }
     public func hasEncryptedReasoningContent() -> Bool {
-        return content.contains { $0.isEncryptedReasoning() }
+        content.contains { $0.isEncryptedReasoning() }
     }
     public func hasToolResult() -> Bool {
-        return content.contains { $0.isToolResult() }
+        content.contains { $0.isToolResult() }
     }
 
     public func getSDKMessage() throws -> BedrockRuntimeClientTypes.Message {

@@ -15,7 +15,6 @@
 
 @preconcurrency import AWSBedrockRuntime
 import AwsCommonRuntimeKit
-
 import Foundation
 
 extension BedrockService {

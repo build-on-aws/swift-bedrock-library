@@ -17,7 +17,6 @@ import Testing
 
 @testable import BedrockService
 
-
 // Text completion
 
 extension BedrockServiceTests {

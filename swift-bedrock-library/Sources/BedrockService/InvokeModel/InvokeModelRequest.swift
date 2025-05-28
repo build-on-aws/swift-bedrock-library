@@ -14,7 +14,6 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
-
 import Foundation
 
 struct InvokeModelRequest {

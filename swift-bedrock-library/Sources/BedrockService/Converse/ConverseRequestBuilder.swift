@@ -13,7 +13,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-
 import Foundation
 
 public struct ConverseRequestBuilder {

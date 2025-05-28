@@ -17,7 +17,6 @@ import Testing
 
 @testable import BedrockService
 
-
 // MARK - Streaming converse vision
 
 extension BedrockServiceTests {
