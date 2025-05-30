@@ -27,14 +27,14 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "AwsCommonRuntimeKit", package: "aws-crt-swift"),
             ],
-            path: "swift-bedrock-library/Sources/BedrockService"
+            path: "Sources/BedrockService"
         ),
         .testTarget(
             name: "BedrockServiceTests",
             dependencies: [
                 .target(name: "BedrockService")
             ],
-            path: "swift-bedrock-library/Tests/BedrockServiceTests"
+            path: "Tests/BedrockServiceTests"
         ),
     ]
 )
