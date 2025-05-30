@@ -2,6 +2,14 @@
 
 A tiny layer on top of the [AWS SDK for Swift](https://github.com/awslabs/aws-sdk-swift) for interacting with [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) foundation models. This library provides a convenient way to access Amazon Bedrock's capabilities from Swift applications.
 
+## Acknowledgment
+
+This library and playground have been written by [Mona Dierickx](https://www.linkedin.com/in/mona-dierickx/), during her last year of studies at [HoGent](https://www.hogent.be/), Belgium.
+
+Thank you for your enthousiasm and positive attitude during the three months we worked together. (February 2025 - May 2025).
+
+Thank for Professor Steven Van Impe for allowing us to work with these young talents.
+
 ## Getting started with BedrockService
 
 1. Set-up your `Package.swift`
