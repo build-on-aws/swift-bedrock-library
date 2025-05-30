@@ -31,9 +31,9 @@ struct Main {
 
         let bedrock = try await BedrockService(
             region: .useast1,
-            logger: logger,
-            // uncomment if you use SSO with AWS Identity Center
-            //    authentication: .sso
+            logger: logger
+                // uncomment if you use SSO with AWS Identity Center
+                //    authentication: .sso
         )
 
         // select a model that supports the converse modality
