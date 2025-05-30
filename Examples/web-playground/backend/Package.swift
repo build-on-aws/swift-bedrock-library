@@ -12,7 +12,12 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/hummingbird-project/hummingbird.git", from: "2.0.0"),
         .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.3.0"),
-        .package(name: "swift-bedrock-library", path: "../.."),
+        
+        // Uncomment the following line to use the Bedrock library from a specific branch or commit
+        // .package(url: "https://github.com/build-on-aws/swift-bedrock-library.git", branch: "main"),
+        
+        // for CI or testing purposes, you can use a local path
+        .package(name: "swift-bedrock-library", path: "../../.."),
     ],
     targets: [
         .executableTarget(

@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Web playground backend tests
+      - name: Web playground backend build
         working-directory: Examples/web-playground/backend
         run: swift build
 
