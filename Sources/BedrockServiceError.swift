@@ -66,7 +66,8 @@ public enum BedrockLibraryError: Error {
         case .invalidSDKResponse(let message):
             return "Invalid SDK response: \(message)"
         case .invalidSDKResponseBody(let value):
-            return "Invalid SDK response body: \(String(describing: value))"
+            let valueAsString = value != nil ? String(data: value!, encoding: .utf8) ?? "" : "nil"
+            return "Invalid SDK response body: \(valueAsString)"
         case .completionNotFound(let message):
             return "Completion not found: \(message)"
         case .encodingError(let message):
