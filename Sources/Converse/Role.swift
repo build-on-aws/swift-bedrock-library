@@ -43,14 +43,14 @@ public struct Role: Codable, Sendable, Equatable {
     }
 
     // custom encoding and decoding to handle string value with a "type" field
-    /*
-            "message":{
-            "content":[
-                {"text":"This is the textcompletion for: This is a test"}
-            ],
-            "role":"assistant"
-        }},
-    */
+    // 
+    //     "message":{
+    //     "content":[
+    //         {"text":"This is the textcompletion for: This is a test"}
+    //     ],
+    //     "role":"assistant"
+    // }},
+    // 
     public init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         let role = try container.decode(String.self)
