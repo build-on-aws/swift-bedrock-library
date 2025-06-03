@@ -27,11 +27,13 @@ extension BedrockServiceTests {
         arguments: NovaTestConstants.textCompletionModels
     )
     func completeTextWithValidModel(model: BedrockModel) async throws {
-        let completion: TextCompletion = try await bedrock.completeText(
-            "This is a test",
-            with: model
-        )
-        #expect(completion.completion == "This is the textcompletion for: This is a test")
+        await #expect(throws: Never.self) {
+            let completion: TextCompletion = try await bedrock.completeText(
+                "This is a test",
+                with: model
+            )
+            #expect(completion.completion == "This is the textcompletion for: This is a test")
+        }
     }
 
     @Test(

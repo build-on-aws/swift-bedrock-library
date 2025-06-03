@@ -16,14 +16,18 @@
 @preconcurrency import AWSBedrockRuntime
 import Foundation
 
-public enum Role: String, Codable, Sendable {
-    case user
-    case assistant
+public struct Role: Codable, Sendable, Equatable {
+    private enum RoleType: Codable, Sendable, Equatable {
+        case user
+        case assistant
+    }
+
+    private let type: RoleType
 
     public init(from sdkConversationRole: BedrockRuntimeClientTypes.ConversationRole) throws {
         switch sdkConversationRole {
-        case .user: self = .user
-        case .assistant: self = .assistant
+        case .user: self.type = .user
+        case .assistant: self.type = .assistant
         case .sdkUnknown(let unknownRole):
             throw BedrockLibraryError.notImplemented(
                 "Role \(unknownRole) is not implemented by BedrockRuntimeClientTypes"
@@ -32,9 +36,47 @@ public enum Role: String, Codable, Sendable {
     }
 
     public func getSDKConversationRole() -> BedrockRuntimeClientTypes.ConversationRole {
-        switch self {
+        switch self.type {
         case .user: return .user
         case .assistant: return .assistant
         }
     }
+
+    // custom encoding and decoding to handle string value with a "type" field
+    //
+    //     "message":{
+    //     "content":[
+    //         {"text":"This is the textcompletion for: This is a test"}
+    //     ],
+    //     "role":"assistant"
+    // }},
+    //
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let role = try container.decode(String.self)
+        switch role {
+        case "user": self.type = .user
+        case "assistant": self.type = .assistant
+        default:
+            throw BedrockLibraryError.decodingError(
+                "Role \(role) is not a valid role"
+            )
+        }
+    }
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self.type {
+        case .user: try container.encode("user")
+        case .assistant: try container.encode("assistant")
+        }
+    }
+    /// Returns the type of the role as a string.
+    public static func == (lhs: Role, rhs: Role) -> Bool {
+        lhs.type == rhs.type
+    }
+    private init(_ type: RoleType) {
+        self.type = type
+    }
+    public static let user = Role(.user)
+    public static let assistant = Role(.assistant)
 }
