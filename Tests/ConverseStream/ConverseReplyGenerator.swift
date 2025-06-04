@@ -115,7 +115,7 @@ extension ConverseReplyStreamTests {
         }
     }
 
-		// Helper function to create a never-ending stream that will continue indefinitely
+    // Helper function to create a never-ending stream that will continue indefinitely
     func createNeverEndingStream() -> AsyncThrowingStream<BedrockRuntimeClientTypes.ConverseStreamOutput, Error> {
         AsyncThrowingStream<BedrockRuntimeClientTypes.ConverseStreamOutput, Error> { continuation in
             // Message start
@@ -159,5 +159,5 @@ extension ConverseReplyStreamTests {
                 continuousTask.cancel()
             }
         }
-    } 		
+    }
 }

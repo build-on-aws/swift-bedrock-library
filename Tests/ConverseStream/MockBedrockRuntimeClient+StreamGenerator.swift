@@ -82,7 +82,7 @@ extension MockBedrockRuntimeClient {
 
             continuation.finish()
         }
-    } 
+    }
 
     package func getToolUseStream(
         for toolName: String
@@ -219,5 +219,5 @@ extension MockBedrockRuntimeClient {
 
             continuation.finish()
         }
-    }		
+    }
 }

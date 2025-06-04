@@ -147,7 +147,7 @@ public struct ConverseReplyStream: Sendable {
 
                             // reassemble buffered data and emit top-level event
                             try ConverseReplyStream.flushContent(state: &state, continuation: continuation)
-                            guard let lastContentBlock = state.lastContentBlock  else {
+                            guard let lastContentBlock = state.lastContentBlock else {
                                 fatalError(
                                     String(
                                         "ContentBlockStop received but no content block was buffered for block ID \(blockId)"
@@ -158,7 +158,7 @@ public struct ConverseReplyStream: Sendable {
                             if case .toolUse(let toolUse) = lastContentBlock.1 {
                                 continuation.yield(.toolUse(blockId, toolUse))
                             }
-                            // buffer this content block 
+                            // buffer this content block
                             state.contentBlocks[blockId] = lastContentBlock.1
 
                             // reset the current block ID

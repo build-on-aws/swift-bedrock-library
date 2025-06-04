@@ -151,23 +151,23 @@ public struct Message: Codable, CustomStringConvertible, Sendable {
         )
     }
 
-        public static func stopReason(fromSDK sdkStopReason: BedrockRuntimeClientTypes.StopReason?) -> StopReason? {
-            switch sdkStopReason {
-            case .endTurn:
-                return .endTurn
-            case .toolUse:
-                return .toolUse
-            case .maxTokens:
-                return .maxTokens
-            case .stopSequence:
-                return .stopSequence
-            case .guardrailIntervened:
-                return .guardrailIntervened
-            case .contentFiltered:
-                return .contentFiltered
-            default:
-                return nil
-            }
-        }   
+    public static func stopReason(fromSDK sdkStopReason: BedrockRuntimeClientTypes.StopReason?) -> StopReason? {
+        switch sdkStopReason {
+        case .endTurn:
+            return .endTurn
+        case .toolUse:
+            return .toolUse
+        case .maxTokens:
+            return .maxTokens
+        case .stopSequence:
+            return .stopSequence
+        case .guardrailIntervened:
+            return .guardrailIntervened
+        case .contentFiltered:
+            return .contentFiltered
+        default:
+            return nil
+        }
+    }
 
 }

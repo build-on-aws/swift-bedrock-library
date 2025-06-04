@@ -29,7 +29,7 @@ struct ConverseReplyStreamTests {
             bedrockRuntimeClient: MockBedrockRuntimeClient()
         )
     }
-        
+
     @Test("Test streaming text response")
     func testStreamingTextResponse() async throws {
         // Create the ConverseReplyStream from the simulated stream
@@ -110,7 +110,6 @@ struct ConverseReplyStreamTests {
         } else {
             Issue.record("Expected contentBlockComplete")
         }
-        
 
         // Check message complete
         if case .messageComplete(let message) = streamElements[3] {
