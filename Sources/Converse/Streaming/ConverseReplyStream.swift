@@ -48,7 +48,7 @@ public struct ConverseReplyStream: Sendable {
 
                         switch output {
                         case .messagestart(let event):
-                            logger.trace("Message Start", metadata: ["event": "\(event)"])
+                            logger?.trace("Message Start", metadata: ["event": "\(event)"])
 
                             guard let sdkRole = event.role,
                                 let role = try? Role(from: sdkRole)
@@ -235,41 +235,13 @@ public struct ConverseReplyStream: Sendable {
         state: inout StreamState,
         continuation: AsyncThrowingStream<ConverseStreamElement, any Error>.Continuation
     ) throws {
-        guard isToolUseBufferValid(state) ||
-              isReasoningDataBufferValid(state) ||
-              isEmptyBufferValid(state) ||
-              isReasoningBufferValid(state) ||
-              isTextBufferValid(state)
+        guard
+            isToolUseBufferValid(state) || isReasoningDataBufferValid(state) || isEmptyBufferValid(state)
+                || isReasoningBufferValid(state) || isTextBufferValid(state)
         else {
             throw BedrockLibraryError.invalidSDKType("ContentBlockStop received while multiple buffers are not empty")
         }
 
-    }
-
-    private static func isToolUseBufferValid(_ state: StreamState) -> Bool {
-        return state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
-            && !state.bufferToolUse.isEmpty
-    }
-
-    private static func isReasoningDataBufferValid(_ state: StreamState) -> Bool {
-        return state.bufferText.isEmpty && state.bufferReasoning.isEmpty && !state.bufferReasoningData.isEmpty
-            && state.bufferToolUse.isEmpty
-    }
-
-    private static func isEmptyBufferValid(_ state: StreamState) -> Bool {
-        return state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
-            && state.bufferToolUse.isEmpty
-    }
-
-    private static func isReasoningBufferValid(_ state: StreamState) -> Bool {
-        return state.bufferText.isEmpty && !state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
-            && state.bufferToolUse.isEmpty
-    }
-
-    private static func isTextBufferValid(_ state: StreamState) -> Bool {
-        return !state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
-            && state.bufferToolUse.isEmpty
-    }
         if !state.bufferText.isEmpty {
             state.lastContentBlock = (state.currentBlockId, Content.text(state.bufferText))
             state.bufferText = ""
@@ -297,6 +269,31 @@ public struct ConverseReplyStream: Sendable {
             state.bufferToolUse = ""
         }
         state.currentBlockId = -1
+    }
+
+    private static func isToolUseBufferValid(_ state: StreamState) -> Bool {
+        state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
+            && !state.bufferToolUse.isEmpty
+    }
+
+    private static func isReasoningDataBufferValid(_ state: StreamState) -> Bool {
+        state.bufferText.isEmpty && state.bufferReasoning.isEmpty && !state.bufferReasoningData.isEmpty
+            && state.bufferToolUse.isEmpty
+    }
+
+    private static func isEmptyBufferValid(_ state: StreamState) -> Bool {
+        state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
+            && state.bufferToolUse.isEmpty
+    }
+
+    private static func isReasoningBufferValid(_ state: StreamState) -> Bool {
+        state.bufferText.isEmpty && !state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
+            && state.bufferToolUse.isEmpty
+    }
+
+    private static func isTextBufferValid(_ state: StreamState) -> Bool {
+        !state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
+            && state.bufferToolUse.isEmpty
     }
 
     // a simple struct to buffer whatever content we receive from the SDK
