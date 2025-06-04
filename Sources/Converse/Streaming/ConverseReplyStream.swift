@@ -296,7 +296,7 @@ public struct ConverseReplyStream: Sendable {
             )
             state.bufferToolUse = ""
         }
-        state.currentBlockId = 0
+        state.currentBlockId = -1
     }
 
     // a simple struct to buffer whatever content we receive from the SDK
