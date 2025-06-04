@@ -48,7 +48,7 @@ public struct ConverseReplyStream: Sendable {
 
                         switch output {
                         case .messagestart(let event):
-                            logger?.trace("Message Start", metadata: ["event": "\(event)"])
+                            logger.trace("Message Start", metadata: ["event": "\(event)"])
 
                             guard let sdkRole = event.role,
                                 let role = try? Role(from: sdkRole)
