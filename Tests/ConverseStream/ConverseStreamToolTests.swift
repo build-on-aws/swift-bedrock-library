@@ -19,7 +19,7 @@ import Testing
 
 // MARK - Streaming conversetooluse
 
-extension BedrockServiceTests {
+extension ConverseReplyStreamTests {
     @Test("Continue conversation with tool use")
     func converseStreamWithToolUse() async throws {
         let tool = try Tool(

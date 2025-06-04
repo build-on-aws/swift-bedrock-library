@@ -17,14 +17,27 @@
 import Foundation
 
 public struct Message: Codable, CustomStringConvertible, Sendable {
+
+    // https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_MessageStopEvent.html
+    // end_turn | tool_use | max_tokens | stop_sequence | guardrail_intervened | content_filtered
+    public enum StopReason: Codable, Sendable {
+        case endTurn
+        case toolUse
+        case maxTokens
+        case stopSequence
+        case guardrailIntervened
+        case contentFiltered
+    }
     public let role: Role
     public let content: [Content]
+    public let stopReason: StopReason?
 
     // MARK - initializers
 
-    public init(from role: Role, content: [Content]) {
+    public init(from role: Role, content: [Content], stopReason: StopReason? = nil) {
         self.role = role
         self.content = content
+        self.stopReason = stopReason
     }
 
     /// convenience initializer for message with only a user prompt
@@ -137,4 +150,24 @@ public struct Message: Codable, CustomStringConvertible, Sendable {
             role: role.getSDKConversationRole()
         )
     }
+
+        public static func stopReason(fromSDK sdkStopReason: BedrockRuntimeClientTypes.StopReason?) -> StopReason? {
+            switch sdkStopReason {
+            case .endTurn:
+                return .endTurn
+            case .toolUse:
+                return .toolUse
+            case .maxTokens:
+                return .maxTokens
+            case .stopSequence:
+                return .stopSequence
+            case .guardrailIntervened:
+                return .guardrailIntervened
+            case .contentFiltered:
+                return .contentFiltered
+            default:
+                return nil
+            }
+        }   
+
 }

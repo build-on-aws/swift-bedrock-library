@@ -19,7 +19,7 @@ import Testing
 
 // MARK - Streaming converse tekst
 
-extension BedrockServiceTests {
+extension ConverseReplyStreamTests {
 
     @Test("Streaming converse with reasoning")
     func streamingConverseReasoning() async throws {

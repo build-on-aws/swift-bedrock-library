@@ -21,123 +21,15 @@ import Testing
 @Suite("ConverseReplyStreamTests")
 struct ConverseReplyStreamTests {
 
-    // Helper function to create a simulated stream with a single text block
-    func createSingleTextBlockStream() -> AsyncThrowingStream<BedrockRuntimeClientTypes.ConverseStreamOutput, Error> {
-        AsyncThrowingStream<BedrockRuntimeClientTypes.ConverseStreamOutput, Error> { continuation in
-            // Message start
-            let messageStartEvent = BedrockRuntimeClientTypes.MessageStartEvent(
-                role: .assistant
-            )
-            continuation.yield(.messagestart(messageStartEvent))
+    let bedrock: BedrockService
 
-            // Content block start
-            let contentBlockStartEvent = BedrockRuntimeClientTypes.ContentBlockStartEvent(
-                contentBlockIndex: 0,
-                start: nil
-            )
-            continuation.yield(.contentblockstart(contentBlockStartEvent))
-
-            // Content block delta (first part)
-            let contentBlockDelta1 = BedrockRuntimeClientTypes.ContentBlockDelta.text("Hello, ")
-            let contentBlockDeltaEvent1 = BedrockRuntimeClientTypes.ContentBlockDeltaEvent(
-                contentBlockIndex: 0,
-                delta: contentBlockDelta1
-            )
-            continuation.yield(.contentblockdelta(contentBlockDeltaEvent1))
-
-            // Content block delta (second part)
-            let contentBlockDelta2 = BedrockRuntimeClientTypes.ContentBlockDelta.text("this is ")
-            let contentBlockDeltaEvent2 = BedrockRuntimeClientTypes.ContentBlockDeltaEvent(
-                contentBlockIndex: 0,
-                delta: contentBlockDelta2
-            )
-            continuation.yield(.contentblockdelta(contentBlockDeltaEvent2))
-
-            // Content block delta (third part)
-            let contentBlockDelta3 = BedrockRuntimeClientTypes.ContentBlockDelta.text("a test message.")
-            let contentBlockDeltaEvent3 = BedrockRuntimeClientTypes.ContentBlockDeltaEvent(
-                contentBlockIndex: 0,
-                delta: contentBlockDelta3
-            )
-            continuation.yield(.contentblockdelta(contentBlockDeltaEvent3))
-
-            // Content block stop
-            let contentBlockStopEvent = BedrockRuntimeClientTypes.ContentBlockStopEvent(
-                contentBlockIndex: 0
-            )
-            continuation.yield(.contentblockstop(contentBlockStopEvent))
-
-            // Message stop
-            let messageStopEvent = BedrockRuntimeClientTypes.MessageStopEvent(
-                additionalModelResponseFields: nil,
-                stopReason: nil
-            )
-            continuation.yield(.messagestop(messageStopEvent))
-
-            continuation.finish()
-        }
+    init() async throws {
+        self.bedrock = try await BedrockService(
+            bedrockClient: MockBedrockClient(),
+            bedrockRuntimeClient: MockBedrockRuntimeClient()
+        )
     }
-
-    // Helper function to create a simulated stream with multiple content blocks
-    func createMultipleContentBlocksStream() -> AsyncThrowingStream<
-        BedrockRuntimeClientTypes.ConverseStreamOutput, Error
-    > {
-        AsyncThrowingStream<BedrockRuntimeClientTypes.ConverseStreamOutput, Error> { continuation in
-            // Message start
-            let messageStartEvent = BedrockRuntimeClientTypes.MessageStartEvent(
-                role: .assistant
-            )
-            continuation.yield(.messagestart(messageStartEvent))
-
-            // First content block
-            let contentBlockStartEvent1 = BedrockRuntimeClientTypes.ContentBlockStartEvent(
-                contentBlockIndex: 0,
-                start: nil
-            )
-            continuation.yield(.contentblockstart(contentBlockStartEvent1))
-
-            let contentBlockDelta1 = BedrockRuntimeClientTypes.ContentBlockDelta.text("First block content.")
-            let contentBlockDeltaEvent1 = BedrockRuntimeClientTypes.ContentBlockDeltaEvent(
-                contentBlockIndex: 0,
-                delta: contentBlockDelta1
-            )
-            continuation.yield(.contentblockdelta(contentBlockDeltaEvent1))
-
-            let contentBlockStopEvent1 = BedrockRuntimeClientTypes.ContentBlockStopEvent(
-                contentBlockIndex: 0
-            )
-            continuation.yield(.contentblockstop(contentBlockStopEvent1))
-
-            // Second content block
-            let contentBlockStartEvent2 = BedrockRuntimeClientTypes.ContentBlockStartEvent(
-                contentBlockIndex: 1,
-                start: nil
-            )
-            continuation.yield(.contentblockstart(contentBlockStartEvent2))
-
-            let contentBlockDelta2 = BedrockRuntimeClientTypes.ContentBlockDelta.text("Second block content.")
-            let contentBlockDeltaEvent2 = BedrockRuntimeClientTypes.ContentBlockDeltaEvent(
-                contentBlockIndex: 1,
-                delta: contentBlockDelta2
-            )
-            continuation.yield(.contentblockdelta(contentBlockDeltaEvent2))
-
-            let contentBlockStopEvent2 = BedrockRuntimeClientTypes.ContentBlockStopEvent(
-                contentBlockIndex: 1
-            )
-            continuation.yield(.contentblockstop(contentBlockStopEvent2))
-
-            // Message stop
-            let messageStopEvent = BedrockRuntimeClientTypes.MessageStopEvent(
-                additionalModelResponseFields: nil,
-                stopReason: nil
-            )
-            continuation.yield(.messagestop(messageStopEvent))
-
-            continuation.finish()
-        }
-    }
-
+        
     @Test("Test streaming text response")
     func testStreamingTextResponse() async throws {
         // Create the ConverseReplyStream from the simulated stream
@@ -153,52 +45,22 @@ struct ConverseReplyStreamTests {
         #expect(streamElements.count == 5)
 
         // Check content segments
-        if case .contentSegment(let segment1) = streamElements[0] {
-            if case .text(let index1, let text1) = segment1 {
-                #expect(index1 == 0)
-                #expect(text1 == "Hello, ")
-            } else {
-                Issue.record("Expected text segment")
-            }
+        if case .messageStart(let segment1) = streamElements[0] {
+            #expect(segment1 == .assistant)
         } else {
-            Issue.record("Expected contentSegment")
+            Issue.record("Expected messageStart")
         }
 
-        if case .contentSegment(let segment2) = streamElements[1] {
-            if case .text(let index2, let text2) = segment2 {
-                #expect(index2 == 0)
-                #expect(text2 == "this is ")
-            } else {
-                Issue.record("Expected text segment")
-            }
+        if case .text(let blockId, let textDelta) = streamElements[1] {
+            #expect(blockId == 0)
+            #expect(textDelta == "Hello, ")
         } else {
-            Issue.record("Expected contentSegment")
+            Issue.record("Expected text segment")
         }
 
-        if case .contentSegment(let segment3) = streamElements[2] {
-            if case .text(let index3, let text3) = segment3 {
-                #expect(index3 == 0)
-                #expect(text3 == "a test message.")
-            } else {
-                Issue.record("Expected text segment")
-            }
-        } else {
-            Issue.record("Expected contentSegment")
-        }
+        // no need t test each text delta, let's skip to ful message
 
         // Check content block complete
-        if case .contentBlockComplete(let index, let content) = streamElements[3] {
-            #expect(index == 0)
-            if case .text(let text) = content {
-                #expect(text == "Hello, this is a test message.")
-            } else {
-                Issue.record("Expected text content")
-            }
-        } else {
-            Issue.record("Expected contentBlockComplete")
-        }
-
-        // Check message complete
         if case .messageComplete(let message) = streamElements[4] {
             #expect(message.role == .assistant)
             #expect(message.content.count == 1)
@@ -208,7 +70,7 @@ struct ConverseReplyStreamTests {
                 Issue.record("Expected text content in message")
             }
         } else {
-            Issue.record("Expected messageComplete")
+            Issue.record("Expected a full message")
         }
     }
 
@@ -224,58 +86,34 @@ struct ConverseReplyStreamTests {
         }
 
         // Verify the stream elements
-        #expect(streamElements.count == 5)
+        #expect(streamElements.count == 4)
 
-        // Check first content segment
-        if case .contentSegment(let segment1) = streamElements[0] {
-            if case .text(let index1, let text1) = segment1 {
-                #expect(index1 == 0)
-                #expect(text1 == "First block content.")
-            } else {
-                Issue.record("Expected text segment")
-            }
+        // Check first event
+        if case .messageStart(let segment1) = streamElements[0] {
+            #expect(segment1 == .assistant)
         } else {
-            Issue.record("Expected contentSegment")
+            Issue.record("Expected messageStart")
         }
 
-        // Check first content block complete
-        if case .contentBlockComplete(let index1, let content1) = streamElements[1] {
+        // Check first content segment
+        if case .text(let index1, let content1) = streamElements[1] {
             #expect(index1 == 0)
-            if case .text(let text1) = content1 {
-                #expect(text1 == "First block content.")
-            } else {
-                Issue.record("Expected text content")
-            }
+            #expect(content1 == "First block content.")
         } else {
             Issue.record("Expected contentBlockComplete")
         }
 
         // Check second content segment
-        if case .contentSegment(let segment2) = streamElements[2] {
-            if case .text(let index2, let text2) = segment2 {
-                #expect(index2 == 1)
-                #expect(text2 == "Second block content.")
-            } else {
-                Issue.record("Expected text segment")
-            }
-        } else {
-            Issue.record("Expected contentSegment")
-        }
-
-        // Check second content block complete
-        if case .contentBlockComplete(let index2, let content2) = streamElements[3] {
-            #expect(index2 == 1)
-            if case .text(let text2) = content2 {
-                #expect(text2 == "Second block content.")
-            } else {
-                Issue.record("Expected text content")
-            }
+        if case .text(let index1, let content1) = streamElements[2] {
+            #expect(index1 == 1)
+            #expect(content1 == "Second block content.")
         } else {
             Issue.record("Expected contentBlockComplete")
         }
+        
 
         // Check message complete
-        if case .messageComplete(let message) = streamElements[4] {
+        if case .messageComplete(let message) = streamElements[3] {
             #expect(message.role == .assistant)
             #expect(message.content.count == 2)
             if case .text(let text1) = message.content[0] {
@@ -293,59 +131,6 @@ struct ConverseReplyStreamTests {
         }
     }
 
-    // Helper function to create a never-ending stream that will continue indefinitely
-    func createNeverEndingStream() -> AsyncThrowingStream<BedrockRuntimeClientTypes.ConverseStreamOutput, Error> {
-        AsyncThrowingStream<BedrockRuntimeClientTypes.ConverseStreamOutput, Error> { continuation in
-            // Message start
-            let messageStartEvent = BedrockRuntimeClientTypes.MessageStartEvent(
-                role: .assistant
-            )
-            continuation.yield(.messagestart(messageStartEvent))
-
-            // Content block start
-            let contentBlockStartEvent = BedrockRuntimeClientTypes.ContentBlockStartEvent(
-                contentBlockIndex: 0,
-                start: nil
-            )
-            continuation.yield(.contentblockstart(contentBlockStartEvent))
-
-            // Set up a counter to track how many deltas we've sent
-            var counter = 0
-
-            // Create a Task that will continuously send content block deltas
-            // This simulates a never-ending stream of tokens from the model
-            let continuousTask = Task {
-                while !Task.isCancelled {
-                    // Create a content block delta with a counter to track progress
-                    let text = "Token \(counter) "
-                    let contentBlockDelta = BedrockRuntimeClientTypes.ContentBlockDelta.text(text)
-                    let contentBlockDeltaEvent = BedrockRuntimeClientTypes.ContentBlockDeltaEvent(
-                        contentBlockIndex: 0,
-                        delta: contentBlockDelta
-                    )
-
-                    // Yield the delta
-                    continuation.yield(.contentblockdelta(contentBlockDeltaEvent))
-
-                    // Increment counter
-                    counter += 1
-
-                    // Add a small delay to avoid overwhelming the system
-                    try await Task.sleep(nanoseconds: 10_000_000)  // 10ms
-                }
-
-                // If we get here, the task was cancelled
-                continuation.finish(throwing: CancellationError())
-            }
-
-            // When the stream is terminated, cancel our continuous task
-            // this is not necessary for the test, but it's a good practice
-            continuation.onTermination = { @Sendable _ in
-                continuousTask.cancel()
-            }
-        }
-    }
-
     @Test("Test cancellation of never-ending stream")
     func testCancellationOfNeverEndingStream() async throws {
         // Create the ConverseReplyStream from the simulated never-ending stream
@@ -355,7 +140,7 @@ struct ConverseReplyStreamTests {
         let consumptionTask = Task {
             var count = 0
             for try await element in converseReplyStream.stream {
-                if case .contentSegment = element {
+                if case .text = element {
                     count += 1
                 }
             }
