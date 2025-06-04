@@ -235,21 +235,41 @@ public struct ConverseReplyStream: Sendable {
         state: inout StreamState,
         continuation: AsyncThrowingStream<ConverseStreamElement, any Error>.Continuation
     ) throws {
-        guard
-            (state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
-                && !state.bufferToolUse.isEmpty)
-                || (state.bufferText.isEmpty && state.bufferReasoning.isEmpty && !state.bufferReasoningData.isEmpty
-                    && state.bufferToolUse.isEmpty)
-                || (state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
-                    && state.bufferToolUse.isEmpty)
-                || (state.bufferText.isEmpty && !state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
-                    && state.bufferToolUse.isEmpty)
-                || (!state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
-                    && state.bufferToolUse.isEmpty)
+        guard isToolUseBufferValid(state) ||
+              isReasoningDataBufferValid(state) ||
+              isEmptyBufferValid(state) ||
+              isReasoningBufferValid(state) ||
+              isTextBufferValid(state)
         else {
             throw BedrockLibraryError.invalidSDKType("ContentBlockStop received while multiple buffers are not empty")
         }
 
+    }
+
+    private static func isToolUseBufferValid(_ state: StreamState) -> Bool {
+        return state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
+            && !state.bufferToolUse.isEmpty
+    }
+
+    private static func isReasoningDataBufferValid(_ state: StreamState) -> Bool {
+        return state.bufferText.isEmpty && state.bufferReasoning.isEmpty && !state.bufferReasoningData.isEmpty
+            && state.bufferToolUse.isEmpty
+    }
+
+    private static func isEmptyBufferValid(_ state: StreamState) -> Bool {
+        return state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
+            && state.bufferToolUse.isEmpty
+    }
+
+    private static func isReasoningBufferValid(_ state: StreamState) -> Bool {
+        return state.bufferText.isEmpty && !state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
+            && state.bufferToolUse.isEmpty
+    }
+
+    private static func isTextBufferValid(_ state: StreamState) -> Bool {
+        return !state.bufferText.isEmpty && state.bufferReasoning.isEmpty && state.bufferReasoningData.isEmpty
+            && state.bufferToolUse.isEmpty
+    }
         if !state.bufferText.isEmpty {
             state.lastContentBlock = (state.currentBlockId, Content.text(state.bufferText))
             state.bufferText = ""
