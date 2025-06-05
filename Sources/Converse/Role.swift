@@ -16,7 +16,7 @@
 @preconcurrency import AWSBedrockRuntime
 import Foundation
 
-public struct Role: Codable, Sendable, Equatable {
+public struct Role: Codable, Sendable, Equatable, CustomStringConvertible {
     private enum RoleType: Codable, Sendable, Equatable {
         case user
         case assistant
@@ -71,9 +71,19 @@ public struct Role: Codable, Sendable, Equatable {
         }
     }
     /// Returns the type of the role as a string.
+    public var description: String {
+        switch self.type {
+        case .user: return "user"
+        case .assistant: return "assistant"
+        }
+    }
+
+    // Equatable
     public static func == (lhs: Role, rhs: Role) -> Bool {
         lhs.type == rhs.type
     }
+
+    // convenience static properties for common roles
     private init(_ type: RoleType) {
         self.type = type
     }
