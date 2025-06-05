@@ -41,4 +41,3 @@ jobs:
   swift-6-language-mode:
     name: Swift 6 Language Mode
     uses: ./.github/workflows/swift-6-language-mode.yml
-  
