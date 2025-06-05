@@ -12,13 +12,7 @@ jobs:
   swift-6-language-mode:
     name: Swift 6 language mode
     runs-on: ubuntu-latest
-    # container:
-    #   image: swift:6.1-noble
     steps:
-      # - name: Install OS dependencies
-      #   run: |
-      #     apt-get update
-      #     apt-get install openssl libssl-dev
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
