@@ -30,7 +30,7 @@ on:
       matrix_linux_swift_container_image:
         type: string
         description: "Container image for the matrix job. Defaults to matching Swift 6.1 Ubuntu image."
-        default: "swiftlang/swift:6.1-noble"
+        default: "swift:6.1-noble"
 
 ## We are cancelling previously triggered workflow runs
 concurrency:
@@ -84,10 +84,10 @@ jobs:
     if: ${{ inputs.check_foundation_enabled }}
     runs-on: ubuntu-latest
     steps:
-      - name: Install OS dependencies
-        run: |
-          apt-get update
-          apt-get install openssl libssl-dev
+      # - name: Install OS dependencies
+      #   run: |
+      #     apt-get update
+      #     apt-get install openssl libssl-dev
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
