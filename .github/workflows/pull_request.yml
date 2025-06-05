@@ -1,0 +1,43 @@
+name: Build, tests & soundness checks
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  swift-bedrock-library:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Run tests
+        run: swift test
+
+  soundness:
+    name: Soundness
+    uses: swiftlang/github-workflows/.github/workflows/soundness.yml@main
+    with:
+      license_header_check_enabled: true
+      license_header_check_project_name: "Swift Bedrock Library"
+      shell_check_enabled: false
+      python_lint_check_enabled: false
+      api_breakage_check_enabled: false
+      # api_breakage_check_container_image: "swift:6.1-noble"
+      docs_check_container_image: "swift:6.1-noble"
+      format_check_container_image: "swift:6.1-noble"
+      yamllint_check_enabled: true
+
+  integration-tests:
+    name: Integration Tests
+    uses: ./.github/workflows/integration_tests.yml
+    with:
+      name: "Integration tests"
+      examples_enabled: true
+      matrix_linux_command: "swift build"
+      check_foundation_enabled: true
+      # We pass the list of examples here, but we can't pass an array as argument
+      # Instead, we pass a String with a valid JSON array.
+      # The workaround is mentioned here https://github.com/orgs/community/discussions/11692
+      examples: "[ 'converse', 'converse-stream' ]"
+
+  swift-6-language-mode:
+    name: Swift 6 Language Mode
+    uses: ./.github/workflows/swift-6-language-mode.yml
