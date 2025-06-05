@@ -33,7 +33,7 @@ struct ConverseReplyStreamTests {
     @Test("Test streaming text response")
     func testStreamingTextResponse() async throws {
         // Create the ConverseReplyStream from the simulated stream
-        let converseReplyStream = ConverseReplyStream(createSingleTextBlockStream())
+        let converseReplyStream = try ConverseReplyStream(createSingleTextBlockStream())
 
         // Collect all the stream elements
         var streamElements: [ConverseStreamElement] = []
@@ -77,7 +77,7 @@ struct ConverseReplyStreamTests {
     @Test("Test multiple content blocks")
     func testMultipleContentBlocks() async throws {
         // Create the ConverseReplyStream from the simulated stream
-        let converseReplyStream = ConverseReplyStream(createMultipleContentBlocksStream())
+        let converseReplyStream = try ConverseReplyStream(createMultipleContentBlocksStream())
 
         // Collect all the stream elements
         var streamElements: [ConverseStreamElement] = []
@@ -133,7 +133,7 @@ struct ConverseReplyStreamTests {
     @Test("Test cancellation of never-ending stream")
     func testCancellationOfNeverEndingStream() async throws {
         // Create the ConverseReplyStream from the simulated never-ending stream
-        let converseReplyStream = ConverseReplyStream(createNeverEndingStream())
+        let converseReplyStream = try ConverseReplyStream(createNeverEndingStream())
 
         // Create a task to consume the stream
         let consumptionTask = Task {

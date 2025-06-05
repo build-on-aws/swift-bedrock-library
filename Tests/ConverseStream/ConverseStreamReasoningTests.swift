@@ -35,8 +35,8 @@ extension ConverseReplyStreamTests {
         #expect(builder.maxReasoningTokens == 4096)
         #expect(builder.history.count == 0)
 
-        var stream = try await bedrock.converseStream(with: builder)
-        var message: Message = try await validateStream(stream, elementsCount: 6)
+        var reply = try await bedrock.converseStream(with: builder)
+        var message: Message = try await validateStream(reply.stream, elementsCount: 6)
 
         try checkReasoningContent(message)
         try checkTextContent(message, prompt: prompt)
@@ -51,8 +51,8 @@ extension ConverseReplyStreamTests {
         #expect(builder.maxReasoningTokens == 4096)
         #expect(builder.history.count == 2)
 
-        stream = try await bedrock.converseStream(with: builder)
-        message = try await validateStream(stream, elementsCount: 6)
+        reply = try await bedrock.converseStream(with: builder)
+        message = try await validateStream(reply.stream, elementsCount: 6)
 
         try checkReasoningContent(message)
         try checkTextContent(message, prompt: prompt)
@@ -68,8 +68,8 @@ extension ConverseReplyStreamTests {
         #expect(builder.maxReasoningTokens == nil)
         #expect(builder.history.count == 4)
 
-        stream = try await bedrock.converseStream(with: builder)
-        message = try await validateStream(stream, elementsCount: 6, contentCount: 1)
+        reply = try await bedrock.converseStream(with: builder)
+        message = try await validateStream(reply.stream, elementsCount: 6, contentCount: 1)
         try checkTextContent(message, prompt: prompt)
         try checkReasoningContent(message, hasReasoningContent: false)
     }

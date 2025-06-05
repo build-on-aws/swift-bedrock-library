@@ -34,7 +34,8 @@ extension BedrockService {
     ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
     ///           BedrockLibraryError.invalidModality for invalid modality from the selected model
     ///           BedrockLibraryError.invalidSDKResponse if the response body is missing
-    /// - Returns: A stream of ConverseResponseStreaming objects
+    /// - Returns: A ConverseReplyStream object that gives access to the high-level stream of ConverseStreamElements objects 
+    ///            or the low-level stream provided by the AWS SDK.
     public func converseStream(
         with model: BedrockModel,
         conversation: [Message],
@@ -46,7 +47,7 @@ extension BedrockService {
         tools: [Tool]? = nil,
         enableReasoning: Bool? = false,
         maxReasoningTokens: Int? = nil
-    ) async throws -> AsyncThrowingStream<ConverseStreamElement, any Error> {
+    ) async throws -> ConverseReplyStream {
         do {
             guard model.hasConverseStreamingModality() else {
                 throw BedrockLibraryError.invalidModality(
@@ -118,18 +119,18 @@ extension BedrockService {
             // - message metadata
             // see https://github.com/awslabs/aws-sdk-swift/blob/2697fb44f607b9c43ad0ce5ca79867d8d6c545c2/Sources/Services/AWSBedrockRuntime/Sources/AWSBedrockRuntime/Models.swift#L3478
             // it will be the responsibility of the user to handle the stream and re-assemble the messages and content
-            // TODO: should we expose the SDK ConverseStreamOutput from the SDK ? or wrap it (what's the added value) ?
 
-            let reply = ConverseReplyStream(sdkStream)
+            let reply = try ConverseReplyStream(sdkStream)
 
             // this time, a different stream is created from the previous one, this one has the following elements
-            // - content segment: this contains a ContentSegment, an enum which can be a .text(Int, String),
-            //   the integer is the id for the content block that the content segment is a part of,
-            //   the String is the part of text that is send from the model.
-            // - content block complete: this includes the id of the completed content block and the complete content block itself
+            // - messageStart: this is the start of a message, it contains the role (assistant or user)
+            // - text: this is a delta of the text content, it contains the partial text 
+            // - reasoning: this is a delta of the reasoning content, it contains the partial reasoning text
+            // - toolUse: this is a buffered tool use response, it contains the tool name and id, and the input parameters
             // - message complete: this includes the complete Message, ready to be added to the history and used for future requests
+            // - metaData: this is the metadata about the response, it contains statitics about the response, such as the number of tokens used and the latency
 
-            return reply.stream
+            return reply
 
         } catch {
             try handleCommonError(error, context: "invoking converse stream")
@@ -143,7 +144,7 @@ extension BedrockService {
     /// - Returns: A stream of ConverseResponseStreaming objects
     public func converseStream(
         with builder: ConverseRequestBuilder
-    ) async throws -> AsyncThrowingStream<ConverseStreamElement, any Error> {
+    ) async throws -> ConverseReplyStream {
         logger.trace("Conversing and streaming")
         do {
             var history = builder.history

@@ -30,7 +30,7 @@ public struct ConverseReplyStream: Sendable {
     package init(
         _ inputStream: AsyncThrowingStream<BedrockRuntimeClientTypes.ConverseStreamOutput, Error>,
         logger: Logger? = nil
-    ) {
+    ) throws {
 
         self.logger = logger ?? .init(label: "ConverseReplyStream")
 
@@ -38,7 +38,16 @@ public struct ConverseReplyStream: Sendable {
         self.sdkStream = inputStream
 
         // build a new stream that will convert the SDK stream output to our own ConverseStreamElement
-        self.stream = AsyncThrowingStream(ConverseStreamElement.self) { continuation in
+        self.stream = try ConverseReplyStream.convertToLibraryStream(inputStream, logger: self.logger)
+    }
+
+    /// Convert the SDK Stream to a highler level stream of ConverseStreamElement
+    private static func convertToLibraryStream(
+        _ inputStream: AsyncThrowingStream<BedrockRuntimeClientTypes.ConverseStreamOutput, Error>,
+        logger: Logger
+    ) throws -> AsyncThrowingStream<ConverseStreamElement, Error> {
+
+        AsyncThrowingStream(ConverseStreamElement.self) { continuation in
             let t = Task {
                 do {
                     var state: StreamState!
@@ -48,7 +57,7 @@ public struct ConverseReplyStream: Sendable {
 
                         switch output {
                         case .messagestart(let event):
-                            logger?.trace("Message Start", metadata: ["event": "\(event)"])
+                            logger.trace("Message Start", metadata: ["event": "\(event)"])
 
                             guard let sdkRole = event.role,
                                 let role = try? Role(from: sdkRole)
@@ -62,7 +71,7 @@ public struct ConverseReplyStream: Sendable {
                         // only received at the start of a tool use block
                         // https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-call.html#conversation-inference-call-response
                         case .contentblockstart(let event):
-                            logger?.trace("Content Block Start")
+                            logger.trace("Content Block Start")
                             guard state.currentBlockId == -1 else {
                                 // If we already have a block started, this is an error
                                 throw BedrockLibraryError.invalidSDKType(
@@ -79,7 +88,7 @@ public struct ConverseReplyStream: Sendable {
                         // do not yield an event here, wait for full ToolUse block to arrive
 
                         case .contentblockdelta(let event):
-                            logger?.trace("Content Block Delta")
+                            logger.trace("Content Block Delta")
                             guard let blockId = event.contentBlockIndex else {
                                 // when there is no blockId, this is an error
                                 throw BedrockLibraryError.invalidSDKType(
@@ -114,22 +123,22 @@ public struct ConverseReplyStream: Sendable {
                                     state.bufferReasoningData.append(redactedContent)
                                 // do not yield partial reasoning data, wait for full JSON data
                                 case .sdkUnknown(let output):
-                                    logger?.warning(
+                                    logger.warning(
                                         "Received unknown SDK Reasoning Delta",
                                         metadata: ["reasoning delta": "\(output)"]
                                     )
                                 }
                             case .sdkUnknown(let output):
-                                logger?.warning(
+                                logger.warning(
                                     "Received unknown SDK Event Delta",
                                     metadata: ["delta": "\(output)"]
                                 )
                             case .none:
-                                logger?.warning("Received none SDK Event Delta")
+                                logger.warning("Received none SDK Event Delta")
                             }
 
                         case .contentblockstop(let event):
-                            logger?.trace("Content Block Stop")
+                            logger.trace("Content Block Stop")
                             guard state.currentBlockId != -1 else {
                                 // If we don't have a block started, this is an error
                                 throw BedrockLibraryError.invalidSDKType(
@@ -165,7 +174,7 @@ public struct ConverseReplyStream: Sendable {
                             state.currentBlockId = -1
 
                         case .messagestop(let event):
-                            logger?.trace("Message Stop")
+                            logger.trace("Message Stop")
                             state.messageComplete = true
 
                             // create a Message with all content blocks
@@ -177,7 +186,7 @@ public struct ConverseReplyStream: Sendable {
                             continuation.yield(.messageComplete(message))
 
                         case .metadata(let event):
-                            logger?.trace("Metadata", metadata: ["event": "\(event)"])
+                            logger.trace("Metadata", metadata: ["event": "\(event)"])
 
                             // Convert the metadata event to our ResponseMetadata type
                             let metadata = try ResponseMetadata(from: event)
@@ -187,7 +196,7 @@ public struct ConverseReplyStream: Sendable {
                             // Handle unknown SDK output
                             // This is a catch-all for any future SDK output types that we don't handle yet
                             // We log it and continue, but we could also throw an error if desired
-                            logger?.warning(
+                            logger.warning(
                                 "Received unknown SDK ConverseStreamOutput",
                                 metadata: ["output": "\(output)"]
                             )
@@ -214,7 +223,7 @@ public struct ConverseReplyStream: Sendable {
                     t.cancel()  // Cancel the task when the stream is terminated
                 }
             }
-        }
+        }        
     }
 
     /// Flushes and processes the buffered content from the stream state
