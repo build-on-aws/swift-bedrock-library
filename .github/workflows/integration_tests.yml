@@ -27,10 +27,6 @@ on:
         type: string
         description: "The command of the current Swift version linux matrix job to execute."
         required: true
-      matrix_linux_swift_container_image:
-        type: string
-        description: "Container image for the matrix job. Defaults to matching Swift 6.1 Ubuntu image."
-        default: "swift:6.1-noble"
 
 ## We are cancelling previously triggered workflow runs
 concurrency:
@@ -46,14 +42,7 @@ jobs:
       fail-fast: false
       matrix:
         examples: ${{ fromJson(inputs.examples) }}
-
-        # We are using only one Swift version
-        swift:
-          - image: ${{ inputs.matrix_linux_swift_container_image }}
-    container:
-      image: ${{ matrix.swift.image }}
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
