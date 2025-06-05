@@ -33,7 +33,7 @@ struct Main {
             region: .useast1,
             logger: logger
                 // uncomment if you use SSO with AWS Identity Center
-                //    authentication: .sso
+                // authentication: .sso
         )
 
         // select a model that supports the converse modality

@@ -18,9 +18,9 @@
 package struct ToolUseStart: Sendable {
     var index: Int
     var name: String
-    var toolUseId: String
+    var id: String
 
-    init(index: Int, sdkToolUseStart: BedrockRuntimeClientTypes.ToolUseBlockStart) throws {
+    private init(index: Int, sdkToolUseStart: BedrockRuntimeClientTypes.ToolUseBlockStart) throws {
         guard let name = sdkToolUseStart.name else {
             throw BedrockLibraryError.invalidSDKType("No name found in ToolUseBlockStart")
         }
@@ -29,25 +29,16 @@ package struct ToolUseStart: Sendable {
         }
         self.index = index
         self.name = name
-        self.toolUseId = toolUseId
+        self.id = toolUseId
     }
-}
-
-public struct ToolUsePart: Sendable {
-    var index: Int
-    var name: String
-    var toolUseId: String
-    var inputPart: String
-
-    // init(index: Int, sdkToolUseStart: BedrockRuntimeClientTypes.ToolUseBlockStart) throws {
-    //     guard let name = sdkToolUseStart.name else {
-    //         throw BedrockLibraryError.invalidSDKType("No name found in ToolUseBlockStart")
-    //     }
-    //     guard let toolUseId = sdkToolUseStart.toolUseId else {
-    //         throw BedrockLibraryError.invalidSDKType("No toolUseId found in ToolUseBlockStart")
-    //     }
-    //     self.index = index
-    //     self.name = name
-    //     self.toolUseId = toolUseId
-    // }
+    package init(index: Int, sdkEventBlockStart: BedrockRuntimeClientTypes.ContentBlockStart?) throws {
+        guard let sdkEventBlockStart else {
+            throw BedrockLibraryError.invalidSDKType("No ContentBlockStart found in ToolUseStart")
+        }
+        if case .tooluse(let sdkToolUseStart) = sdkEventBlockStart {
+            try self.init(index: index, sdkToolUseStart: sdkToolUseStart)
+        } else {
+            throw BedrockLibraryError.invalidSDKType("ContentBlockStart is not a ToolUseStart")
+        }
+    }
 }

@@ -19,7 +19,7 @@ import Testing
 
 // MARK - Streaming conversetooluse
 
-extension BedrockServiceTests {
+extension ConverseReplyStreamTests {
     @Test("Continue conversation with tool use")
     func converseStreamWithToolUse() async throws {
         let tool = try Tool(
@@ -44,11 +44,11 @@ extension BedrockServiceTests {
         #expect(builder.systemPrompts == ["You are a helpful assistant."])
         #expect(builder.tools != nil)
 
-        var stream = try await bedrock.converseStream(with: builder)
+        var reply = try await bedrock.converseStream(with: builder)
 
         // Collect all the stream elements
         var streamElements: [ConverseStreamElement] = []
-        for try await element in stream {
+        for try await element in reply.stream {
             streamElements.append(element)
         }
 
@@ -88,10 +88,10 @@ extension BedrockServiceTests {
         #expect(builder.history.count == 2)
         #expect(builder.tools != nil)
 
-        stream = try await bedrock.converseStream(with: builder)
+        reply = try await bedrock.converseStream(with: builder)
         // Collect all the stream elements
         streamElements = []
-        for try await element in stream {
+        for try await element in reply.stream {
             streamElements.append(element)
         }
 

@@ -125,38 +125,45 @@ The stream will contain `ConverseStreamElement` object that can either be `conte
 To create the next builder, with the same model and inference parameters, use the full message from the `.messageComplete`.
 
 ```swift
-let model: BedrockModel = .nova_lite
+        let model: BedrockModel = .nova_lite
 
-guard model.hasConverseModality() else {
-    throw MyError.incorrectModality("\(model.name) does not support converse")
-}
-guard model.hasConverseModality(.reasoning) else {
-    throw MyError.incorrectModality("\(model.name) does not support reasoning")
-}
-
-var builder = try ConverseRequestBuilder(from: builder, with: reply)
-    .withPrompt("Tell me more about the birds in Paris")
-
-let stream = try await bedrock.converseStream(with: builder)
-
-for try await element in stream {
-    switch element {
-    case .contentSegment(let contentSegment):
-        switch contentSegment {
-        case .text(_, let text):
-            print(text, terminator: "")
-        default:
-            break
+        guard model.hasConverseModality() else {
+            throw MyError.incorrectModality("\(model.name) does not support converse")
         }
-    case .contentBlockComplete:
-        print("\n\n")
-    case .messageComplete(let message):
-        assistantMessage = message
-    }
-}
 
-builder = try ConverseRequestBuilder(from: builder, with: assistantMessage)
-    .withPrompt("And what about the rats?")
+        // create a request
+        let builder = try ConverseRequestBuilder(with: model)
+            .withPrompt("Tell me about rainbows")
+
+        // send the request
+        let reply = try await bedrock.converseStream(with: builder)
+
+        // consume the stream of elements
+        for try await element in reply.stream {
+
+            switch element {
+            case .messageStart(let role):
+                logger.info("Message started with role: \(role)")
+
+            case .text(_, let text):
+                print(text, terminator: "")
+            
+            case .reasoning(let index, let reasoning):
+                logger.info("Reasoning delta: \(reasoning)", metadata: ["index": "\(index)"])
+            
+            case .toolUse(let index, let toolUse):
+                logger.info(
+                    "Tool use: \(toolUse.name) with id: \(toolUse.id) and input: \(toolUse.input)",
+                    metadata: ["index": "\(index)"]
+                )
+
+            case .messageComplete(_):
+                print("\n")
+
+            case .metaData(let metaData):
+                logger.info("Metadata: \(metaData)")
+            }
+        }
 ```
 
 ### Vision
