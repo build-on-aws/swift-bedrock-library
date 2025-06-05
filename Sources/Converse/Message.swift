@@ -132,7 +132,7 @@ public struct Message: Codable, CustomStringConvertible, Sendable {
             return nil
         }
     }
-    
+
     public func hasImageContent() -> Bool {
         content.contains { $0.isImage() }
     }
