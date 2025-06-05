@@ -18,7 +18,7 @@ log() { printf -- "** %s\n" "$*" >&2; }
 error() { printf -- "** ERROR: %s\n" "$*" >&2; }
 fatal() { error "$@"; exit 1; }
 
-EXAMPLE=Converse
+EXAMPLE=converse
 OUTPUT_DIR=.build/release
 OUTPUT_FILE=${OUTPUT_DIR}/converse
 LIBS_TO_CHECK="libFoundation.so libFoundationInternationalization.so lib_FoundationICU.so"
