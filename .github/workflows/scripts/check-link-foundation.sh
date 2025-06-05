@@ -20,7 +20,7 @@ fatal() { error "$@"; exit 1; }
 
 EXAMPLE=Converse
 OUTPUT_DIR=.build/release
-OUTPUT_FILE=${OUTPUT_DIR}/Converse
+OUTPUT_FILE=${OUTPUT_DIR}/converse
 LIBS_TO_CHECK="libFoundation.so libFoundationInternationalization.so lib_FoundationICU.so"
 
 pushd Examples/${EXAMPLE} || fatal "Failed to change directory to Examples/${EXAMPLE}."
