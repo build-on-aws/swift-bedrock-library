@@ -34,7 +34,7 @@ extension BedrockService {
     ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
     ///           BedrockLibraryError.invalidModality for invalid modality from the selected model
     ///           BedrockLibraryError.invalidSDKResponse if the response body is missing
-    /// - Returns: A ConverseReplyStream object that gives access to the high-level stream of ConverseStreamElements objects 
+    /// - Returns: A ConverseReplyStream object that gives access to the high-level stream of ConverseStreamElements objects
     ///            or the low-level stream provided by the AWS SDK.
     public func converseStream(
         with model: BedrockModel,
@@ -124,7 +124,7 @@ extension BedrockService {
 
             // this time, a different stream is created from the previous one, this one has the following elements
             // - messageStart: this is the start of a message, it contains the role (assistant or user)
-            // - text: this is a delta of the text content, it contains the partial text 
+            // - text: this is a delta of the text content, it contains the partial text
             // - reasoning: this is a delta of the reasoning content, it contains the partial reasoning text
             // - toolUse: this is a buffered tool use response, it contains the tool name and id, and the input parameters
             // - message complete: this includes the complete Message, ready to be added to the history and used for future requests

@@ -223,7 +223,7 @@ public struct ConverseReplyStream: Sendable {
                     t.cancel()  // Cancel the task when the stream is terminated
                 }
             }
-        }        
+        }
     }
 
     /// Flushes and processes the buffered content from the stream state
