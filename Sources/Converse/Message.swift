@@ -124,6 +124,15 @@ public struct Message: Codable, CustomStringConvertible, Sendable {
     public func hasTextContent() -> Bool {
         content.contains { $0.isText() }
     }
+    public func textContent() -> String? {
+        let content = content.first(where: { $0.isText() })
+        if case .text(let text) = content {
+            return text
+        } else {
+            return nil
+        }
+    }
+    
     public func hasImageContent() -> Bool {
         content.contains { $0.isImage() }
     }
