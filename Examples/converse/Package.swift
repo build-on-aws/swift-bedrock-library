@@ -10,7 +10,12 @@ let package = Package(
         .executable(name: "Converse", targets: ["Converse"])
     ],
     dependencies: [
-        .package(url: "https://github.com/build-on-aws/swift-bedrock-library.git", branch: "main"),
+        // for production use, uncomment the following line
+        // .package(url: "https://github.com/build-on-aws/swift-bedrock-library.git", branch: "main"),
+        
+        // for local development, use the following line
+        .package(name: "swift-bedrock-library", path: "../.."),
+        
         .package(url: "https://github.com/apple/swift-log.git", from: "1.5.0"),
     ],
     targets: [
