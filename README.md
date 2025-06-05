@@ -120,9 +120,20 @@ reply = try await bedrock.converse(with: builder)
 ```
 
 To get a streaming response, use the same `ConverseRequestBuilder`, but the `converseStream` function instead of the `converse` function. Ensure the model you are using supports streaming. 
-The stream will contain `ConverseStreamElement` object that can either be `contentSegment` containing a piece of content, `contentComplete` signifying that a `Content` object is complete or a `messageComplete` to return the final completed message with all the complete content parts. A `contentSegment` could either be `text`, `toolUse`, `reasoning` or `encryptedReasoning`.
+The stream will contain a `.stream` of `ConverseStreamElement` objects that indicate the progress into the response. 
 
-To create the next builder, with the same model and inference parameters, use the full message from the `.messageComplete`.
+To create the next builder, with the same model and inference parameters, use the full message from the `.messageComplete`. The `ConverseStreamElement` enum provides several cases to track the streaming response:
+
+- `.messageStart(Role)`: Indicates the beginning of a message with the specified role (assistant, user, etc.)
+- `.text(Int, String)`: Contains partial text content with an index and the text fragment
+- `.reasoning(Int, String)`: Contains partial reasoning content with an index and the reasoning fragment
+- `.toolUse(Int, ToolUseBlock)`: Contains a complete tool use response with an index and the tool use details
+- `.messageComplete(Message)`: Provides the complete message with all content blocks and reason for stopping
+- `.metaData(ResponseMetadata)`: Contains metadata about the response including token usage and latency metrics
+
+The index in each case helps track the order of content blocks in the final message. When processing a stream, you should handle each element type appropriately. For convenience, the `messageComplete` event contains the full response, ready to use.
+
+The stream provided by this library is a balance between convenience of use and latency. If you need more flexibility or very low latency (for example, no buffering on the tool use response), the `ConverseStreamreply` also exposes the low-level stream returned by the AWS SDK.
 
 ```swift
         let model: BedrockModel = .nova_lite
