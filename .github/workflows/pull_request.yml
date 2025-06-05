@@ -32,7 +32,6 @@ jobs:
       name: "Integration tests"
       examples_enabled: true
       matrix_linux_command: "swift build"
-      check_foundation_enabled: true
       # We pass the list of examples here, but we can't pass an array as argument
       # Instead, we pass a String with a valid JSON array.
       # The workaround is mentioned here https://github.com/orgs/community/discussions/11692
@@ -41,3 +40,16 @@ jobs:
   swift-6-language-mode:
     name: Swift 6 Language Mode
     uses: ./.github/workflows/swift-6-language-mode.yml
+
+  check-foundation:
+    name: No dependencies on Foundation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Mark the workspace as safe
+        # https://github.com/actions/checkout/issues/766
+        run: git config --global --add safe.directory ${GITHUB_WORKSPACE}
+      - name: Check for Foundation or ICU dependency
+        run: |
+          .github/workflows/scripts/check-link-foundation.sh

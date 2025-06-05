@@ -1,4 +1,4 @@
-name: IntegrationTests
+name: Integration Tests
 
 on:
   workflow_call:
@@ -18,10 +18,6 @@ on:
       examples_enabled:
         type: boolean
         description: "Boolean to enable the compilation of examples. Defaults to true."
-        default: true
-      check_foundation_enabled:
-        type: boolean
-        description: "Boolean to enable the check for Foundation dependency. Defaults to true."
         default: true
       matrix_linux_command:
         type: string
@@ -64,17 +60,3 @@ jobs:
       - name: Web playground backend build
         working-directory: Examples/web-playground/backend
         run: swift build
-
-  check-foundation:
-    name: No dependencies on Foundation
-    if: ${{ inputs.check_foundation_enabled }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Mark the workspace as safe
-        # https://github.com/actions/checkout/issues/766
-        run: git config --global --add safe.directory ${GITHUB_WORKSPACE}
-      - name: Check for Foundation or ICU dependency
-        run: |
-          .github/workflows/scripts/check-link-foundation.sh
