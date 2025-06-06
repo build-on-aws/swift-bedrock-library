@@ -35,7 +35,7 @@ jobs:
       # We pass the list of examples here, but we can't pass an array as argument
       # Instead, we pass a String with a valid JSON array.
       # The workaround is mentioned here https://github.com/orgs/community/discussions/11692
-      examples: "[ 'converse', 'converse-stream' ]"
+      examples: "[ 'converse', 'converse-stream', 'text_chat' ]"
 
   swift-6-language-mode:
     name: Swift 6 Language Mode
