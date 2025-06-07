@@ -7,7 +7,7 @@ let package = Package(
     name: "TextChat",
     platforms: [.macOS(.v15), .iOS(.v18), .tvOS(.v18)],
     products: [
-        .executable(name: "TextChat", targets: ["TextChat"]),
+        .executable(name: "TextChat", targets: ["TextChat"])
     ],
     dependencies: [
         // for production use, uncomment the following line

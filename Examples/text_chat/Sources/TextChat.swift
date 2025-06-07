@@ -32,8 +32,8 @@ struct TextChat {
         let bedrock = try await BedrockService(
             region: .useast1,
             logger: logger
-            // uncomment if you use SSO with AWS Identity Center
-            // authentication: .sso
+                // uncomment if you use SSO with AWS Identity Center
+                // authentication: .sso
         )
 
         // select a model that supports the converse modality
@@ -61,7 +61,7 @@ struct TextChat {
             }
 
             print("\nAssistant: ", terminator: "")
-            
+
             if request == nil {
                 // create a new request
                 request = try ConverseRequestBuilder(with: model)
