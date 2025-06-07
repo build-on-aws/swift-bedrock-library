@@ -59,7 +59,7 @@ public struct ModelSummary: Encodable {
         if sdkModelSummary.responseStreamingSupported != nil {
             responseStreamingSupported = sdkModelSummary.responseStreamingSupported!
         }
-        let bedrockModel = BedrockModel(rawValue: modelId) ?? BedrockModel(rawValue: "us.\(modelId)")
+        let bedrockModel = BedrockModel(rawValue: modelId)
 
         return ModelSummary(
             modelName: modelName,

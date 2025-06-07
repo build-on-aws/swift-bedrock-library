@@ -85,7 +85,7 @@ extension BedrockService {
                 topK: topK,
                 stopSequences: stopSequences
             )
-            let input: InvokeModelInput = try request.getInvokeModelInput()
+            let input: InvokeModelInput = try request.getInvokeModelInput(forRegion: self.region)
             logger.trace(
                 "Sending request to invokeModel",
                 metadata: [

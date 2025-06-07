@@ -17,12 +17,12 @@
 
 public typealias ConverseStreamingRequest = ConverseRequest
 extension ConverseStreamingRequest {
-    func getConverseStreamingInput() throws -> ConverseStreamInput {
+    func getConverseStreamingInput(forRegion region: Region) throws -> ConverseStreamInput {
         ConverseStreamInput(
             additionalModelRequestFields: try getAdditionalModelRequestFields(),
             inferenceConfig: inferenceConfig?.getSDKInferenceConfig(),
             messages: try getSDKMessages(),
-            modelId: model.id,
+            modelId: model.getModelIdWithCrossRegionInferencePrefix(region: region),
             system: getSDKSystemPrompts(),
             toolConfig: try toolConfig?.getSDKToolConfig()
         )

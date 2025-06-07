@@ -84,7 +84,7 @@ extension BedrockService {
             )
 
             logger.trace("Creating ConverseInput")
-            let input = try converseRequest.getConverseInput()
+            let input = try converseRequest.getConverseInput(forRegion: self.region)
 
             logger.trace(
                 "Sending ConverseInput to BedrockRuntimeClient",

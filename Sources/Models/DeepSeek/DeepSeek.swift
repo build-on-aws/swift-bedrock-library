@@ -30,7 +30,7 @@ import Foundation
 // filtered to remove the reasoning content blocks before it is sent to the model.
 // The same goes for ConverseStreamingModality.
 
-struct DeepSeekText: TextModality {
+struct DeepSeekText: TextModality, CrossRegionInferenceModality {
     let parameters: TextGenerationParameters
     let converseFeatures: [ConverseFeature]
     let converseParameters: ConverseParameters

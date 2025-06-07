@@ -53,12 +53,12 @@ public struct ConverseRequest {
         }
     }
 
-    func getConverseInput() throws -> ConverseInput {
+    func getConverseInput(forRegion region: Region) throws -> ConverseInput {
         ConverseInput(
             additionalModelRequestFields: try getAdditionalModelRequestFields(),
             inferenceConfig: inferenceConfig?.getSDKInferenceConfig(),
             messages: try getSDKMessages(),
-            modelId: model.id,
+            modelId: model.getModelIdWithCrossRegionInferencePrefix(region: region),
             system: getSDKSystemPrompts(),
             toolConfig: try toolConfig?.getSDKToolConfig()
         )
