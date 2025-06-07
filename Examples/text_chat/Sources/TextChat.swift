@@ -68,7 +68,8 @@ struct TextChat {
                     .withPrompt(prompt)
             } else {
                 // append the new prompt to the existing request
-                // ConverseRequestBuilder is stateles, it doesn't keep track of the history
+                // ConverseRequestBuilder is stateless, it doesn't keep track of the history
+                // thanks to the `if` above, we're sure `request` is not nil
                 request = try ConverseRequestBuilder(from: request!)
                     .withHistory(history)
                     .withPrompt(prompt)
@@ -77,7 +78,7 @@ struct TextChat {
             // keep track of the history of the conversation
             history.append(Message(prompt))
 
-            // send the request
+            // send the request. We are sure `request` is not nil
             let reply = try await bedrock.converseStream(with: request!)
 
             for try await element in reply.stream {
