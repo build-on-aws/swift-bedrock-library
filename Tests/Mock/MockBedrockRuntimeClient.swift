@@ -14,8 +14,9 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
-import AWSClientRuntime
-import AWSSDKIdentity
+
+import Testing 
+
 import BedrockService
 import Foundation
 
@@ -172,9 +173,19 @@ public struct MockBedrockRuntimeClient: BedrockRuntimeClientProtocol {
                 message: "Malformed input request, please reformat your input and try again."
             )
         }
-        let model: BedrockModel = BedrockModel(rawValue: modelId)!
 
-        switch model.modality.getName() {
+        // remove the cross region inference prefix if it exists
+        // when modelId starts with "us.", "eu.", "ap.", remove it"
+        let prefixPattern: String = "^(us|eu|ap)\\."
+        let modelIdWithoutPrefix = modelId.replacingOccurrences(
+            of: prefixPattern,
+            with: "",
+            options: .regularExpression
+        )
+        let model: BedrockModel? = BedrockModel(rawValue: modelIdWithoutPrefix)
+        #expect(model != nil, "Model with id \(modelIdWithoutPrefix) not found")
+
+        switch model?.modality.getName() {
         case "Amazon Image Generation":
             return InvokeModelOutput(body: try getImageGeneration(body: inputBody))
         case "Nova Text Generation":

@@ -303,3 +303,18 @@ extension Region {
         }
     }
 }
+
+// Support for Bedrock cross region inference
+// https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html
+// https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html
+extension Region {
+    public func isUSRegion() -> Bool {
+        return self.rawValue.hasPrefix("us-") 
+    }
+    public func isEURegion() -> Bool {
+        return self.rawValue.hasPrefix("eu-") 
+    }
+    public func isAPRegion() -> Bool {
+        return self.rawValue.hasPrefix("ap-") 
+    }
+}

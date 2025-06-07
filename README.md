@@ -925,7 +925,7 @@ You can now create instances for any of the models that follow the request and r
 ```swift
 extension BedrockModel {
     public static let llama3_3_70b_instruct: BedrockModel = BedrockModel(
-        id: "us.meta.llama3-3-70b-instruct-v1:0",
+        id: "meta.llama3-3-70b-instruct-v1:0",
         name: "Llama 3.3 70B Instruct",
         modality: LlamaText(
             parameters: TextGenerationParameters(

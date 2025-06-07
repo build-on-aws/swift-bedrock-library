@@ -125,7 +125,7 @@ export const chatModels = [
     },
     {
         modelName: "Anthropic Claude 3.5 Haiku",
-        modelId: "us.anthropic.claude-3-5-haiku-20241022-v1:0",
+        modelId: "anthropic.claude-3-5-haiku-20241022-v1:0",
         temperatureRange: {
             default: 1,
             min: 0,
@@ -287,7 +287,7 @@ export const chatModels = [
     // DeepSeek
     // {
     //     modelName: "Deep Seek",
-    //     modelId: "us.deepseek.r1-v1:0",
+    //     modelId: "deepseek.r1-v1:0",
     //     topPRange: {
     //         max: 1,
     //         default: 1,

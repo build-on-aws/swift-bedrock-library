@@ -1,6 +1,6 @@
 export const defaultModel = {
     modelName: "Claude V3.7 Sonnet",
-    modelId: "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
+    modelId: "anthropic.claude-3-7-sonnet-20250219-v1:0",
     topKRange: {
         max: 500,
         default: 0,
@@ -32,7 +32,7 @@ export const models = [
     defaultModel,
     // {
     //     modelName: "Deep Seek",
-    //     modelId: "us.deepseek.r1-v1:0",
+    //     modelId: "deepseek.r1-v1:0",
     //     topPRange: {
     //         max: 1,
     //         default: 1,

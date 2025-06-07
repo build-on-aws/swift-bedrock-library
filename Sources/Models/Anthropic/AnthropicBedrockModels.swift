@@ -93,7 +93,7 @@ extension BedrockModel {
         )
     )
     public static let claudev3_opus: BedrockModel = BedrockModel(
-        id: "us.anthropic.claude-3-opus-20240229-v1:0",
+        id: "anthropic.claude-3-opus-20240229-v1:0",
         name: "Claude V3 Opus",
         modality: ClaudeV3Opus(
             parameters: TextGenerationParameters(
@@ -123,7 +123,7 @@ extension BedrockModel {
         )
     )
     public static let claudev3_5_haiku: BedrockModel = BedrockModel(
-        id: "us.anthropic.claude-3-5-haiku-20241022-v1:0",
+        id: "anthropic.claude-3-5-haiku-20241022-v1:0",
         name: "Claude V3.5 Haiku",
         modality: ClaudeV3_5Haiku(
             parameters: TextGenerationParameters(
@@ -138,7 +138,7 @@ extension BedrockModel {
         )
     )
     public static let claudev3_5_sonnet: BedrockModel = BedrockModel(
-        id: "us.anthropic.claude-3-5-sonnet-20240620-v1:0",
+        id: "anthropic.claude-3-5-sonnet-20240620-v1:0",
         name: "Claude V3.5 Sonnet",
         modality: ClaudeV3_5Sonnet(
             parameters: TextGenerationParameters(
@@ -153,7 +153,7 @@ extension BedrockModel {
         )
     )
     public static let claudev3_5_sonnet_v2: BedrockModel = BedrockModel(
-        id: "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+        id: "anthropic.claude-3-5-sonnet-20241022-v2:0",
         name: "Claude V3.5 Sonnet V2",
         modality: ClaudeV3_5Sonnet(
             parameters: TextGenerationParameters(
@@ -168,7 +168,7 @@ extension BedrockModel {
         )
     )
     public static let claudev3_7_sonnet: BedrockModel = BedrockModel(
-        id: "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
+        id: "anthropic.claude-3-7-sonnet-20250219-v1:0",
         name: "Claude V3.7 Sonnet",
         modality: ClaudeV3_7Sonnet(
             parameters: TextGenerationParameters(
@@ -184,7 +184,7 @@ extension BedrockModel {
         )
     )
     public static let claude_sonnet_v4: BedrockModel = BedrockModel(
-        id: "us.anthropic.claude-sonnet-4-20250514-v1:0",
+        id: "anthropic.claude-sonnet-4-20250514-v1:0",
         name: "Claude Sonnet v4",
         modality: Claude_Sonnet_v4(
             parameters: TextGenerationParameters(
@@ -200,7 +200,7 @@ extension BedrockModel {
         )
     )
     public static let claude_opus_v4: BedrockModel = BedrockModel(
-        id: "us.anthropic.claude-opus-4-20250514-v1:0",
+        id: "anthropic.claude-opus-4-20250514-v1:0",
         name: "Claude Opus v4",
         modality: Claude_Opus_v4(
             parameters: TextGenerationParameters(

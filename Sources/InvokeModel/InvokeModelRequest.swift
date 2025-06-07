@@ -205,14 +205,14 @@ struct InvokeModelRequest {
     /// Creates an InvokeModelInput instance for making a request to Amazon Bedrock
     /// - Returns: A configured InvokeModelInput containing the model ID, content type, and encoded request body
     /// - Throws: BedrockLibraryError.encodingError if the request body cannot be encoded to JSON
-    public func getInvokeModelInput() throws -> InvokeModelInput {
-        do {
+    public func getInvokeModelInput(forRegion region: Region) throws -> InvokeModelInput {
+        do {        
             let jsonData: Data = try JSONEncoder().encode(self.body)
             return InvokeModelInput(
                 accept: self.accept.headerValue,
                 body: jsonData,
                 contentType: self.contentType.headerValue,
-                modelId: model.id
+                modelId: model.getModelIdWithCrossRegionInferencePrefix(region: region)
             )
         } catch {
             throw BedrockLibraryError.encodingError(

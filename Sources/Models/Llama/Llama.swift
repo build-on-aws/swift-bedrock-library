@@ -15,7 +15,7 @@
 
 import Foundation
 
-struct LlamaText: TextModality, ConverseModality, ConverseStreamingModality {
+struct LlamaText: TextModality, ConverseModality, ConverseStreamingModality, CrossRegionInferenceModality {
     func getName() -> String { "Llama Text Generation" }
 
     let parameters: TextGenerationParameters

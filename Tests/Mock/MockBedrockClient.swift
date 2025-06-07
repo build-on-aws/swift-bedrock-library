@@ -14,8 +14,6 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrock
-import AWSClientRuntime
-import AWSSDKIdentity
 import BedrockService
 import Foundation
 

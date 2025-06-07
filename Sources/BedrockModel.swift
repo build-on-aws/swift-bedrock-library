@@ -18,8 +18,8 @@ import Foundation
 public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
     public var rawValue: String { id }
 
-    public var id: String
-    public var name: String
+    public let id: String
+    public let name: String
     public let modality: any Modality
 
     /// Creates a new BedrockModel instance
@@ -104,6 +104,17 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
         default:
             return nil
         }
+    }
+
+    // MARK: Cross region inference
+    public func getModelIdWithCrossRegionInferencePrefix(region: Region) -> String {
+        // If the model does not support cross region inference, return the model ID as is
+        guard let crossRegionInferenceModality = modality as? CrossRegionInferenceModality else {
+            return id
+        }
+        // If the model supports cross region inference, return the model ID with the appropriate prefix
+        let prefix = crossRegionInferenceModality.crossRegionPrefix(forRegion: region)
+        return "\(prefix)\(id)"
     }
 
     // MARK: Modality checks

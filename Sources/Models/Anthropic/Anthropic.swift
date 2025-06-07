@@ -15,7 +15,7 @@
 
 import Foundation
 
-struct AnthropicText: TextModality, ConverseModality, ConverseStreamingModality {
+struct AnthropicText: TextModality, ConverseModality, ConverseStreamingModality, CrossRegionInferenceModality {
     let parameters: TextGenerationParameters
     let converseParameters: ConverseParameters
     let converseFeatures: [ConverseFeature]
