@@ -15,10 +15,10 @@
 
 public protocol CrossRegionInferenceModality: Sendable {}
 extension CrossRegionInferenceModality {
-	public func crossRegionPrefix(forRegion region: Region) -> String {
-		if region.isEURegion() { return "eu." }
-		if region.isUSRegion() { return "us." }
-		if region.isAPRegion() { return "ap." }
-		return ""
-	}
+    public func crossRegionPrefix(forRegion region: Region) -> String {
+        if region.isEURegion() { return "eu." }
+        if region.isUSRegion() { return "us." }
+        if region.isAPRegion() { return "ap." }
+        return ""
+    }
 }

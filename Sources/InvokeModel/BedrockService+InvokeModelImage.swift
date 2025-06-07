@@ -160,31 +160,31 @@ extension BedrockService {
 
     /// Sends the request to invoke the model and returns the generated image(s)
     private func sendRequest(request: InvokeModelRequest, model: BedrockModel) async throws -> ImageGenerationOutput {
-            let input: InvokeModelInput = try request.getInvokeModelInput(forRegion: self.region)
+        let input: InvokeModelInput = try request.getInvokeModelInput(forRegion: self.region)
+        logger.trace(
+            "Sending request to invokeModel",
+            metadata: [
+                "model": .string(model.id), "request": .string(String(describing: input)),
+            ]
+        )
+        let response = try await self.bedrockRuntimeClient.invokeModel(input: input)
+        guard let responseBody = response.body else {
             logger.trace(
-                "Sending request to invokeModel",
+                "Invalid response",
                 metadata: [
-                    "model": .string(model.id), "request": .string(String(describing: input)),
+                    "response": .string(String(describing: response)),
+                    "hasBody": .stringConvertible(response.body != nil),
                 ]
             )
-            let response = try await self.bedrockRuntimeClient.invokeModel(input: input)
-            guard let responseBody = response.body else {
-                logger.trace(
-                    "Invalid response",
-                    metadata: [
-                        "response": .string(String(describing: response)),
-                        "hasBody": .stringConvertible(response.body != nil),
-                    ]
-                )
-                throw BedrockLibraryError.invalidSDKResponse(
-                    "Something went wrong while extracting body from response."
-                )
-            }
-            let invokemodelResponse: InvokeModelResponse = try InvokeModelResponse.createImageResponse(
-                body: responseBody,
-                model: model
+            throw BedrockLibraryError.invalidSDKResponse(
+                "Something went wrong while extracting body from response."
             )
-            return try invokemodelResponse.getGeneratedImage()
+        }
+        let invokemodelResponse: InvokeModelResponse = try InvokeModelResponse.createImageResponse(
+            body: responseBody,
+            model: model
+        )
+        return try invokemodelResponse.getGeneratedImage()
     }
 
     /// Generates 1 to 5 image variation(s) from reference images and a text prompt using a specific model

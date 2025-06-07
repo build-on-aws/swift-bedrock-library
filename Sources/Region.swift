@@ -309,12 +309,12 @@ extension Region {
 // https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html
 extension Region {
     public func isUSRegion() -> Bool {
-        return self.rawValue.hasPrefix("us-") 
+        self.rawValue.hasPrefix("us-")
     }
     public func isEURegion() -> Bool {
-        return self.rawValue.hasPrefix("eu-") 
+        self.rawValue.hasPrefix("eu-")
     }
     public func isAPRegion() -> Bool {
-        return self.rawValue.hasPrefix("ap-") 
+        self.rawValue.hasPrefix("ap-")
     }
 }

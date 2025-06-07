@@ -21,7 +21,7 @@ import Foundation
 
 typealias MistralConverse = StandardConverse
 
-// TODO: define a new struct to support Pixtral Large 25 + cross region inference 
+// TODO: define a new struct to support Pixtral Large 25 + cross region inference
 
 extension BedrockModel {
     public static let mistral_large_2402 = BedrockModel(

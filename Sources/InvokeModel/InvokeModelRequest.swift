@@ -206,7 +206,7 @@ struct InvokeModelRequest {
     /// - Returns: A configured InvokeModelInput containing the model ID, content type, and encoded request body
     /// - Throws: BedrockLibraryError.encodingError if the request body cannot be encoded to JSON
     public func getInvokeModelInput(forRegion region: Region) throws -> InvokeModelInput {
-        do {        
+        do {
             let jsonData: Data = try JSONEncoder().encode(self.body)
             return InvokeModelInput(
                 accept: self.accept.headerValue,

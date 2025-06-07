@@ -14,11 +14,9 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
-
-import Testing 
-
 import BedrockService
 import Foundation
+import Testing
 
 public struct MockBedrockRuntimeClient: BedrockRuntimeClientProtocol {
     public init() {}
