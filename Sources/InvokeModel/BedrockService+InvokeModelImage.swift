@@ -154,7 +154,7 @@ extension BedrockService {
             )
             return try await sendRequest(request: request, model: model)
         } catch {
-            try handleCommonError(error, context: "listing foundation models")
+            try handleCommonError(error, context: "invoking image model")
         }
     }
 
