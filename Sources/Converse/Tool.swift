@@ -69,7 +69,7 @@ public struct Tool: Codable, CustomStringConvertible {
     }
 
     // for CustomStringConvertible
-    public var description : String {
+    public var description: String {
         "Tool(name: \(name), description: \(toolDescription ?? "nil"))"
     }
 }
