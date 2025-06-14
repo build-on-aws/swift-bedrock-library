@@ -17,10 +17,10 @@
 import Foundation
 import Smithy
 
-public struct Tool: Codable {
+public struct Tool: Codable, CustomStringConvertible {
     public let name: String
     public let inputSchema: JSON
-    public let description: String?
+    public let toolDescription: String?
 
     public init(name: String, inputSchema: JSON, description: String? = nil) throws {
         guard !name.isEmpty else {
@@ -33,7 +33,7 @@ public struct Tool: Codable {
         }
         self.name = name
         self.inputSchema = inputSchema
-        self.description = description
+        self.toolDescription = description
     }
 
     public init(from sdkToolSpecification: BedrockRuntimeClientTypes.ToolSpecification) throws {
@@ -66,5 +66,10 @@ public struct Tool: Codable {
             inputSchema: .json(try inputSchema.toDocument()),
             name: name
         )
+    }
+
+    // for CustomStringConvertible
+    public var description: String {
+        "Tool(name: \(name), description: \(toolDescription ?? "nil"))"
     }
 }
