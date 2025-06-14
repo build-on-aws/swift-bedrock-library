@@ -120,7 +120,7 @@ extension BedrockService {
             // see https://github.com/awslabs/aws-sdk-swift/blob/2697fb44f607b9c43ad0ce5ca79867d8d6c545c2/Sources/Services/AWSBedrockRuntime/Sources/AWSBedrockRuntime/Models.swift#L3478
             // it will be the responsibility of the user to handle the stream and re-assemble the messages and content
 
-            let reply = try ConverseReplyStream(sdkStream)
+            let reply = try ConverseReplyStream(sdkStream, logger: logger)
 
             // this time, a different stream is created from the previous one, this one has the following elements
             // - messageStart: this is the start of a message, it contains the role (assistant or user)
