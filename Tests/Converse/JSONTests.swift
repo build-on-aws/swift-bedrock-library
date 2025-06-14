@@ -18,7 +18,8 @@ import Testing
 @testable import BedrockService
 
 // MARK: JSON
-extension BedrockServiceTests {
+@Suite("JSONTests")
+struct JSONTests {
 
     @Test("JSON getValue")
     func jsonGetValue() async throws {
@@ -124,6 +125,14 @@ extension BedrockServiceTests {
             """  // Note: trailing comma, making this invalid
         #expect(throws: BedrockLibraryError.self) {
             let _ = try JSON(from: invalidJSONString)
+        }
+    }
+
+    @Test("Empty JSON")
+    func emptyJSON() async throws {
+        #expect(throws: Never.self) {
+            let json = try JSON(from: "")
+            #expect(json.getValue("nonExistentKey") == nil)
         }
     }
 }

@@ -60,7 +60,13 @@ public struct JSON: Codable, @unchecked Sendable {  // FIXME: make Sendable
     }
 
     public init(from string: String) throws {
-        guard let data = string.data(using: .utf8) else {
+        var s: String!
+        if string.isEmpty {
+            s = "{}"
+        } else {
+            s = string
+        }
+        guard let data = s.data(using: .utf8) else {
             throw BedrockLibraryError.encodingError("Could not encode String to Data")
         }
         try self.init(from: data)

@@ -267,10 +267,9 @@ public struct ConverseReplyStream: Sendable {
         //     contentBlock[currentBlockId] = .reasoning(bufferReasoningData)
         //     bufferReasoningData = Data()
         // }
-        if !state.bufferToolUse.isEmpty {
-            guard let toolUseStart = state.toolUseStart else {
-                throw BedrockLibraryError.invalidSDKType("Received a tool use delta without tool use start")
-            }
+
+        // when there is a toolUse, the bufferToolUse may be empty, when the model found out that there is not arguments to pass. Therefore, I just check the presence of the toolUseStart
+        if let toolUseStart = state.toolUseStart {
             let json = try JSON(from: state.bufferToolUse)
             state.lastContentBlock = (
                 state.currentBlockId, .toolUse(.init(id: toolUseStart.id, name: toolUseStart.name, input: json))
