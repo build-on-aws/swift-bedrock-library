@@ -16,6 +16,13 @@
 import AWSSDKIdentity
 import Logging
 
+// for setenv and unsetenv functions
+#if os(Linux)
+import Glibc
+#else
+import Darwin.C
+#endif
+
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #else
