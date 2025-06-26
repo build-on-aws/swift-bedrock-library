@@ -76,7 +76,7 @@ public enum BedrockAuthentication: Sendable, CustomStringConvertible {
         case .static(let accessKey, let secretKey, let sessionToken):
             logger.warning("Using static AWS credentials. This is not recommended for production.")
             let creds = AWSCredentialIdentity(accessKey: accessKey, secret: secretKey, sessionToken: sessionToken)
-            return try StaticAWSCredentialIdentityResolver(creds)
+            return StaticAWSCredentialIdentityResolver(creds)
         }
     }
 }
