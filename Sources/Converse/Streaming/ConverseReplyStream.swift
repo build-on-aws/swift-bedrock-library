@@ -135,7 +135,13 @@ public struct ConverseReplyStream: Sendable {
                                 )
                             case .none:
                                 logger.warning("Received none SDK Event Delta")
-                            }
+
+                            default:
+                                logger.warning(
+                                    "Received unsupported SDK Event delta",
+                                    metadata: ["delta": "\(String(describing:event.delta))"]
+                                )
+                            }  // switch
 
                         case .contentblockstop(let event):
                             logger.trace("Content Block Stop")

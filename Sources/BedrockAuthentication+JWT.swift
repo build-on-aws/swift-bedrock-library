@@ -71,7 +71,7 @@ extension BedrockAuthentication {
             setenv("AWS_ROLE_ARN", roleARN, 1)
             setenv("AWS_ROLE_SESSION_NAME", "SwiftBedrockService-\(UUID().uuidString)", 1)
             setenv("AWS_WEB_IDENTITY_TOKEN_FILE", tokenFilePath, 1)
-            let identityResolver = STSWebIdentityAWSCredentialIdentityResolver(source: .env)
+            let identityResolver = try STSWebIdentityAWSCredentialIdentityResolver(source: .env)
 
             // Test the resolver by retrieving credentials to ensure it works
             logger.trace("Retrieving credentials using web identity token")

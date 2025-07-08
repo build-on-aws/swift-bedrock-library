@@ -10,11 +10,11 @@ let package = Package(
         .library(name: "BedrockService", targets: ["BedrockService"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.3.0"),
-        .package(url: "https://github.com/awslabs/aws-sdk-swift", from: "1.3.3"),
-        .package(url: "https://github.com/smithy-lang/smithy-swift", from: "0.118.0"),
-        .package(url: "https://github.com/apple/swift-log.git", from: "1.5.0"),
-        .package(url: "https://github.com/awslabs/aws-crt-swift", from: "0.5.0"),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.6.1"),
+        .package(url: "https://github.com/awslabs/aws-sdk-swift", from: "1.3.50"),
+        .package(url: "https://github.com/smithy-lang/smithy-swift", from: "0.145.0"),
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.6.3"),
+        .package(url: "https://github.com/awslabs/aws-crt-swift", from: "0.52.0"),
     ],
     targets: [
         .target(
