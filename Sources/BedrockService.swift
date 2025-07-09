@@ -158,7 +158,7 @@ public struct BedrockService: Sendable {
         authentication: BedrockAuthentication,
         logger: Logging.Logger
     ) async throws -> C {
-        
+
         var config = initialConfig
 
         // support profile, SSO, web identity and static authentication
