@@ -19,10 +19,8 @@ import ClientRuntime
 import SmithyIdentity
 
 protocol BedrockConfigProtocol {
-    init() async throws
     var awsCredentialIdentityResolver: any SmithyIdentity.AWSCredentialIdentityResolver { get set }
     var httpClientConfiguration: ClientRuntime.HttpClientConfiguration { get set }
-    var region: String? { get set }
 }
 extension BedrockClient.BedrockClientConfiguration: @retroactive @unchecked Sendable, BedrockConfigProtocol {}
 extension BedrockRuntimeClient.BedrockRuntimeClientConfiguration: @retroactive @unchecked Sendable,

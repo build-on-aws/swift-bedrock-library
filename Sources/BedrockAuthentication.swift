@@ -63,9 +63,11 @@ public enum BedrockAuthentication: Sendable, CustomStringConvertible {
     ) async throws -> (any SmithyIdentity.AWSCredentialIdentityResolver)? {
 
         switch self {
-        case .default,
-            .apiKey(_):
+        case .default:
             return nil
+        case .apiKey(_):
+            fatalError("API Key authentication is not supported at the moment. Please check https://github.com/awslabs/aws-sdk-swift/issues/1979 for status.")
+            // return nil
         case .profile(let profileName):
             return try? ProfileAWSCredentialIdentityResolver(profileName: profileName)
         case .sso(let profileName):

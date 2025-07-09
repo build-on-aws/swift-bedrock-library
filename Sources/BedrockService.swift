@@ -52,7 +52,7 @@ public struct BedrockService: Sendable {
     ) async throws {
         self.logger = logger ?? BedrockService.createLogger("bedrock.service")
         self.logger.trace(
-            "Initializing SwiftBedrock",
+            "Initializing BedrockService",
             metadata: ["region": .string(region.rawValue)]
         )
         self.region = region
@@ -121,7 +121,7 @@ public struct BedrockService: Sendable {
         -> BedrockClient
     {
         let config: BedrockClient.BedrockClientConfiguration = try await prepareConfig(
-            region: region,
+            initialConfig: BedrockClient.BedrockClientConfiguration(region: region.rawValue),
             authentication: authentication,
             logger: logger
         )
@@ -143,7 +143,9 @@ public struct BedrockService: Sendable {
         -> BedrockRuntimeClient
     {
         let config: BedrockRuntimeClient.BedrockRuntimeClientConfiguration = try await prepareConfig(
-            region: region,
+            initialConfig: BedrockRuntimeClient.BedrockRuntimeClientConfiguration(
+                region: region.rawValue
+            ),
             authentication: authentication,
             logger: logger
         )
@@ -152,13 +154,12 @@ public struct BedrockService: Sendable {
 
     /// Generic function to create client configuration and avoid duplication code.
     internal static func prepareConfig<C: BedrockConfigProtocol>(
-        region: Region,
+        initialConfig: C,
         authentication: BedrockAuthentication,
         logger: Logging.Logger
     ) async throws -> C {
-        var config: C = try await .init()
-
-        config.region = region.rawValue
+        
+        var config = initialConfig
 
         // support profile, SSO, web identity and static authentication
         if let awsCredentialIdentityResolver = try? await authentication.getAWSCredentialIdentityResolver(

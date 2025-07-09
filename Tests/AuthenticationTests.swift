@@ -88,7 +88,9 @@ extension BedrockServiceTests {
         // when
         // create bedrock configuration with API Key authentication
         let config: BedrockClient.BedrockClientConfiguration = try await BedrockService.prepareConfig(
-            region: .useast1,
+            initialConfig: BedrockClient.BedrockClientConfiguration(
+                region: "us-east-1"  // default region
+            ),
             authentication: auth,
             logger: Logger(label: "test.logger"),
         )
@@ -147,7 +149,9 @@ extension BedrockServiceTests {
 
         // when
         let _: BedrockClient.BedrockClientConfiguration = try await BedrockService.prepareConfig(
-            region: .useast1,
+            initialConfig: BedrockClient.BedrockClientConfiguration(
+                region: "us-east-1"  // default region
+            ),
             authentication: auth,
             logger: logger
         )
