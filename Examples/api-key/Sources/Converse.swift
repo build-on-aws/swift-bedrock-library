@@ -34,7 +34,7 @@ struct Main {
         let bedrock = try await BedrockService(
             region: .useast1,
             logger: logger,
-            authentication: .apiKey(key: myApiKey) // define your API Key in APIKey.swift
+            authentication: .apiKey(key: myApiKey)  // define your API Key in APIKey.swift
         )
 
         // select a model that supports the converse modality
