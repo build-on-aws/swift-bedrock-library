@@ -18,6 +18,19 @@ import AwsCommonRuntimeKit
 import Logging
 import Testing
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
+import Foundation
+#endif 
+
+// for setenv and unsetenv functions
+#if os(Linux)
+import Glibc
+#else
+import Darwin.C
+#endif
+
 @testable import BedrockService
 
 // MARK: authentication
@@ -118,4 +131,29 @@ extension BedrockServiceTests {
         #expect(!description.contains("12345"))  // should not contain the full key
         #expect(!description.contains("very-long-key"))  // should not contain the full key
     }
-}
+ 
+     @Test("Authentication: AWS_BEARER_TOKEN_BEDROCK is unset after prepareConfig")
+     func awsBearerTokenBedrockUnset() async throws {
+         // given
+         let testApiKey = "test-api-key-12345"
+         let auth = BedrockAuthentication.apiKey(key: testApiKey)
+         let logger = Logger(label: "test.logger")
+         
+         // Set the environment variable before calling prepareConfig
+         setenv("AWS_BEARER_TOKEN_BEDROCK", "some-bearer-token", 1)
+         
+         // Verify it's set before the test
+         #expect(ProcessInfo.processInfo.environment["AWS_BEARER_TOKEN_BEDROCK"] == "some-bearer-token")
+ 
+         // when
+         let _: BedrockClient.BedrockClientConfiguration = try await BedrockService.prepareConfig(
+             region: .useast1,
+             authentication: auth,
+             logger: logger
+         )
+ 
+         // then
+         // Verify that AWS_BEARER_TOKEN_BEDROCK is no longer set
+         #expect(ProcessInfo.processInfo.environment["AWS_BEARER_TOKEN_BEDROCK"] == nil)
+     }
+ }
