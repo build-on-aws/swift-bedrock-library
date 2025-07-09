@@ -73,6 +73,96 @@ Use the `listModels()` function to test your set-up. This function will return a
 let models = try await bedrock.listModels()
 ```
 
+## Authentication
+
+The Swift Bedrock Library supports multiple authentication methods to work with Amazon Bedrock. By default, it uses the standard AWS credential provider chain, but you can specify different authentication types when initializing the `BedrockService`.
+
+### Default Authentication
+
+Uses the standard AWS credential provider chain, which checks for credentials in the following order:
+1. Environment variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`)
+2. AWS credentials file (`~/.aws/credentials`)
+3. AWS config file (`~/.aws/config`)
+4. IAM roles for Amazon EC2 instances
+5. IAM roles for tasks (Amazon ECS)
+6. IAM roles for Lambda functions
+
+```swift
+let bedrock = try await BedrockService(
+    region: .uswest2
+    // authentication defaults to .default
+)
+```
+
+### Profile-based Authentication
+
+Use a specific profile from your AWS credentials file. This is useful when you have multiple AWS accounts or roles configured locally.
+
+```swift
+let bedrock = try await BedrockService(
+    region: .uswest2,
+    authentication: .profile(profileName: "my-profile")
+)
+```
+
+### SSO Authentication
+
+Use AWS Single Sign-On (SSO) authentication. You must run `aws sso login --profile <profile_name>` before using this authentication method.
+
+```swift
+let bedrock = try await BedrockService(
+    region: .uswest2,
+    authentication: .sso(profileName: "my-sso-profile")
+)
+```
+
+### Web Identity Token Authentication
+
+Use a JWT token from an external identity provider (like Sign In with Apple or Google) to assume an IAM role. This is particularly useful for iOS, tvOS, and macOS applications where traditional AWS CLI-based authentication isn't available.
+
+```swift
+let bedrock = try await BedrockService(
+    region: .uswest2,
+    authentication: .webIdentity(
+        token: jwtToken,
+        roleARN: "arn:aws:iam::123456789012:role/MyAppRole",
+        region: .uswest2,
+        notification: {
+            // Optional: Called on main thread when credentials are retrieved
+            print("AWS credentials updated")
+        }
+    )
+)
+```
+
+### API Key Authentication
+
+Use an API key for authentication. API keys are generated in the AWS console and provide a simpler authentication method for specific use cases.
+
+```swift
+let bedrock = try await BedrockService(
+    region: .uswest2,
+    authentication: .apiKey(key: "your-api-key-here")
+)
+```
+
+### Static Credentials Authentication
+
+Use static AWS credentials directly. **This method is strongly discouraged for production use** and should only be used for testing and debugging purposes.
+
+```swift
+let bedrock = try await BedrockService(
+    region: .uswest2,
+    authentication: .static(
+        accessKey: "AKIAIOSFODNN7EXAMPLE",
+        secretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+        sessionToken: "optional-session-token"
+    )
+)
+```
+
+**Security Note**: Never hardcode credentials in your source code or commit them to version control. Use environment variables, secure credential storage, or other secure methods to manage credentials in production applications.
+
 ## Chatting using the Converse or ConverseStream API
 
 ### Text prompt
