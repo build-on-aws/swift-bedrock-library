@@ -20,6 +20,13 @@ import AwsCommonRuntimeKit
 import Foundation
 import Logging
 
+// for setenv and unsetenv functions
+#if os(Linux)
+import Glibc
+#else
+import Darwin.C
+#endif
+
 public struct BedrockService: Sendable {
     package let region: Region
     package let logger: Logging.Logger
@@ -106,21 +113,18 @@ public struct BedrockService: Sendable {
     ///   - authentication: The authentication type to use
     /// - Returns: Configured BedrockClientProtocol instance
     /// - Throws: Error if client creation fails
-    static private func createBedrockClient(
+    internal static func createBedrockClient(
         region: Region,
         authentication: BedrockAuthentication,
         logger: Logging.Logger
     ) async throws
-        -> BedrockClientProtocol
+        -> BedrockClient
     {
-        let config = try await BedrockClient.BedrockClientConfiguration(
-            region: region.rawValue
-        )
-        if let awsCredentialIdentityResolver = try? await authentication.getAWSCredentialIdentityResolver(
+        let config: BedrockClient.BedrockClientConfiguration = try await prepareConfig(
+            region: region,
+            authentication: authentication,
             logger: logger
-        ) {
-            config.awsCredentialIdentityResolver = awsCredentialIdentityResolver
-        }
+        )
         return BedrockClient(config: config)
     }
 
@@ -130,24 +134,55 @@ public struct BedrockService: Sendable {
     ///   - authentication: The authentication type to use
     /// - Returns: Configured BedrockRuntimeClientProtocol instance
     /// - Throws: Error if client creation fails
-    static private func createBedrockRuntimeClient(
+    internal static func createBedrockRuntimeClient(
         region: Region,
         authentication: BedrockAuthentication,
         logger: Logging.Logger
     )
         async throws
-        -> BedrockRuntimeClientProtocol
+        -> BedrockRuntimeClient
     {
-        let config =
-            try await BedrockRuntimeClient.BedrockRuntimeClientConfiguration(
-                region: region.rawValue
-            )
+        let config: BedrockRuntimeClient.BedrockRuntimeClientConfiguration = try await prepareConfig(
+            region: region,
+            authentication: authentication,
+            logger: logger
+        )
+        return BedrockRuntimeClient(config: config)
+    }
+
+    /// Generic function to create client configuration and avoid duplication code.
+    internal static func prepareConfig<C: BedrockConfigProtocol>(
+        region: Region,
+        authentication: BedrockAuthentication,
+        logger: Logging.Logger
+    ) async throws -> C {
+        var config: C = try await .init()
+
+        config.region = region.rawValue
+
+        // support profile, SSO, web identity and static authentication
         if let awsCredentialIdentityResolver = try? await authentication.getAWSCredentialIdentityResolver(
             logger: logger
         ) {
             config.awsCredentialIdentityResolver = awsCredentialIdentityResolver
         }
-        return BedrockRuntimeClient(config: config)
+
+        // support API keys
+        if case .apiKey(let key) = authentication {
+            config.httpClientConfiguration.defaultHeaders.add(
+                name: "Authorization",
+                value: "Bearer \(key)"
+            )
+            logger.trace("Using API Key for authentication")
+        } else {
+            logger.trace("Using AWS credentials for authentication")
+        }
+
+        //We uncheck AWS_BEARER_TOKEN_BEDROCK to avoid conflict with future AWS SDK version
+        //see https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started-api-keys.html
+        unsetenv("AWS_BEARER_TOKEN_BEDROCK")
+
+        return config
     }
 
     func handleCommonError(_ error: Error, context: String) throws -> Never {

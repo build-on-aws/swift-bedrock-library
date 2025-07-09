@@ -13,7 +13,9 @@
 //
 //===----------------------------------------------------------------------===//
 
+import AWSBedrock
 import AwsCommonRuntimeKit
+import Logging
 import Testing
 
 @testable import BedrockService
@@ -35,6 +37,7 @@ extension BedrockServiceTests {
                 region: .useast1,
                 notification: {}
             ),
+            BedrockAuthentication.apiKey(key: "MY_SECRET_API_KEY"),
         ]
     )
     func authNoLeaks(auth: BedrockAuthentication) {
@@ -62,4 +65,57 @@ extension BedrockServiceTests {
     //         let _ = try await bedrock.listModels()
     //     }
     // }
+
+    @Test("Authentication: API Key authentication adds HTTP Header to the request")
+    func apiKeyAuthentication() async throws {
+        // given
+        let testApiKey = "test-api-key-12345"
+        let auth = BedrockAuthentication.apiKey(key: testApiKey)
+
+        // when
+        // create bedrock configuration with API Key authentication
+        let config: BedrockClient.BedrockClientConfiguration = try await BedrockService.prepareConfig(
+            region: .useast1,
+            authentication: auth,
+            logger: Logger(label: "test.logger"),
+        )
+
+        // then
+        #expect(config.region == Region.useast1.rawValue)  // default region
+        #expect(
+            config.httpClientConfiguration.defaultHeaders.value(for: "Authorization") == "Bearer test-api-key-12345"
+        )
+
+    }
+
+    @Test("Authentication: API Key returns nil credential resolver")
+    func apiKeyCredentialResolver() async throws {
+        // given
+        let testApiKey = "test-api-key-12345"
+        let auth = BedrockAuthentication.apiKey(key: testApiKey)
+        let logger = Logger(label: "test.logger")
+
+        // when
+        let resolver = try await auth.getAWSCredentialIdentityResolver(logger: logger)
+
+        // then
+        #expect(resolver == nil, "API Key authentication should return nil credential resolver")
+    }
+
+    @Test("Authentication: API Key description doesn't leak full key")
+    func apiKeyDescription() {
+        // given
+        let testApiKey = "test-api-key-12345-very-long-key"
+        let auth = BedrockAuthentication.apiKey(key: testApiKey)
+
+        // when
+        let description = auth.description
+
+        // then
+        #expect(description.contains("apiKey:"))
+        #expect(description.contains("tes..."))  // should show first 3 characters
+        #expect(description.contains("*** shuuut, it's a secret ***"))
+        #expect(!description.contains("12345"))  // should not contain the full key
+        #expect(!description.contains("very-long-key"))  // should not contain the full key
+    }
 }
