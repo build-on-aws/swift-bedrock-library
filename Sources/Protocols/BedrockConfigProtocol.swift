@@ -20,6 +20,7 @@ import SmithyIdentity
 
 protocol BedrockConfigProtocol {
     var awsCredentialIdentityResolver: any SmithyIdentity.AWSCredentialIdentityResolver { get set }
+    var bearerTokenIdentityResolver: any SmithyIdentity.BearerTokenIdentityResolver { get set }
     var httpClientConfiguration: ClientRuntime.HttpClientConfiguration { get set }
 }
 extension BedrockClient.BedrockClientConfiguration: @retroactive @unchecked Sendable, BedrockConfigProtocol {}

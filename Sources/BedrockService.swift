@@ -174,6 +174,15 @@ public struct BedrockService: Sendable {
                 name: "Authorization",
                 value: "Bearer \(key)"
             )
+            if let bearerTokenIdentityresolver = authentication.getBearerTokenIdentityResolver(logger: logger) {
+                config.bearerTokenIdentityResolver = bearerTokenIdentityresolver
+                print(bearerTokenIdentityresolver)
+            } else {
+                // TODO: should we throw an error here ?
+                logger.error(
+                    "API Key authentication is used but no BearerTokenIdentityResolver is provided. This will lead to issues."
+                )
+            }
             logger.trace("Using API Key for authentication")
         } else {
             logger.trace("Using AWS credentials for authentication")
