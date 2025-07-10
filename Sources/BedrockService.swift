@@ -169,14 +169,13 @@ public struct BedrockService: Sendable {
         }
 
         // support API keys
-        if case .apiKey(let key) = authentication {
-            config.httpClientConfiguration.defaultHeaders.add(
-                name: "Authorization",
-                value: "Bearer \(key)"
-            )
+        if case .apiKey(_) = authentication {
+            // config.httpClientConfiguration.defaultHeaders.add(
+            //     name: "Authorization",
+            //     value: "Bearer \(key)"
+            // )
             if let bearerTokenIdentityresolver = authentication.getBearerTokenIdentityResolver(logger: logger) {
                 config.bearerTokenIdentityResolver = bearerTokenIdentityresolver
-                print(bearerTokenIdentityresolver)
             } else {
                 // TODO: should we throw an error here ?
                 logger.error(
