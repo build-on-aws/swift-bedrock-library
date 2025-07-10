@@ -64,7 +64,7 @@ public enum BedrockAuthentication: Sendable, CustomStringConvertible {
 
         switch self {
         case .default, .apiKey(_):
-            return nil //TODO should we throw an error when apiKey is used ?
+            return nil  //TODO should we throw an error when apiKey is used ?
         case .profile(let profileName):
             return try? ProfileAWSCredentialIdentityResolver(profileName: profileName)
         case .sso(let profileName):
@@ -89,9 +89,9 @@ public enum BedrockAuthentication: Sendable, CustomStringConvertible {
     /// - Note: Only `apiKey` authentication uses BearerTokenIdentityResolver.
     func getBearerTokenIdentityResolver(logger: Logger) -> (any SmithyIdentity.BearerTokenIdentityResolver)? {
         guard case .apiKey(let key) = self else {
-            return nil // Only apiKey authentication uses BearerTokenIdentityResolver
+            return nil  // Only apiKey authentication uses BearerTokenIdentityResolver
         }
-        
+
         // Create a StaticBearerTokenIdentityResolver with the provided API key
         let identity = BearerTokenIdentity(token: key)
         return StaticBearerTokenIdentityResolver(token: identity)
