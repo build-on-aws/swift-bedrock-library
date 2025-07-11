@@ -52,7 +52,7 @@ public struct BedrockService: Sendable {
     ) async throws {
         self.logger = logger ?? BedrockService.createLogger("bedrock.service")
         self.logger.trace(
-            "Initializing SwiftBedrock",
+            "Initializing BedrockService",
             metadata: ["region": .string(region.rawValue)]
         )
         self.region = region
@@ -121,7 +121,7 @@ public struct BedrockService: Sendable {
         -> BedrockClient
     {
         let config: BedrockClient.BedrockClientConfiguration = try await prepareConfig(
-            region: region,
+            initialConfig: BedrockClient.BedrockClientConfiguration(region: region.rawValue),
             authentication: authentication,
             logger: logger
         )
@@ -143,7 +143,9 @@ public struct BedrockService: Sendable {
         -> BedrockRuntimeClient
     {
         let config: BedrockRuntimeClient.BedrockRuntimeClientConfiguration = try await prepareConfig(
-            region: region,
+            initialConfig: BedrockRuntimeClient.BedrockRuntimeClientConfiguration(
+                region: region.rawValue
+            ),
             authentication: authentication,
             logger: logger
         )
@@ -152,13 +154,18 @@ public struct BedrockService: Sendable {
 
     /// Generic function to create client configuration and avoid duplication code.
     internal static func prepareConfig<C: BedrockConfigProtocol>(
-        region: Region,
+        initialConfig: C,
         authentication: BedrockAuthentication,
         logger: Logging.Logger
     ) async throws -> C {
-        var config: C = try await .init()
 
-        config.region = region.rawValue
+        var config = initialConfig
+
+        if logger.logLevel == .trace {
+            // enable trace HTTP requests and responses for the SDK
+            // see https://github.com/smithy-lang/smithy-swift/blob/main/Sources/ClientRuntime/Telemetry/Logging/ClientLogMode.swift
+            config.clientLogMode = .requestAndResponse
+        }
 
         // support profile, SSO, web identity and static authentication
         if let awsCredentialIdentityResolver = try? await authentication.getAWSCredentialIdentityResolver(
@@ -168,11 +175,25 @@ public struct BedrockService: Sendable {
         }
 
         // support API keys
-        if case .apiKey(let key) = authentication {
-            config.httpClientConfiguration.defaultHeaders.add(
-                name: "Authorization",
-                value: "Bearer \(key)"
-            )
+        if case .apiKey(_) = authentication {
+            // config.httpClientConfiguration.defaultHeaders.add(
+            //     name: "Authorization",
+            //     value: "Bearer \(key)"
+            // )
+            if let bearerTokenIdentityresolver = authentication.getBearerTokenIdentityResolver(logger: logger) {
+                config.bearerTokenIdentityResolver = bearerTokenIdentityresolver
+
+                // force utilisation of a bearer token instead of AWS credentials + Signv4
+                // see https://github.com/awslabs/aws-sdk-swift/blob/15b8951d108968f767f4199a3c011e27ac519d61/Sources/Services/AWSBedrockRuntime/Sources/AWSBedrockRuntime/AuthSchemeResolver.swift#L58
+                config.authSchemeResolver = DefaultBedrockRuntimeAuthSchemeResolver(authSchemePreference: [
+                    "httpBearerAuth"
+                ])
+            } else {
+                // TODO: should we throw an error here ?
+                logger.error(
+                    "API Key authentication is used but no BearerTokenIdentityResolver is provided. This will lead to issues."
+                )
+            }
             logger.trace("Using API Key for authentication")
         } else {
             logger.trace("Using AWS credentials for authentication")

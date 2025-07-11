@@ -16,13 +16,23 @@
 import AWSBedrock
 import AWSBedrockRuntime
 import ClientRuntime
+import SmithyHTTPAuthAPI
 import SmithyIdentity
 
 protocol BedrockConfigProtocol {
-    init() async throws
+    // support regular AWS Credentials + Sigv4 authentication
     var awsCredentialIdentityResolver: any SmithyIdentity.AWSCredentialIdentityResolver { get set }
-    var httpClientConfiguration: ClientRuntime.HttpClientConfiguration { get set }
-    var region: String? { get set }
+
+    // support bearer token authentication (for API Keys)
+    var bearerTokenIdentityResolver: any SmithyIdentity.BearerTokenIdentityResolver { get set }
+    var authSchemeResolver: SmithyHTTPAuthAPI.AuthSchemeResolver { get set }
+
+    // not used at the moment, we use the bearer token instead
+    //var httpClientConfiguration: ClientRuntime.HttpClientConfiguration { get set }
+
+    // for debugging
+    var clientLogMode: ClientRuntime.ClientLogMode { get set }
+
 }
 extension BedrockClient.BedrockClientConfiguration: @retroactive @unchecked Sendable, BedrockConfigProtocol {}
 extension BedrockRuntimeClient.BedrockRuntimeClientConfiguration: @retroactive @unchecked Sendable,

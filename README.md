@@ -135,7 +135,9 @@ let bedrock = try await BedrockService(
 )
 ```
 
-### API Key Authentication
+### API Key Authentication (temporary unavailable)
+
+This capability will be available when issue [#1979](https://github.com/awslabs/aws-sdk-swift/issues/1979) from the AWS SDK for Swift will be fixed or a workaround provided.
 
 Use an API key for authentication. API keys are generated in the AWS console and provide a simpler authentication method for specific use cases.
 

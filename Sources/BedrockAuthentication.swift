@@ -56,16 +56,15 @@ public enum BedrockAuthentication: Sendable, CustomStringConvertible {
     /// Creates an AWS credential identity resolver depending on the authentication parameter.
     /// - Parameters:
     ///     - authentication: The authentication type to use
-    /// - Returns: An optional AWS credential identity resolver. A nil return value means that the default AWS credential provider chain will be used.
+    /// - Returns: An optional AWS credential identity resolver. A nil return value means that the default AWS credential provider chain will be used or that the authentication type does not require a specific resolver (like `apiKey`).
     ///
     func getAWSCredentialIdentityResolver(
         logger: Logger
     ) async throws -> (any SmithyIdentity.AWSCredentialIdentityResolver)? {
 
         switch self {
-        case .default,
-            .apiKey(_):
-            return nil
+        case .default, .apiKey(_):
+            return nil  //TODO should we throw an error when apiKey is used ?
         case .profile(let profileName):
             return try? ProfileAWSCredentialIdentityResolver(profileName: profileName)
         case .sso(let profileName):
@@ -83,5 +82,18 @@ public enum BedrockAuthentication: Sendable, CustomStringConvertible {
             let creds = AWSCredentialIdentity(accessKey: accessKey, secret: secretKey, sessionToken: sessionToken)
             return StaticAWSCredentialIdentityResolver(creds)
         }
+    }
+
+    /// Creates a BearerTokenIdentityResolver depending on the authentication parameter.
+    /// - Returns: An optional BearerTokenIdentityResolver. A nil return value means that the authentication type requires an AWSCredentialsProvider instead (like `default`, `profile`, `sso`, `webIdentity`, or `static`).
+    /// - Note: Only `apiKey` authentication uses BearerTokenIdentityResolver.
+    func getBearerTokenIdentityResolver(logger: Logger) -> (any SmithyIdentity.BearerTokenIdentityResolver)? {
+        guard case .apiKey(let key) = self else {
+            return nil  // Only apiKey authentication uses BearerTokenIdentityResolver
+        }
+
+        // Create a StaticBearerTokenIdentityResolver with the provided API key
+        let identity = BearerTokenIdentity(token: key)
+        return StaticBearerTokenIdentityResolver(token: identity)
     }
 }
