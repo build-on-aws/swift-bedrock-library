@@ -161,6 +161,12 @@ public struct BedrockService: Sendable {
 
         var config = initialConfig
 
+        if logger.logLevel == .trace {
+            // enable trace HTTP requests and responses for the SDK
+            // see https://github.com/smithy-lang/smithy-swift/blob/main/Sources/ClientRuntime/Telemetry/Logging/ClientLogMode.swift
+            config.clientLogMode = .requestAndResponse
+        }
+
         // support profile, SSO, web identity and static authentication
         if let awsCredentialIdentityResolver = try? await authentication.getAWSCredentialIdentityResolver(
             logger: logger
@@ -176,6 +182,12 @@ public struct BedrockService: Sendable {
             // )
             if let bearerTokenIdentityresolver = authentication.getBearerTokenIdentityResolver(logger: logger) {
                 config.bearerTokenIdentityResolver = bearerTokenIdentityresolver
+
+                // force utilisation of a bearer token instead of AWS credentials + Signv4
+                // see https://github.com/awslabs/aws-sdk-swift/blob/15b8951d108968f767f4199a3c011e27ac519d61/Sources/Services/AWSBedrockRuntime/Sources/AWSBedrockRuntime/AuthSchemeResolver.swift#L58
+                config.authSchemeResolver = DefaultBedrockRuntimeAuthSchemeResolver(authSchemePreference: [
+                    "httpBearerAuth"
+                ])
             } else {
                 // TODO: should we throw an error here ?
                 logger.error(

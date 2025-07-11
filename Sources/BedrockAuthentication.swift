@@ -96,5 +96,4 @@ public enum BedrockAuthentication: Sendable, CustomStringConvertible {
         let identity = BearerTokenIdentity(token: key)
         return StaticBearerTokenIdentityResolver(token: identity)
     }
-
 }
