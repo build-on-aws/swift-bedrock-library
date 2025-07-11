@@ -14,8 +14,10 @@
 //===----------------------------------------------------------------------===//
 
 import AWSBedrock
+import AWSBedrockRuntime
 import AwsCommonRuntimeKit
 import Logging
+import SmithyIdentity
 import Testing
 
 @testable import BedrockService
@@ -97,9 +99,15 @@ extension BedrockServiceTests {
 
         // then
         #expect(config.region == Region.useast1.rawValue)  // default region
-        #expect(
-            config.httpClientConfiguration.defaultHeaders.value(for: "Authorization") == "Bearer test-api-key-12345"
-        )
+
+        // check token 
+        let resolver = config.bearerTokenIdentityResolver as? StaticBearerTokenIdentityResolver
+        let token = try await resolver?.getIdentity(identityProperties: nil).token
+        #expect(token == testApiKey, "Expected token to match the API key")
+
+        // check bearer auth scheme 
+        let authScheme = (config.authSchemeResolver as? DefaultBedrockRuntimeAuthSchemeResolver)?.authSchemePreference
+        #expect(authScheme?.contains("httpBearerAuth") == true, "Expected auth scheme to be HTTP Bearer")
 
     }
 
