@@ -66,7 +66,7 @@ public enum BedrockAuthentication: Sendable, CustomStringConvertible {
         case .default, .apiKey(_):
             return nil  //TODO should we throw an error when apiKey is used ?
         case .profile(let profileName):
-            return try? ProfileAWSCredentialIdentityResolver(profileName: profileName)
+            return ProfileAWSCredentialIdentityResolver(profileName: profileName)
         case .sso(let profileName):
             return try? SSOAWSCredentialIdentityResolver(profileName: profileName)
         case .webIdentity(let token, let roleARN, let region, let notification):

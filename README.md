@@ -146,7 +146,7 @@ let bedrock = try await BedrockService(
 )
 ```
 
-As usual, do not store or hardcode API Keys in yoru front end application.
+As usual, do not store or hardcode API Keys in your front end application.
 
 ### Static Credentials Authentication
 

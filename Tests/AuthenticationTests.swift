@@ -106,8 +106,8 @@ extension BedrockServiceTests {
         #expect(token == testApiKey, "Expected token to match the API key")
 
         // check bearer auth scheme
-        let authScheme = (config.authSchemeResolver as? DefaultBedrockRuntimeAuthSchemeResolver)?.authSchemePreference
-        #expect(authScheme?.contains("httpBearerAuth") == true, "Expected auth scheme to be HTTP Bearer")
+        let authSchemePreference = config.authSchemePreference
+        #expect(authSchemePreference?.contains("httpBearerAuth") == true, "Expected auth scheme to be HTTP Bearer")
 
     }
 

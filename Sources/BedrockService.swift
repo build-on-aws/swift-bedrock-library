@@ -176,18 +176,9 @@ public struct BedrockService: Sendable {
 
         // support API keys
         if case .apiKey(_) = authentication {
-            // config.httpClientConfiguration.defaultHeaders.add(
-            //     name: "Authorization",
-            //     value: "Bearer \(key)"
-            // )
             if let bearerTokenIdentityresolver = authentication.getBearerTokenIdentityResolver(logger: logger) {
                 config.bearerTokenIdentityResolver = bearerTokenIdentityresolver
-
-                // force utilisation of a bearer token instead of AWS credentials + Signv4
-                // see https://github.com/awslabs/aws-sdk-swift/blob/15b8951d108968f767f4199a3c011e27ac519d61/Sources/Services/AWSBedrockRuntime/Sources/AWSBedrockRuntime/AuthSchemeResolver.swift#L58
-                config.authSchemeResolver = DefaultBedrockRuntimeAuthSchemeResolver(authSchemePreference: [
-                    "httpBearerAuth"
-                ])
+                config.authSchemePreference = ["httpBearerAuth"]
             } else {
                 // TODO: should we throw an error here ?
                 logger.error(
