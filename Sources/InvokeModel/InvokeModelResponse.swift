@@ -15,6 +15,7 @@
 
 @preconcurrency import AWSBedrockRuntime
 import Foundation
+import Logging
 
 public struct InvokeModelResponse {
     let model: BedrockModel
@@ -50,9 +51,10 @@ public struct InvokeModelResponse {
     ///   - model: The Bedrock model that generated the response
     /// - Throws: BedrockLibraryError.invalidModel if the model is not supported
     ///          BedrockLibraryError.invalidResponseBody if the response cannot be decoded
-    static func createTextResponse(body data: Data, model: BedrockModel) throws -> Self {
+    static func createTextResponse(body data: Data, model: BedrockModel, logger: Logger) throws -> Self {
         do {
             let textModality = try model.getTextModality()
+            logger.trace("Raw response data:\n\(String(data: data, encoding: .utf8) ?? "")\n")
             return self.init(model: model, textCompletionBody: try textModality.getTextResponseBody(from: data))
         } catch {
             throw BedrockLibraryError.invalidSDKResponseBody(data)
@@ -65,9 +67,10 @@ public struct InvokeModelResponse {
     ///   - model: The Bedrock model that generated the response
     /// - Throws: BedrockLibraryError.invalidModel if the model is not supported
     ///          BedrockLibraryError.invalidResponseBody if the response cannot be decoded
-    static func createImageResponse(body data: Data, model: BedrockModel) throws -> Self {
+    static func createImageResponse(body data: Data, model: BedrockModel, logger: Logger) throws -> Self {
         do {
             let imageModality = try model.getImageModality()
+            logger.trace("Raw response", metadata: ["Data": "\(String(data: data, encoding: .utf8) ?? "")"])
             return self.init(model: model, imageGenerationBody: try imageModality.getImageResponseBody(from: data))
         } catch {
             throw BedrockLibraryError.invalidSDKResponseBody(data)

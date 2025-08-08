@@ -13,7 +13,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-public struct ConverseReply: Codable, CustomStringConvertible {
+public struct ConverseReply: Codable, Sendable, CustomStringConvertible {
     let history: History
     let textReply: String?
     let toolUse: ToolUseBlock?

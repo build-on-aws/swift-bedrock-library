@@ -15,10 +15,26 @@
 
 import Foundation
 
-public struct TextCompletion: Codable {
+public struct TextCompletion: Codable, Sendable {
     public let completion: String
+    public let reasoning: String?
 
     public init(_ completion: String) {
-        self.completion = completion
+        let (extractedCompletion, extractedReasoning) = Self.extractReasoning(from: completion)
+        self.completion = extractedCompletion
+        self.reasoning = extractedReasoning
+    }
+
+    private static func extractReasoning(from text: String) -> (completion: String, reasoning: String?) {
+        let reasoningRegex = /<reasoning>(.*?)<\/reasoning>/
+
+        guard let match = text.firstMatch(of: reasoningRegex) else {
+            return (text, nil)
+        }
+
+        let reasoning = String(match.1)
+        let cleanedText = text.replacing(reasoningRegex, with: "")
+
+        return (cleanedText, reasoning)
     }
 }
