@@ -182,7 +182,8 @@ extension BedrockService {
         }
         let invokemodelResponse: InvokeModelResponse = try InvokeModelResponse.createImageResponse(
             body: responseBody,
-            model: model
+            model: model,
+            logger: self.logger
         )
         return try invokemodelResponse.getGeneratedImage()
     }

@@ -119,7 +119,8 @@ extension BedrockService {
 
             let invokemodelResponse: InvokeModelResponse = try InvokeModelResponse.createTextResponse(
                 body: responseBody,
-                model: model
+                model: model,
+                logger: self.logger
             )
             logger.trace(
                 "Generated text completion",

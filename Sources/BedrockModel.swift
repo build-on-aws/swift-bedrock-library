@@ -101,6 +101,9 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
         //cohere
         case BedrockModel.cohere_command_R_plus.id: self = BedrockModel.cohere_command_R_plus
         case BedrockModel.cohere_command_R.id: self = BedrockModel.cohere_command_R
+        // OpenAI
+        case BedrockModel.openai_gpt_oss_20b.id: self = BedrockModel.openai_gpt_oss_20b
+        case BedrockModel.openai_gpt_oss_120b.id: self = BedrockModel.openai_gpt_oss_120b
         default:
             return nil
         }
