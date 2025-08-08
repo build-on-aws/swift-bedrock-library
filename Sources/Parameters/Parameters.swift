@@ -72,7 +72,7 @@ extension String {
     func trimWhitespaceAndNewlines() -> String {
         let scalars = self.unicodeScalars
         let whitespaceAndNewline: (UnicodeScalar) -> Bool = { $0.properties.isWhitespace || $0 == "\n" || $0 == "\r" }
-        
+
         // Find start
         var startIdx = scalars.startIndex
         while startIdx < scalars.endIndex, whitespaceAndNewline(scalars[startIdx]) {
