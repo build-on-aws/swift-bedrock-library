@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public struct StandardConverse: ConverseModality, StreamingModality {
     public func getName() -> String { "Standard Converse Modality" }

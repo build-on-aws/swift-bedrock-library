@@ -16,7 +16,12 @@
 @preconcurrency import AWSBedrock
 import AWSClientRuntime
 import AWSSDKIdentity
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 // Protocol allows writing mocks for unit tests
 public protocol BedrockClientProtocol: Sendable {

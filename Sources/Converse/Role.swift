@@ -14,7 +14,12 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public struct Role: Codable, Sendable, Equatable, CustomStringConvertible {
     private enum RoleType: Codable, Sendable, Equatable {

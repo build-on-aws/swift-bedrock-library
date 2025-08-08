@@ -13,8 +13,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-import Foundation
 import Smithy
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
+import Foundation
+#endif
 
 // FIXME: avoid extensions on structs you do not control
 extension SmithyDocument {

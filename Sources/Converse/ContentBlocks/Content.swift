@@ -14,7 +14,12 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public enum Content: Codable, CustomStringConvertible, Sendable {
     case text(String)

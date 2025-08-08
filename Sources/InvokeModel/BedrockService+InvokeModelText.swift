@@ -15,7 +15,12 @@
 
 @preconcurrency import AWSBedrockRuntime
 import AwsCommonRuntimeKit
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 extension BedrockService {
 

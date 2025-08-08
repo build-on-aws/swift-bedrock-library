@@ -14,7 +14,12 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrock
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public struct ModelSummary: Encodable {
     public let modelName: String

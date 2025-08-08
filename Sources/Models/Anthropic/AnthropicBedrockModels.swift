@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 typealias ClaudeInstantV1 = AnthropicText
 typealias ClaudeV1 = AnthropicText
