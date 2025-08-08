@@ -17,8 +17,13 @@
 @preconcurrency import AWSBedrockRuntime
 import AWSClientRuntime
 import AwsCommonRuntimeKit
-import Foundation
 import Logging
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
+import Foundation
+#endif
 
 // for setenv and unsetenv functions
 #if os(Linux)

@@ -63,7 +63,10 @@ struct AddingTwoNumbersTests {
  
 }
 ```
-When asked to write unit tests, always prefer the new Swift testing framework over XCTest.
+
+Always use standard Swift 6 tools by preference. For example, 
+when asked to write unit tests, always prefer the new Swift testing framework over XCTest.
+When asked to format files, use swift format instead of swift-format.
 
 In general, prefer the use of Swift Concurrency (async/await, 
 actors, etc.) over tools like Dispatch or Combine, but if the 

@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public protocol Parameters: Sendable, Hashable, Equatable {}
 
@@ -64,11 +68,30 @@ public struct Parameter<T: Sendable & Hashable & Equatable & Numeric & Comparabl
     }
 }
 
+extension String {
+    func trimWhitespaceAndNewlines() -> String {
+        let scalars = self.unicodeScalars
+        let whitespaceAndNewline: (UnicodeScalar) -> Bool = { $0.properties.isWhitespace || $0 == "\n" || $0 == "\r" }
+
+        // Find start
+        var startIdx = scalars.startIndex
+        while startIdx < scalars.endIndex, whitespaceAndNewline(scalars[startIdx]) {
+            startIdx = scalars.index(after: startIdx)
+        }
+        // Find end
+        var endIdx = scalars.endIndex
+        while endIdx > startIdx, whitespaceAndNewline(scalars[scalars.index(before: endIdx)]) {
+            endIdx = scalars.index(before: endIdx)
+        }
+        return String(scalars[startIdx..<endIdx])
+    }
+}
+
 public struct PromptParams: Parameters {
     public let maxSize: Int?
 
     public func validateValue(_ value: String) throws {
-        guard !value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
+        guard !value.trimWhitespaceAndNewlines().isEmpty else {
             throw BedrockLibraryError.invalidPrompt("Prompt is not allowed to be empty.")
         }
         if let maxSize {

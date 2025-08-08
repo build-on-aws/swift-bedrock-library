@@ -14,8 +14,13 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
-import Foundation
 import Smithy
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
+import Foundation
+#endif
 
 public struct Tool: Codable, CustomStringConvertible {
     public let name: String

@@ -14,7 +14,12 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public struct ImageBlock: Codable, Sendable {
     public let format: Format

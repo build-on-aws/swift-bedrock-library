@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 //TODO: split in two structs : BedrockModelError and BedrockLibraryError
 public enum BedrockLibraryError: Error {

@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public struct JSON: Codable, @unchecked Sendable {  // FIXME: make Sendable
     public var value: Any?

@@ -14,8 +14,13 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrockRuntime
-import Foundation
 import Logging
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
+import Foundation
+#endif
 
 public struct InvokeModelResponse {
     let model: BedrockModel

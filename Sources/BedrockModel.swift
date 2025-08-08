@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
     public var rawValue: String { id }

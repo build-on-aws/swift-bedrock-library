@@ -13,8 +13,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-import Foundation
 import Smithy
+
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
+import Foundation
+#endif
 
 extension JSON {
     public func toDocument() throws -> Document {

@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 struct LlamaText: TextModality, ConverseModality, ConverseStreamingModality, CrossRegionInferenceModality {
     func getName() -> String { "Llama Text Generation" }

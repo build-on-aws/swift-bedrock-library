@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 public protocol ImageResolutionValidator: Sendable {
     func validateResolution(_ resolution: ImageResolution) throws

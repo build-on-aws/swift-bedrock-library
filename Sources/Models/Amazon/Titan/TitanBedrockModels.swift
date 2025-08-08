@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 // MARK: text generation
 // https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-titan-text.html

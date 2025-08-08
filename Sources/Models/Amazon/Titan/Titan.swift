@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 struct TitanText: TextModality, ConverseModality, ConverseStreamingModality {
     func getName() -> String { "Titan Text Generation" }

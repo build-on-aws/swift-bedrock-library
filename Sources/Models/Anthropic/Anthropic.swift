@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 struct AnthropicText: TextModality, ConverseModality, ConverseStreamingModality, CrossRegionInferenceModality {
     let parameters: TextGenerationParameters

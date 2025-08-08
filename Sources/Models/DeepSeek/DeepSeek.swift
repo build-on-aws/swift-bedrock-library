@@ -13,7 +13,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
 import Foundation
+#endif
 
 // ConverseModality was taken out, because DeepSeek automatically uses reasoning
 // and does not tolerate the way reasoning is handled in this library.
