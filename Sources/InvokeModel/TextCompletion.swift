@@ -26,14 +26,14 @@ public struct TextCompletion: Codable, Sendable {
     }
 
     private static func extractReasoning(from text: String) -> (completion: String, reasoning: String?) {
-        let reasoningRegex = /<reasoning>(.*?)<\/reasoning>/
-        guard let match = text.firstMatch(of: reasoningRegex) else {
+        guard let match = text.firstMatch(of: Self.reasoningRegex) else {
             return (text, nil)
         }
 
         let reasoning = String(match.1)
-        let cleanedText = text.replacing(reasoningRegex, with: "")
+        let cleanedText = text.replacing(Self.reasoningRegex, with: "")
 
         return (cleanedText, reasoning)
     }
+    private static let reasoningRegex = /<reasoning>(.*?)<\/reasoning>/
 }
