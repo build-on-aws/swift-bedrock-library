@@ -25,7 +25,7 @@ protocol BedrockConfigProtocol {
 
     // support bearer token authentication (for API Keys)
     var bearerTokenIdentityResolver: any SmithyIdentity.BearerTokenIdentityResolver { get set }
-    var authSchemeResolver: SmithyHTTPAuthAPI.AuthSchemeResolver { get set }
+    var authSchemePreference:[String]? { get set }
 
     // not used at the moment, we use the bearer token instead
     //var httpClientConfiguration: ClientRuntime.HttpClientConfiguration { get set }
