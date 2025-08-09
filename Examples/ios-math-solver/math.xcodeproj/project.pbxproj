@@ -8,32 +8,43 @@
 
 /* Begin PBXBuildFile section */
 		0013E0AE2D94AFF800A9D5BF /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 0013E0AD2D94AFF800A9D5BF /* MarkdownUI */; };
-		004A09F52E23919F00AE95E3 /* BedrockService in Frameworks */ = {isa = PBXBuildFile; productRef = 004A09F42E23919F00AE95E3 /* BedrockService */; };
-		00CC47C42D96EB8200BFBFBD /* AWSSTS in Frameworks */ = {isa = PBXBuildFile; productRef = 00CC47C32D96EB8200BFBFBD /* AWSSTS */; };
 		00D89B9F2DA45DF200DF151E /* LaTeXSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 00D89B9E2DA45DF200DF151E /* LaTeXSwiftUI */; };
+		1C1EB1F02E471EA500C5DE46 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C1EB1E62E471EA500C5DE46 /* Assets.xcassets */; };
+		1C1EB1F12E471EA500C5DE46 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C1EB1E42E471EA500C5DE46 /* Preview Assets.xcassets */; };
+		1C1EB1F22E471EA500C5DE46 /* MathSolverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1ED2E471EA500C5DE46 /* MathSolverViewModel.swift */; };
+		1C1EB1F32E471EA500C5DE46 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1E82E471EA500C5DE46 /* Content.swift */; };
+		1C1EB1F42E471EA500C5DE46 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1E72E471EA500C5DE46 /* AuthenticationManager.swift */; };
+		1C1EB1F52E471EA500C5DE46 /* MathSolverApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1EC2E471EA500C5DE46 /* MathSolverApp.swift */; };
+		1C1EB1F62E471EA500C5DE46 /* MarkdownLatexView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1EB2E471EA500C5DE46 /* MarkdownLatexView.swift */; };
+		1C1EB1F72E471EA500C5DE46 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1E92E471EA500C5DE46 /* ContentView.swift */; };
+		1C1EB1F82E471EA500C5DE46 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1EA2E471EA500C5DE46 /* LoginView.swift */; };
+		1C1EB1FE2E47204100C5DE46 /* BedrockService in Frameworks */ = {isa = PBXBuildFile; productRef = 1C1EB1FD2E47204100C5DE46 /* BedrockService */; };
+		1C8333F62E47228100C16CA7 /* AWSSTS in Frameworks */ = {isa = PBXBuildFile; productRef = 1C8333F52E47228100C16CA7 /* AWSSTS */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		002999232D945FFF002C6BC0 /* physics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = physics.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		002999232D945FFF002C6BC0 /* MathSolver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MathSolver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C1EB1E42E471EA500C5DE46 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1C1EB1E62E471EA500C5DE46 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1C1EB1E72E471EA500C5DE46 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
+		1C1EB1E82E471EA500C5DE46 /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
+		1C1EB1E92E471EA500C5DE46 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1C1EB1EA2E471EA500C5DE46 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		1C1EB1EB2E471EA500C5DE46 /* MarkdownLatexView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownLatexView.swift; sourceTree = "<group>"; };
+		1C1EB1EC2E471EA500C5DE46 /* MathSolverApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathSolverApp.swift; sourceTree = "<group>"; };
+		1C1EB1ED2E471EA500C5DE46 /* MathSolverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathSolverViewModel.swift; sourceTree = "<group>"; };
+		1C1EB1FF2E4720A700C5DE46 /* math.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = math.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		002999252D945FFF002C6BC0 /* physics */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = physics;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		002999202D945FFF002C6BC0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00CC47C42D96EB8200BFBFBD /* AWSSTS in Frameworks */,
-				004A09F52E23919F00AE95E3 /* BedrockService in Frameworks */,
 				00D89B9F2DA45DF200DF151E /* LaTeXSwiftUI in Frameworks */,
+				1C1EB1FE2E47204100C5DE46 /* BedrockService in Frameworks */,
 				0013E0AE2D94AFF800A9D5BF /* MarkdownUI in Frameworks */,
+				1C8333F62E47228100C16CA7 /* AWSSTS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,7 +54,7 @@
 		0029991A2D945FFF002C6BC0 = {
 			isa = PBXGroup;
 			children = (
-				002999252D945FFF002C6BC0 /* physics */,
+				1C1EB1EF2E471EA500C5DE46 /* Sources */,
 				00CC47C22D96EB8200BFBFBD /* Frameworks */,
 				002999242D945FFF002C6BC0 /* Products */,
 			);
@@ -52,7 +63,7 @@
 		002999242D945FFF002C6BC0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				002999232D945FFF002C6BC0 /* physics.app */,
+				002999232D945FFF002C6BC0 /* MathSolver.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -64,12 +75,37 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1C1EB1E52E471EA500C5DE46 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				1C1EB1E42E471EA500C5DE46 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1C1EB1EF2E471EA500C5DE46 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				1C1EB1E52E471EA500C5DE46 /* Preview Content */,
+				1C1EB1E62E471EA500C5DE46 /* Assets.xcassets */,
+				1C1EB1E72E471EA500C5DE46 /* AuthenticationManager.swift */,
+				1C1EB1E82E471EA500C5DE46 /* Content.swift */,
+				1C1EB1E92E471EA500C5DE46 /* ContentView.swift */,
+				1C1EB1EA2E471EA500C5DE46 /* LoginView.swift */,
+				1C1EB1EB2E471EA500C5DE46 /* MarkdownLatexView.swift */,
+				1C1EB1EC2E471EA500C5DE46 /* MathSolverApp.swift */,
+				1C1EB1ED2E471EA500C5DE46 /* MathSolverViewModel.swift */,
+				1C1EB1FF2E4720A700C5DE46 /* math.entitlements */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		002999222D945FFF002C6BC0 /* physics */ = {
+		002999222D945FFF002C6BC0 /* MathSolver */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 002999312D946000002C6BC0 /* Build configuration list for PBXNativeTarget "physics" */;
+			buildConfigurationList = 002999312D946000002C6BC0 /* Build configuration list for PBXNativeTarget "MathSolver" */;
 			buildPhases = (
 				0029991F2D945FFF002C6BC0 /* Sources */,
 				002999202D945FFF002C6BC0 /* Frameworks */,
@@ -79,21 +115,17 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				002999252D945FFF002C6BC0 /* physics */,
-			);
-			name = physics;
+			name = MathSolver;
 			packageProductDependencies = (
-				0029993D2D9464D9002C6BC0 /* AWSBedrockRuntime */,
 				0013E0AD2D94AFF800A9D5BF /* MarkdownUI */,
-				00CC47C32D96EB8200BFBFBD /* AWSSTS */,
 				00D89B9E2DA45DF200DF151E /* LaTeXSwiftUI */,
 				000E7F392DAF7C8700442BD1 /* BedrockService */,
 				000E7F3B2DAF7C8700442BD1 /* BedrockTypes */,
-				004A09F42E23919F00AE95E3 /* BedrockService */,
+				1C1EB1FD2E47204100C5DE46 /* BedrockService */,
+				1C8333F52E47228100C16CA7 /* AWSSTS */,
 			);
 			productName = physics;
-			productReference = 002999232D945FFF002C6BC0 /* physics.app */;
+			productReference = 002999232D945FFF002C6BC0 /* MathSolver.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -111,7 +143,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 0029991E2D945FFF002C6BC0 /* Build configuration list for PBXProject "physics" */;
+			buildConfigurationList = 0029991E2D945FFF002C6BC0 /* Build configuration list for PBXProject "math" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -121,17 +153,17 @@
 			mainGroup = 0029991A2D945FFF002C6BC0;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				0029993C2D9464D9002C6BC0 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
 				0013E0AC2D94AFF800A9D5BF /* XCRemoteSwiftPackageReference "MarkdownUI" */,
 				00D89B9D2DA45DF200DF151E /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */,
-				004A09F32E23919F00AE95E3 /* XCRemoteSwiftPackageReference "swift-bedrock-library" */,
+				1C1EB1FC2E47204100C5DE46 /* XCRemoteSwiftPackageReference "swift-bedrock-library" */,
+				1C8333F42E47228100C16CA7 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 002999242D945FFF002C6BC0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				002999222D945FFF002C6BC0 /* physics */,
+				002999222D945FFF002C6BC0 /* MathSolver */,
 			);
 		};
 /* End PBXProject section */
@@ -141,6 +173,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C1EB1F02E471EA500C5DE46 /* Assets.xcassets in Resources */,
+				1C1EB1F12E471EA500C5DE46 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +185,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C1EB1F22E471EA500C5DE46 /* MathSolverViewModel.swift in Sources */,
+				1C1EB1F32E471EA500C5DE46 /* Content.swift in Sources */,
+				1C1EB1F42E471EA500C5DE46 /* AuthenticationManager.swift in Sources */,
+				1C1EB1F52E471EA500C5DE46 /* MathSolverApp.swift in Sources */,
+				1C1EB1F62E471EA500C5DE46 /* MarkdownLatexView.swift in Sources */,
+				1C1EB1F72E471EA500C5DE46 /* ContentView.swift in Sources */,
+				1C1EB1F82E471EA500C5DE46 /* LoginView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,10 +324,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = physics/physics.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Sources/math.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"physics/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Sources/Preview Content\"";
+				DEVELOPMENT_TEAM = 56U756R2L2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "We need access to your photo library to select images of math and physics problems.";
@@ -295,13 +338,18 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.stormacq.app.demo.physics;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stormacq.app.demo.math;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -313,10 +361,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = physics/physics.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Sources/math.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"physics/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Sources/Preview Content\"";
+				DEVELOPMENT_TEAM = 56U756R2L2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "We need access to your photo library to select images of math and physics problems.";
@@ -325,13 +375,18 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.stormacq.app.demo.physics;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stormacq.app.demo.math;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -341,7 +396,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0029991E2D945FFF002C6BC0 /* Build configuration list for PBXProject "physics" */ = {
+		0029991E2D945FFF002C6BC0 /* Build configuration list for PBXProject "math" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0029992F2D946000002C6BC0 /* Debug */,
@@ -350,7 +405,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		002999312D946000002C6BC0 /* Build configuration list for PBXNativeTarget "physics" */ = {
+		002999312D946000002C6BC0 /* Build configuration list for PBXNativeTarget "MathSolver" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				002999322D946000002C6BC0 /* Debug */,
@@ -370,15 +425,15 @@
 				minimumVersion = 2.4.1;
 			};
 		};
-		0029993C2D9464D9002C6BC0 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
+		00D89B9D2DA45DF200DF151E /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/awslabs/aws-sdk-swift";
+			repositoryURL = "https://github.com/colinc86/LaTeXSwiftUI";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.45;
+				minimumVersion = 1.4.1;
 			};
 		};
-		004A09F32E23919F00AE95E3 /* XCRemoteSwiftPackageReference "swift-bedrock-library" */ = {
+		1C1EB1FC2E47204100C5DE46 /* XCRemoteSwiftPackageReference "swift-bedrock-library" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/build-on-aws/swift-bedrock-library";
 			requirement = {
@@ -386,12 +441,12 @@
 				kind = branch;
 			};
 		};
-		00D89B9D2DA45DF200DF151E /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */ = {
+		1C8333F42E47228100C16CA7 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/colinc86/LaTeXSwiftUI";
+			repositoryURL = "https://github.com/awslabs/aws-sdk-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.1;
+				minimumVersion = 1.5.17;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -410,25 +465,20 @@
 			package = 0013E0AC2D94AFF800A9D5BF /* XCRemoteSwiftPackageReference "MarkdownUI" */;
 			productName = MarkdownUI;
 		};
-		0029993D2D9464D9002C6BC0 /* AWSBedrockRuntime */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0029993C2D9464D9002C6BC0 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
-			productName = AWSBedrockRuntime;
-		};
-		004A09F42E23919F00AE95E3 /* BedrockService */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 004A09F32E23919F00AE95E3 /* XCRemoteSwiftPackageReference "swift-bedrock-library" */;
-			productName = BedrockService;
-		};
-		00CC47C32D96EB8200BFBFBD /* AWSSTS */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 0029993C2D9464D9002C6BC0 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
-			productName = AWSSTS;
-		};
 		00D89B9E2DA45DF200DF151E /* LaTeXSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 00D89B9D2DA45DF200DF151E /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */;
 			productName = LaTeXSwiftUI;
+		};
+		1C1EB1FD2E47204100C5DE46 /* BedrockService */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1C1EB1FC2E47204100C5DE46 /* XCRemoteSwiftPackageReference "swift-bedrock-library" */;
+			productName = BedrockService;
+		};
+		1C8333F52E47228100C16CA7 /* AWSSTS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1C8333F42E47228100C16CA7 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
+			productName = AWSSTS;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
