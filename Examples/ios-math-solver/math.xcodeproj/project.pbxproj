@@ -438,8 +438,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/build-on-aws/swift-bedrock-library";
 			requirement = {
-				branch = "sebsto/ios-demo";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		1C3BC47E2E55F8B0008E6904 /* XCRemoteSwiftPackageReference "swift-log" */ = {
