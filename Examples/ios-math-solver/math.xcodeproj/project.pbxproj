@@ -19,6 +19,7 @@
 		1C1EB1F72E471EA500C5DE46 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1E92E471EA500C5DE46 /* ContentView.swift */; };
 		1C1EB1F82E471EA500C5DE46 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1EA2E471EA500C5DE46 /* LoginView.swift */; };
 		1C1EB1FE2E47204100C5DE46 /* BedrockService in Frameworks */ = {isa = PBXBuildFile; productRef = 1C1EB1FD2E47204100C5DE46 /* BedrockService */; };
+		1C24EDC32E56680B0054568E /* changeme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C24EDC22E56680B0054568E /* changeme.swift */; };
 		1C3BC4802E55F8B0008E6904 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 1C3BC47F2E55F8B0008E6904 /* Logging */; };
 		1CBB02282E54F49A00610FB8 /* BedrockService in Frameworks */ = {isa = PBXBuildFile; productRef = 000E7F392DAF7C8700442BD1 /* BedrockService */; };
 /* End PBXBuildFile section */
@@ -35,6 +36,7 @@
 		1C1EB1EC2E471EA500C5DE46 /* MathSolverApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathSolverApp.swift; sourceTree = "<group>"; };
 		1C1EB1ED2E471EA500C5DE46 /* MathSolverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathSolverViewModel.swift; sourceTree = "<group>"; };
 		1C1EB1FF2E4720A700C5DE46 /* math.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = math.entitlements; sourceTree = "<group>"; };
+		1C24EDC22E56680B0054568E /* changeme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = changeme.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 		1C1EB1EF2E471EA500C5DE46 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				1C24EDC22E56680B0054568E /* changeme.swift */,
 				1C1EB1E52E471EA500C5DE46 /* Preview Content */,
 				1C1EB1E62E471EA500C5DE46 /* Assets.xcassets */,
 				1C1EB1E72E471EA500C5DE46 /* AuthenticationManager.swift */,
@@ -187,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1C1EB1F22E471EA500C5DE46 /* MathSolverViewModel.swift in Sources */,
+				1C24EDC32E56680B0054568E /* changeme.swift in Sources */,
 				1C1EB1F32E471EA500C5DE46 /* Content.swift in Sources */,
 				1C1EB1F42E471EA500C5DE46 /* AuthenticationManager.swift in Sources */,
 				1C1EB1F52E471EA500C5DE46 /* MathSolverApp.swift in Sources */,
@@ -438,8 +442,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/build-on-aws/swift-bedrock-library";
 			requirement = {
-				branch = "sebsto/ios-demo";
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		1C3BC47E2E55F8B0008E6904 /* XCRemoteSwiftPackageReference "swift-log" */ = {
