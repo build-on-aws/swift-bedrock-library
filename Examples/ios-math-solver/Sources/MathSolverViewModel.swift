@@ -33,11 +33,6 @@ final class MathSolverViewModel: ObservableObject, @unchecked Sendable {
     /// Reference to the authentication manager
     private weak var authManager: AuthenticationManager?
 
-    // to integrate with Sign In With Apple (SIWA), you must prepare your AWS account
-    // Follow instructions at https://docs.aws.amazon.com/sdk-for-swift/latest/developer-guide/apple-integration.html#apple-sign-in
-
-    private let awsAccountNumber = "486652066693"  // TODO: Replace with your AWS account number
-    private let awsIAMRoleName = "ios-swift-bedrock"  // TODO: Replace with your IAM role name
     private var logger = Logger(label: "MathSolverViewModel")
 
     /// Sets the authentication manager and initializes the Bedrock client

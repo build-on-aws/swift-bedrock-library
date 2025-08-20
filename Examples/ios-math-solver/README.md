@@ -2,6 +2,18 @@
 
 An iOS application that uses AWS Bedrock and Claude to solve math and physics problems from images.
 
+## TODO: add your AWS account detail 
+
+Before compiling or running this app, you must 
+
+- Configure SignIn With Apple on your Apple developer account.
+- Configure an IAM Identity Provider for SignIn With Apple and this application bundle.
+- Create an AWS IAM role that has the necessary permissions to access AWS Bedrock.
+- Replace the placeholder values in `changeme.swift` with your actual AWS account detail and IAM role name.
+- Enable the access to Amazon Bedrock models in the Bedrock console.
+
+See [AWS Documentation](https://docs.aws.amazon.com/sdk-for-swift/latest/developer-guide/apple-integration.html#apple-sign-in) for more information.
+
 ## Features
 
 - Take a photo or select an image from your photo library
