@@ -38,3 +38,4 @@ Package.resolved
 **/*.code-snippets
 .DS_Store
 .licenseignore
+**/*.entitlements

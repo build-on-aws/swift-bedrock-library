@@ -166,6 +166,10 @@ public struct ConverseRequestBuilder {
         return copy
     }
 
+    public func withImage(format: ImageBlock.Format, source: Data) throws -> ConverseRequestBuilder {
+        try self.withImage(try ImageBlock(format: format, source: source.base64EncodedString()))
+    }
+
     public func withImage(format: ImageBlock.Format, source: String) throws -> ConverseRequestBuilder {
         try self.withImage(try ImageBlock(format: format, source: source))
     }
