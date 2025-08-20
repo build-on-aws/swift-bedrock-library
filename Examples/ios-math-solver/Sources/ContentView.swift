@@ -1,6 +1,22 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the Swift Bedrock Library open source project
+//
+// Copyright (c) 2025 Amazon.com, Inc. or its affiliates
+//                    and the Swift Bedrock Library project authors
+// Licensed under Apache License v2.0
+//
+// See LICENSE.txt for license information
+// See CONTRIBUTORS.txt for the list of Swift Bedrock Library project authors
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+//===----------------------------------------------------------------------===//
+
 import MarkdownUI
 import PhotosUI
 import SwiftUI
+
 //import LaTeXSwiftUI
 
 struct ContentView: View {
@@ -44,9 +60,10 @@ struct ContentView: View {
                         }
 
                         // Photo Library Button
-                        PhotosPicker(selection: $photoPickerItem,
-                                     matching: .images)
-                        {
+                        PhotosPicker(
+                            selection: $photoPickerItem,
+                            matching: .images
+                        ) {
                             Label("Library", systemImage: "photo.on.rectangle")
                                 .frame(maxWidth: .infinity)
                                 .padding()
@@ -99,13 +116,16 @@ struct ContentView: View {
                             isResponseExpanded.toggle()
                         }
                     }) {
-                        Label(isResponseExpanded ? "Show Image" : "Expand Solution",
-                              systemImage: isResponseExpanded ? "arrow.up.left.and.arrow.down.right" : "arrow.down.right.and.arrow.up.left")
-                            .font(.caption)
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 8)
-                            .background(Color.gray.opacity(0.2))
-                            .cornerRadius(8)
+                        Label(
+                            isResponseExpanded ? "Show Image" : "Expand Solution",
+                            systemImage: isResponseExpanded
+                                ? "arrow.up.left.and.arrow.down.right" : "arrow.down.right.and.arrow.up.left"
+                        )
+                        .font(.caption)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 8)
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(8)
                     }
                     .padding(.bottom, 4)
                 }
@@ -121,7 +141,7 @@ struct ContentView: View {
 
                             if !viewModel.streamedResponse.isEmpty {
                                 // Display the full response
-                                 Markdown(viewModel.streamedResponse)
+                                Markdown(viewModel.streamedResponse)
                                     .padding(.horizontal)
                                     .textSelection(.enabled)
                                     .id("response")
@@ -132,11 +152,11 @@ struct ContentView: View {
                                     .foregroundColor(.gray)
                                     .padding(.horizontal)
                             }
-//                            else {
-//                                Text("Hello")
-//                                MarkdownLatexView(markdownContent: viewModel.streamedResponse)
-//                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                            }
+                            //                            else {
+                            //                                Text("Hello")
+                            //                                MarkdownLatexView(markdownContent: viewModel.streamedResponse)
+                            //                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            //                            }
 
                             // Invisible element at the bottom for scrolling
                             Color.clear
@@ -167,7 +187,7 @@ struct ContentView: View {
             .onChange(of: photoPickerItem) {
                 Task {
                     if let data = try? await photoPickerItem?.loadTransferable(type: Data.self),
-                       let image = UIImage(data: data)
+                        let image = UIImage(data: data)
                     {
                         selectedImage = image
                         viewModel.analyzeImage(image)
@@ -227,9 +247,10 @@ struct ImagePicker: UIViewControllerRepresentable {
             self.parent = parent
         }
 
-        func imagePickerController(_ picker: UIImagePickerController,
-                                   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any])
-        {
+        func imagePickerController(
+            _ picker: UIImagePickerController,
+            didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+        ) {
             if let image = info[.originalImage] as? UIImage {
                 parent.image = image
                 parent.onImageSelected(image)

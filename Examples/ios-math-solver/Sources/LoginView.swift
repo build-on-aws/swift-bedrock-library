@@ -1,3 +1,18 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the Swift Bedrock Library open source project
+//
+// Copyright (c) 2025 Amazon.com, Inc. or its affiliates
+//                    and the Swift Bedrock Library project authors
+// Licensed under Apache License v2.0
+//
+// See LICENSE.txt for license information
+// See CONTRIBUTORS.txt for the list of Swift Bedrock Library project authors
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+//===----------------------------------------------------------------------===//
+
 import AuthenticationServices
 import SwiftUI
 
@@ -23,7 +38,7 @@ struct LoginView: View {
             .padding(.bottom, 40)
 
             Spacer()
-            
+
             // Error message
             if let error = authManager.error {
                 Text(error)
@@ -41,14 +56,19 @@ struct LoginView: View {
                     switch result {
                     case let .success(authResults):
                         if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential,
-                           let identityToken = appleIDCredential.identityToken
+                            let identityToken = appleIDCredential.identityToken
                         {
                             // Get user identifier and identity token
                             let userIdentifier = appleIDCredential.user
                             authManager.authenticate(with: userIdentifier, identityToken: identityToken)
                         } else {
-                            authManager.handleAuthError(NSError(domain: "LoginError", code: 1002,
-                                                                userInfo: [NSLocalizedDescriptionKey: "Failed to get identity token"]))
+                            authManager.handleAuthError(
+                                NSError(
+                                    domain: "LoginError",
+                                    code: 1002,
+                                    userInfo: [NSLocalizedDescriptionKey: "Failed to get identity token"]
+                                )
+                            )
                         }
                     case let .failure(error):
                         authManager.handleAuthError(error)
@@ -80,7 +100,11 @@ struct SignInWithAppleButton: UIViewRepresentable {
     let onRequest: (ASAuthorizationAppleIDRequest) -> Void
     let onCompletion: (Result<ASAuthorization, Error>) -> Void
 
-    init(_ type: ASAuthorizationAppleIDButton.ButtonType, onRequest: @escaping ((ASAuthorizationAppleIDRequest) -> Void), onCompletion: @escaping ((Result<ASAuthorization, Error>) -> Void)) {
+    init(
+        _ type: ASAuthorizationAppleIDButton.ButtonType,
+        onRequest: @escaping ((ASAuthorizationAppleIDRequest) -> Void),
+        onCompletion: @escaping ((Result<ASAuthorization, Error>) -> Void)
+    ) {
         self.type = type
         self.onRequest = onRequest
         self.onCompletion = onCompletion
@@ -88,7 +112,11 @@ struct SignInWithAppleButton: UIViewRepresentable {
 
     func makeUIView(context: Context) -> ASAuthorizationAppleIDButton {
         let button = ASAuthorizationAppleIDButton(type: type, style: .black)
-        button.addTarget(context.coordinator, action: #selector(Coordinator.handleAuthorizationAppleIDButtonPress), for: .touchUpInside)
+        button.addTarget(
+            context.coordinator,
+            action: #selector(Coordinator.handleAuthorizationAppleIDButtonPress),
+            for: .touchUpInside
+        )
         return button
     }
 
@@ -98,7 +126,9 @@ struct SignInWithAppleButton: UIViewRepresentable {
         Coordinator(self)
     }
 
-    class Coordinator: NSObject, ASAuthorizationControllerDelegate, ASAuthorizationControllerPresentationContextProviding {
+    class Coordinator: NSObject, ASAuthorizationControllerDelegate,
+        ASAuthorizationControllerPresentationContextProviding
+    {
         let parent: SignInWithAppleButton
 
         init(_ parent: SignInWithAppleButton) {
@@ -115,7 +145,10 @@ struct SignInWithAppleButton: UIViewRepresentable {
             authorizationController.performRequests()
         }
 
-        func authorizationController(controller _: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        func authorizationController(
+            controller _: ASAuthorizationController,
+            didCompleteWithAuthorization authorization: ASAuthorization
+        ) {
             parent.onCompletion(.success(authorization))
         }
 

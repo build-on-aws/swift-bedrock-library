@@ -15,11 +15,10 @@ An iOS application that uses AWS Bedrock and Claude to solve math and physics pr
 
 ## Technology Stack
 
+- Swift bedrock Library for AI image analysis and problem solving
 - Swift and SwiftUI for the iOS app
-- AWS Bedrock for AI image analysis and problem solving
 - Claude 3 Sonnet model for high-quality responses
 - Sign in with Apple (SIWA) for authentication
-- AWS STS for secure token exchange
 - Streaming responses for real-time feedback
 
 ## How It Works
