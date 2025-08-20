@@ -1,10 +1,7 @@
 import BedrockService
-import AWSSDKIdentity
 import Foundation
-import SmithyIdentity
+import Logging
 import UIKit
-
-//import ClientRuntime // for SDK Logging
 
 /// ViewModel responsible for handling math problem solving using AWS Bedrock Claude model
 final class MathSolverViewModel: ObservableObject, @unchecked Sendable {
@@ -15,186 +12,133 @@ final class MathSolverViewModel: ObservableObject, @unchecked Sendable {
     
     /// The Bedrock service (provided by the bedrock library)  used to make API calls
     private var bedrockService: BedrockService?
+    private let model: BedrockModel = .claude_sonnet_v4
+    private let region: Region = .useast1
     
     /// Reference to the authentication manager
     private weak var authManager: AuthenticationManager?
     
-    /// Initializes the view model with an optional authentication manager
-    /// - Parameter authManager: The authentication manager to use for AWS credentials
-    init(authManager: AuthenticationManager? = nil) {
-        self.authManager = authManager
-        // Don't set up client in init - wait until we have credentials
-    }
+    // to integrate with Sign In With Apple (SIWA), you must prepare your AWS account
+    // Follow instructions at https://docs.aws.amazon.com/sdk-for-swift/latest/developer-guide/apple-integration.html#apple-sign-in
+    
+    private let awsAccountNumber = "000000000000" // TODO: Replace with your AWS account number
+    private let awsIAMRoleName = "ios-swift-bedrock" // TODO: Replace with your IAM role name
+    private var logger = Logger(label: "MathSolverViewModel")
     
     /// Sets the authentication manager and initializes the Bedrock client
     /// - Parameter authManager: The authentication manager to use for AWS credentials
-    func setAuthManager(_ authManager: AuthenticationManager) {
+    func setAuthManager(_ authManager: AuthenticationManager) async {
         self.authManager = authManager
-        setupBedrockClient()
+        logger.logLevel = .trace
+        await setupBedrockClient()
     }
-    
-    /// Updates the Bedrock client with the latest credentials
-    func updateCredentials() {
-        setupBedrockClient()
-    }
+
     
     /// Sets up the Bedrock client with the current authentication credentials
-    private func setupBedrockClient() {
-//        do {
-//            
-//            // when modelId starts with "eu", use eu-west-1 region, when it starts with "us", use us-east-1 region
-//            let region = modelId.starts(with: "eu") ? "eu-north-1" : "us-east-1"
-//            let config = try BedrockRuntimeClient.BedrockRuntimeClientConfiguration(region: region)
-//            
-//            // Use identity resolver from AuthenticationManager if available
-//            if let authManager = authManager, let identityResolver = authManager.identityResolver {
-//                config.awsCredentialIdentityResolver = identityResolver
-//                print("Using web identity credential resolver for Bedrock client")
-//                bedrockClient = BedrockRuntimeClient(config: config)
-//            } else {
-//                print("No credential resolver available. User must sign in first.")
-//                bedrockClient = nil
-//            }
-//        } catch {
-//            print("Error initializing Bedrock client: \(error)")
-//            bedrockClient = nil
-//        }
+    private func setupBedrockClient() async {
+        do {
+            // Use identity resolver from AuthenticationManager if available
+            if let authManager = authManager, let token = authManager.jwtToken {
+                bedrockService = try await BedrockService(region: region,
+                                                          logger: logger,
+                                                          authentication: .webIdentity(token: token,
+                                                                                       roleARN: "arn:aws:iam::\(awsAccountNumber):role/\(awsIAMRoleName)",
+                                                                                        region: region)
+                                                          )
+                print("Using web identity credential resolver for Bedrock")
+            } else {
+                print("No credential resolver available. User must sign in first.")
+                bedrockService = nil
+            }
+        } catch {
+            print("Error initializing Bedrock client: \(error)")
+            bedrockService = nil
+        }
     }
     
     /// Analyzes a math or physics problem in an image using AWS Bedrock Claude model
     /// - Parameter image: The UIImage containing the math/physics problem to solve
     func analyzeImage(_ image: UIImage) {
-//        guard let bedrockClient = bedrockClient else {
-//            print("Bedrock client not initialized. Please sign in first.")
-//            DispatchQueue.main.async {
-//                self.isLoading = false
-//                self.streamedResponse = "Error: Authentication required. Please sign in to use this feature."
-//            }
-//            return
-//        }
-//        
-//        isLoading = true
-//        streamedResponse = ""
-//        
-//        // Resize image to ensure it's under 5MB when base64 encoded
-//        let resizedImage = resizeImageIfNeeded(image)
-//        
-//        // Start with high quality and progressively reduce until under limit
-//        var compressionQuality: CGFloat = 0.9
-//        var imageData: Data?
-//        var base64Size = 0
-//        
-//        repeat {
-//            imageData = resizedImage.jpegData(compressionQuality: compressionQuality)
-//            if let data = imageData {
-//                // Calculate base64 size (approximately 4/3 of original size)
-//                base64Size = Int(Double(data.count) * 1.37)
-//                
-//                // If still too large, reduce quality and try again
-//                if base64Size > 5 * 1024 * 1024 { // 5MB
-//                    compressionQuality -= 0.1
-//                    print("Image too large (\(ByteCountFormatter.string(fromByteCount: Int64(base64Size), countStyle: .file))), reducing quality to \(compressionQuality)")
-//                }
-//            }
-//        } while base64Size > 5 * 1024 * 1024 && compressionQuality > 0.1
-//        
-//        guard let finalImageData = imageData else {
-//            print("Failed to convert image to data")
-//            isLoading = false
-//            return
-//        }
-//        
-//        let base64Size2 = Int(Double(finalImageData.count) * 1.37)
-//        print("Final image size: \(ByteCountFormatter.string(fromByteCount: Int64(finalImageData.count), countStyle: .file)), estimated base64 size: \(ByteCountFormatter.string(fromByteCount: Int64(base64Size2), countStyle: .file))")
-//        
-//        // Define the system prompt that instructs Claude how to respond
-//        let systemPrompt = """
-//        You are a math and physics tutor. Your task is to:
-//        1. Read and understand the math or physics problem in the image
-//        2. Provide a clear, step-by-step solution to the problem
-//        3. Briefly explain any relevant concepts used in solving the problem
-//        4. Be precise and accurate in your calculations
-//        5. Use mathematical notation when appropriate
-//        
-//        Format your response with clear section headings and numbered steps.
-//        Reply in the same language as the one used in the image.
-//        """
-//        let system: BedrockRuntimeClientTypes.SystemContentBlock = .text(systemPrompt)
-//        
-//        // Create the user message with text prompt and image
-//        let userPrompt = "Please solve this math or physics problem. Show all steps and explain the concepts involved."
-//        let prompt: BedrockRuntimeClientTypes.ContentBlock = .text(userPrompt)
-//        let image: BedrockRuntimeClientTypes.ContentBlock = .image(.init(format: .jpeg, source: .bytes(finalImageData)))
-//        
-//        // Create the user message with both text and image content
-//        let userMessage = BedrockRuntimeClientTypes.Message(
-//            content: [prompt, image],
-//            role: .user
-//        )
-//        
-//        // Initialize the messages array with the user message
-//        var messages: [BedrockRuntimeClientTypes.Message] = []
-//        messages.append(userMessage)
-//        
-//        // Configure the inference parameters
-//        let inferenceConfig: BedrockRuntimeClientTypes.InferenceConfiguration = .init(maxTokens: 4096, temperature: 0.0)
-//        
-//        // Create the input for the Converse API with streaming
-//        let input = ConverseStreamInput(inferenceConfig: inferenceConfig, messages: messages, modelId: modelId, system: [system])
-//        
-//        // Make the streaming request
-//        Task {
-//            do {
-//                // Process the stream
-//                let response = try await bedrockClient.converseStream(input: input)
-//                
-//                // Process the streaming response
-//                guard let stream = response.stream else {
-//                    print("No stream available")
-//                    return
-//                }
-//                
-//                // Iterate through the stream events
-//                for try await event in stream {
-//                    switch event {
-//                    case .messagestart:
-//                        print("AI-assistant started to stream")
-//                        
-//                    case let .contentblockdelta(deltaEvent):
-//                        // Handle text content as it arrives
-//                        if case let .text(text) = deltaEvent.delta {
-//                            DispatchQueue.main.async {
-//                                self.streamedResponse += text
-//                            }
-//                        }
-//                        
-//                    case .messagestop:
-//                        print("Stream ended")
-//                        // Create a complete assistant message from the streamed response
-//                        let assistantMessage = BedrockRuntimeClientTypes.Message(
-//                            content: [.text(self.streamedResponse)],
-//                            role: .assistant
-//                        )
-//                        messages.append(assistantMessage)
-//                        
-//                    default:
-//                        break
-//                    }
-//                }
-//                
-//                DispatchQueue.main.async {
-//                    self.isLoading = false
-//                    print(self.streamedResponse)
-//                    print("Streaming completed. Final response length: \(self.streamedResponse.count)")
-//                }
-//            } catch {
-//                print("Error in streaming response: \(error)")
-//                DispatchQueue.main.async {
-//                    self.isLoading = false
-//                    self.streamedResponse = "Error: \(error.localizedDescription)"
-//                }
-//            }
-//        }
+        guard let bedrockService = bedrockService else {
+            print("Bedrock client not initialized. Please sign in first.")
+            DispatchQueue.main.async {
+                self.isLoading = false
+                self.streamedResponse = "Error: Authentication required. Please sign in to use this feature."
+            }
+            return
+        }
+        
+        isLoading = true
+        streamedResponse = ""
+        
+        
+        // Define the system prompt that instructs Claude how to respond
+        let systemPrompt = """
+        You are a math and physics tutor. Your task is to:
+        1. Read and understand the math or physics problem in the image
+        2. Provide a clear, step-by-step solution to the problem
+        3. Briefly explain any relevant concepts used in solving the problem
+        4. Be precise and accurate in your calculations
+        5. Use mathematical notation when appropriate
+        
+        Format your response with clear section headings and numbered steps.
+        Reply in the same language as the one used in the image.
+        """
+        
+        // Create the user message with text prompt and image
+        guard let finalImageAsData = adjustImageSizeAndCompression(image: image),
+              let promptBuilder = try? ConverseRequestBuilder(with: model)
+                  .withPrompt("Please solve this math or physics problem. Show all steps and explain the concepts involved.")
+                  .withSystemPrompt(systemPrompt)
+                  .withImage(format: .jpeg, source: finalImageAsData)
+                  .withMaxTokens(4096)
+                  .withTemperature(0.0)
+        else {
+            print("Failed to create ConverseRequestBuilder")
+            return
+        }
+            
+        // Make the streaming request
+        Task {
+            var messages: [Message] = []
+            do {
+                // Process the stream
+                let response = try await bedrockService.converseStream(with: promptBuilder)
+                
+                // Iterate through the stream events
+                for try await event in response.stream {
+                    switch event {
+                    case .messageStart(let role):
+                        print("Message stream started with role: \(role)")
+                        
+                    case .text(_, let text):
+                        // Handle text content as it arrives
+                        DispatchQueue.main.async {
+                            self.streamedResponse += text
+                        }
+                        
+                    case .messageComplete(let message):
+                        print("Stream ended")
+                        messages.append(message)
+                        
+                    default:
+                        break
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    print(self.streamedResponse)
+                    print("Streaming completed. Final response length: \(self.streamedResponse.count)")
+                }
+            } catch {
+                print("Error in streaming response: \(error)")
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                    self.streamedResponse = "Error: \(error.localizedDescription)"
+                }
+            }
+        }
     }
     
     /// Resizes an image if it exceeds the maximum allowed dimensions
@@ -226,5 +170,44 @@ final class MathSolverViewModel: ObservableObject, @unchecked Sendable {
         
         print("Resized image from \(Int(originalSize.width))x\(Int(originalSize.height)) to \(Int(newWidth))x\(Int(newHeight))")
         return resizedImage ?? image
+    }
+    
+    /// Adjusts the image size and compression to ensure it fits within the 5MB base64 limit
+    /// - Parameter image: The UIImage to adjust
+    /// - Returns: The adjusted image data as Data, or nil if it could not be converted
+    private func adjustImageSizeAndCompression(image: UIImage) -> Data? {
+        // Compress image to ensure it's under 5MB when base64 encoded
+        let resizedImage = resizeImageIfNeeded(image)
+        
+        // Start with high quality and progressively reduce quality until under limit
+        var compressionQuality: CGFloat = 0.9
+        var imageData: Data?
+        var base64Size = 0
+        let maxBase64Size = 5 * 1024 * 1024 // 5MB in bytes
+        
+        repeat {
+            imageData = resizedImage.jpegData(compressionQuality: compressionQuality)
+            if let data = imageData {
+                // Calculate base64 size (approximately 4/3 of original size)
+                base64Size = Int(Double(data.count) * 1.37)
+                
+                // If still too large, reduce quality and try again
+                if base64Size > maxBase64Size {
+                    compressionQuality -= 0.1
+                    print("Image too large (\(ByteCountFormatter.string(fromByteCount: Int64(base64Size), countStyle: .file))), reducing quality to \(compressionQuality)")
+                }
+            }
+        } while base64Size > maxBase64Size && compressionQuality > 0.1
+        
+        guard let finalImageData = imageData else {
+            print("Failed to convert image to data")
+            isLoading = false
+            return nil
+        }
+        
+        let base64Size2 = Int(Double(finalImageData.count) * 1.37)
+        print("Final image size: \(ByteCountFormatter.string(fromByteCount: Int64(finalImageData.count), countStyle: .file)), estimated base64 size: \(ByteCountFormatter.string(fromByteCount: Int64(base64Size2), countStyle: .file))")
+        
+        return finalImageData
     }
 }

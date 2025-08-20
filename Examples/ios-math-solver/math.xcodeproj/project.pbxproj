@@ -19,7 +19,8 @@
 		1C1EB1F72E471EA500C5DE46 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1E92E471EA500C5DE46 /* ContentView.swift */; };
 		1C1EB1F82E471EA500C5DE46 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C1EB1EA2E471EA500C5DE46 /* LoginView.swift */; };
 		1C1EB1FE2E47204100C5DE46 /* BedrockService in Frameworks */ = {isa = PBXBuildFile; productRef = 1C1EB1FD2E47204100C5DE46 /* BedrockService */; };
-		1C8333F62E47228100C16CA7 /* AWSSTS in Frameworks */ = {isa = PBXBuildFile; productRef = 1C8333F52E47228100C16CA7 /* AWSSTS */; };
+		1C3BC4802E55F8B0008E6904 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 1C3BC47F2E55F8B0008E6904 /* Logging */; };
+		1CBB02282E54F49A00610FB8 /* BedrockService in Frameworks */ = {isa = PBXBuildFile; productRef = 000E7F392DAF7C8700442BD1 /* BedrockService */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,10 +42,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CBB02282E54F49A00610FB8 /* BedrockService in Frameworks */,
 				00D89B9F2DA45DF200DF151E /* LaTeXSwiftUI in Frameworks */,
 				1C1EB1FE2E47204100C5DE46 /* BedrockService in Frameworks */,
 				0013E0AE2D94AFF800A9D5BF /* MarkdownUI in Frameworks */,
-				1C8333F62E47228100C16CA7 /* AWSSTS in Frameworks */,
+				1C3BC4802E55F8B0008E6904 /* Logging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,9 +122,8 @@
 				0013E0AD2D94AFF800A9D5BF /* MarkdownUI */,
 				00D89B9E2DA45DF200DF151E /* LaTeXSwiftUI */,
 				000E7F392DAF7C8700442BD1 /* BedrockService */,
-				000E7F3B2DAF7C8700442BD1 /* BedrockTypes */,
 				1C1EB1FD2E47204100C5DE46 /* BedrockService */,
-				1C8333F52E47228100C16CA7 /* AWSSTS */,
+				1C3BC47F2E55F8B0008E6904 /* Logging */,
 			);
 			productName = physics;
 			productReference = 002999232D945FFF002C6BC0 /* MathSolver.app */;
@@ -156,7 +157,7 @@
 				0013E0AC2D94AFF800A9D5BF /* XCRemoteSwiftPackageReference "MarkdownUI" */,
 				00D89B9D2DA45DF200DF151E /* XCRemoteSwiftPackageReference "LaTeXSwiftUI" */,
 				1C1EB1FC2E47204100C5DE46 /* XCRemoteSwiftPackageReference "swift-bedrock-library" */,
-				1C8333F42E47228100C16CA7 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */,
+				1C3BC47E2E55F8B0008E6904 /* XCRemoteSwiftPackageReference "swift-log" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 002999242D945FFF002C6BC0 /* Products */;
@@ -437,16 +438,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/build-on-aws/swift-bedrock-library";
 			requirement = {
-				branch = main;
+				branch = "sebsto/ios-demo";
 				kind = branch;
 			};
 		};
-		1C8333F42E47228100C16CA7 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */ = {
+		1C3BC47E2E55F8B0008E6904 /* XCRemoteSwiftPackageReference "swift-log" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/awslabs/aws-sdk-swift";
+			repositoryURL = "https://github.com/apple/swift-log.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.17;
+				minimumVersion = 1.6.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -455,10 +456,6 @@
 		000E7F392DAF7C8700442BD1 /* BedrockService */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BedrockService;
-		};
-		000E7F3B2DAF7C8700442BD1 /* BedrockTypes */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = BedrockTypes;
 		};
 		0013E0AD2D94AFF800A9D5BF /* MarkdownUI */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -475,10 +472,10 @@
 			package = 1C1EB1FC2E47204100C5DE46 /* XCRemoteSwiftPackageReference "swift-bedrock-library" */;
 			productName = BedrockService;
 		};
-		1C8333F52E47228100C16CA7 /* AWSSTS */ = {
+		1C3BC47F2E55F8B0008E6904 /* Logging */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1C8333F42E47228100C16CA7 /* XCRemoteSwiftPackageReference "aws-sdk-swift" */;
-			productName = AWSSTS;
+			package = 1C3BC47E2E55F8B0008E6904 /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

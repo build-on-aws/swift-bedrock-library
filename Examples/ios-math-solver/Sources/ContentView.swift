@@ -192,9 +192,11 @@ struct ContentView: View {
                 }
             }
             .onAppear {
-                // Connect the view model to the auth manager when the view appears
-                viewModel.setAuthManager(authManager)
-                // No need to call updateCredentials() as setAuthManager already sets up the client
+                Task {
+                    // Connect the view model to the auth manager when the view appears
+                    await viewModel.setAuthManager(authManager)
+                    // No need to call updateCredentials() as setAuthManager already sets up the client
+                }
             }
         }
     }
