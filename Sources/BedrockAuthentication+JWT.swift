@@ -66,22 +66,27 @@ extension BedrockAuthentication {
         // Create an identity resolver that uses the JWT token received from an Identity Provider
         // to create AWS credentials
         do {
-            logger.trace("Creating identity resolver using web identity token")
-            setenv("AWS_REGION", region.rawValue, 1)
-            setenv("AWS_ROLE_ARN", roleARN, 1)
-            setenv("AWS_ROLE_SESSION_NAME", "SwiftBedrockService-\(UUID().uuidString)", 1)
-            setenv("AWS_WEB_IDENTITY_TOKEN_FILE", tokenFilePath, 1)
-            let identityResolver = try STSWebIdentityAWSCredentialIdentityResolver(source: .env)
+            logger.trace("Creating identity resolver using web identity token, with \(tokenFilePath)")
+            // setenv("AWS_REGION", region.rawValue, 1)
+            // setenv("AWS_ROLE_ARN", roleARN, 1)
+            // setenv("AWS_ROLE_SESSION_NAME", "SwiftBedrockService-\(UUID().uuidString)", 1)
+            // setenv("AWS_WEB_IDENTITY_TOKEN_FILE", tokenFilePath, 1)
+            let identityResolver = try STSWebIdentityAWSCredentialIdentityResolver(
+                region: region.rawValue,
+                roleArn: roleARN,
+                roleSessionName: "MathSolverSession-\(UUID().uuidString)",
+                tokenFilePath: tokenFilePath
+            )
 
             // Test the resolver by retrieving credentials to ensure it works
             logger.trace("Retrieving credentials using web identity token")
             _ = try await identityResolver.getIdentity(identityProperties: nil)
             logger.trace("Successfully retrieved credentials using web identity token")
 
-            unsetenv("AWS_REGION")
-            unsetenv("AWS_ROLE_ARN")
-            unsetenv("AWS_ROLE_SESSION_NAME")
-            unsetenv("AWS_WEB_IDENTITY_TOKEN_FILE")
+            // unsetenv("AWS_REGION")
+            // unsetenv("AWS_ROLE_ARN")
+            // unsetenv("AWS_ROLE_SESSION_NAME")
+            // unsetenv("AWS_WEB_IDENTITY_TOKEN_FILE")
 
             // Notify observers, if any
             logger.trace("Notifying observers of credentials update")
