@@ -71,7 +71,7 @@ public struct ToolResultBlock: Codable, Sendable {
     }
 
     /// convenience initializer for ToolResultBlock for any Codable
-    public init<T: Codable>(_ object: T, id: String, status: Status? = .success) throws {
+    public init<T: Encodable>(_ object: T, id: String, status: Status? = .success) throws {
         guard let data = try? JSONEncoder().encode(object) else {
             throw BedrockLibraryError.encodingError("Could not encode object to JSON")
         }
