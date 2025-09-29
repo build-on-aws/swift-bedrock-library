@@ -2,6 +2,8 @@ name: Build, tests & soundness checks
 
 on: [pull_request, workflow_dispatch]
 
+permissions: read-all
+
 jobs:
   swift-bedrock-library:
     runs-on: ubuntu-latest

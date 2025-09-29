@@ -1,5 +1,7 @@
 name: Swift 6 language mode
 
+permissions: read-all
+
 on:
   workflow_call:
 
