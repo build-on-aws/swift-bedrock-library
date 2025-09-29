@@ -30,6 +30,7 @@ typealias ClaudeV3_5Sonnet = AnthropicText
 typealias ClaudeV3_7Sonnet = AnthropicText
 typealias Claude_Sonnet_v4 = AnthropicText
 typealias Claude_Opus_v4 = AnthropicText
+typealias Claude_Sonnet_v4_5 = AnthropicText
 
 // text
 // https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html
@@ -210,6 +211,22 @@ extension BedrockModel {
             parameters: TextGenerationParameters(
                 temperature: Parameter(.temperature, minValue: 0, maxValue: 1, defaultValue: 1),
                 maxTokens: Parameter(.maxTokens, minValue: 1, maxValue: 32_000, defaultValue: 8_192),
+                topP: Parameter(.topP, minValue: 0, maxValue: 1, defaultValue: 0.999),
+                topK: Parameter(.topK, minValue: 0, maxValue: 500, defaultValue: 0),
+                stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
+                maxPromptSize: 200_000
+            ),
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning],
+            maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
+        )
+    )
+    public static let claude_sonnet_v4_5: BedrockModel = BedrockModel(
+        id: "anthropic.claude-sonnet-4-5-20250929-v1:0",
+        name: "Claude Sonnet v4.5",
+        modality: Claude_Sonnet_v4_5(
+            parameters: TextGenerationParameters(
+                temperature: Parameter(.temperature, minValue: 0, maxValue: 1, defaultValue: 1),
+                maxTokens: Parameter(.maxTokens, minValue: 1, maxValue: 64_000, defaultValue: 8_192),
                 topP: Parameter(.topP, minValue: 0, maxValue: 1, defaultValue: 0.999),
                 topK: Parameter(.topK, minValue: 0, maxValue: 500, defaultValue: 0),
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
