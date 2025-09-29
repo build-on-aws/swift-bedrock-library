@@ -22,7 +22,7 @@ import FoundationEssentials
 import Foundation
 #endif
 
-public struct Tool: Codable, CustomStringConvertible {
+public struct Tool: Codable, CustomStringConvertible, Sendable {
     public let name: String
     public let inputSchema: JSON
     public let toolDescription: String?

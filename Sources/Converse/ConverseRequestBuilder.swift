@@ -286,7 +286,7 @@ public struct ConverseRequestBuilder {
         return try self.withToolResult(toolResult)
     }
 
-    public func withToolResult<C: Codable>(
+    public func withToolResult<C: Encodable>(
         _ object: C,
         id: String? = nil,
         status: ToolResultBlock.Status? = nil
