@@ -36,7 +36,7 @@ public struct MockBedrockRuntimeClient: BedrockRuntimeClientProtocol {
         var maxReasoningTokens: Int?
 
         if let additionalModelRequestFields = input.additionalModelRequestFields {
-            let json: JSON = JSON(with: additionalModelRequestFields)
+            let json = try additionalModelRequestFields.toJSON()
             reasoningEnabled = json["thinking"]?["enabled"]
             maxReasoningTokens = json["thinking"]?["budget_tokens"]
         }
@@ -117,7 +117,7 @@ public struct MockBedrockRuntimeClient: BedrockRuntimeClientProtocol {
         switch content {
         case .text(let prompt):
             if prompt == "Use tool", let _ = input.toolConfig?.tools {
-                let toolInputJson = JSON(with: ["code": "abc"])
+                let toolInputJson = JSON(with: .object(["code": .string("string")]))
                 let toolInput = try? toolInputJson.toDocument()
                 replyContent.append(
                     .tooluse(

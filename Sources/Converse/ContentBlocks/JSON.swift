@@ -19,87 +19,87 @@ import FoundationEssentials
 import Foundation
 #endif
 
-public struct JSON: Codable, @unchecked Sendable {  // FIXME: make Sendable
-    public var value: Any?
+public enum JSONValue: Codable, Sendable {
+    case null
+    case int(Int)
+    case double(Double)
+    case string(String)
+    case bool(Bool)
+    case array([JSONValue])
+    case object([String: JSONValue])
 
-    /// Returns the value inside the JSON object defined by the given key.
+    public init(_ value: Any?) {
+
+        guard let value else {
+            self = .null
+            return
+        }
+        switch value {
+        case let v as Int:
+            self = .int(v)
+            break
+        case let v as Double:
+            self = .double(v)
+            break
+        case let v as String:
+            self = .string(v)
+            break
+        case let v as Bool:
+            self = .bool(v)
+            break
+        case let v as [Any]:
+            self = .array(v.map { JSONValue($0) })
+            break
+        case let v as [String: JSONValue]:
+            self = .object(v)
+            break
+        case let v as [JSONValue]:
+            self = .array(v)
+            break
+        case let v as JSONValue:
+            self = v
+            break
+        default:
+            fatalError("JSONValue: Unsupported type: \(type(of: value))")
+        }
+    }
+
     public subscript<T>(key: String) -> T? {
         get {
-            if let dictionary = value as? [String: JSON] {
-                let json: JSON? = dictionary[key]
-                let nestedValue: Any? = json?.getValue()
-                return nestedValue as? T
+            if case let .object(dictionary) = self {
+                guard let jsonValue = dictionary[key] else {
+                    return nil
+                }
+                switch jsonValue {
+                case .int(let v): return v as? T
+                case .double(let v): return v as? T
+                case .string(let v): return v as? T
+                case .bool(let v): return v as? T
+                case .array(let v): return v as? T
+                case .object(let v): return v as? T
+                case .null: return nil
+                }
             }
             return nil
-        }
-    }
-
-    /// Returns the JSON object defined by the given key.
-    public subscript(key: String) -> JSON? {
-        get {
-            if let dictionary = value as? [String: JSON] {
-                return dictionary[key]
-            }
-            return nil
-        }
-    }
-
-    /// Returns the value inside the JSON object defined by the given key.
-    public func getValue<T>(_ key: String) -> T? {
-        if let dictionary = value as? [String: JSON] {
-            return dictionary[key]?.value as? T
-        }
-        return nil
-    }
-
-    /// Returns the value inside the JSON object.
-    public func getValue<T>() -> T? {
-        value as? T
-    }
-
-    // MARK: Initializers
-
-    public init(with value: Any?) {
-        self.value = value
-    }
-
-    public init(from string: String) throws {
-        var s: String!
-        if string.isEmpty {
-            s = "{}"
-        } else {
-            s = string
-        }
-        guard let data = s.data(using: .utf8) else {
-            throw BedrockLibraryError.encodingError("Could not encode String to Data")
-        }
-        try self.init(from: data)
-    }
-
-    public init(from data: Data) throws {
-        do {
-            self = try JSONDecoder().decode(JSON.self, from: data)
-        } catch {
-            throw BedrockLibraryError.decodingError("Failed to decode JSON: \(error)")
         }
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if container.decodeNil() {
-            self.value = nil
+            self = .null
         } else if let intValue = try? container.decode(Int.self) {
-            self.value = intValue
+            self = .int(intValue)
         } else if let doubleValue = try? container.decode(Double.self) {
-            self.value = doubleValue
+            self = .double(doubleValue)
         } else if let stringValue = try? container.decode(String.self) {
-            self.value = stringValue
+            self = .string(stringValue)
         } else if let boolValue = try? container.decode(Bool.self) {
-            self.value = boolValue
-        } else if let arrayValue = try? container.decode([JSON].self) {
-            self.value = arrayValue.map { JSON(with: $0.value) }
-        } else if let dictionaryValue = try? container.decode([String: JSON].self) {
-            self.value = dictionaryValue.mapValues { JSON(with: $0.value) }
+            self = .bool(boolValue)
+        } else if let arrayValue = try? container.decode([JSONValue].self) {
+            self = .array(arrayValue)
+        } else if let dictionaryValue = try? container.decode([String: JSONValue].self) {
+            self = .object(dictionaryValue)
         } else {
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unsupported type")
         }
@@ -109,28 +109,86 @@ public struct JSON: Codable, @unchecked Sendable {  // FIXME: make Sendable
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        if let jsonValue = value as? JSON {
-            try jsonValue.encode(to: encoder)
-        } else if let intValue = value as? Int {
-            try container.encode(intValue)
-        } else if let doubleValue = value as? Double {
-            try container.encode(doubleValue)
-        } else if let stringValue = value as? String {
-            try container.encode(stringValue)
-        } else if let boolValue = value as? Bool {
-            try container.encode(boolValue)
-        } else if let arrayValue = value as? [Any] {
-            let jsonArray = arrayValue.map { JSON(with: $0) }
-            try container.encode(jsonArray)
-        } else if let dictionaryValue = value as? [String: Any] {
-            let jsonDictionary = dictionaryValue.mapValues { JSON(with: $0) }
-            try container.encode(jsonDictionary)
-        } else {
-            // try container.encode(String(describing: value ?? "nil"))
-            throw EncodingError.invalidValue(
-                value ?? "nil",
-                EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Unsupported type")
-            )
+        switch self {
+        case .null:
+            try container.encodeNil()
+        case .int(let v):
+            try container.encode(v)
+        case .double(let v):
+            try container.encode(v)
+        case .string(let v):
+            try container.encode(v)
+        case .bool(let v):
+            try container.encode(v)
+        case .array(let v):
+            try container.encode(v)
+        case .object(let v):
+            try container.encode(v)
         }
     }
+
+}
+
+public struct JSON: Codable, Sendable {
+    public let value: JSONValue
+
+    public subscript<T>(key: String) -> T? {
+        get {
+            value[key]
+        }
+    }
+
+    public subscript(key: String) -> JSONValue? {
+        get {
+            if case let .object(dictionary) = value {
+                if let v = dictionary[key] {
+                    return v
+                }
+            }
+            return nil
+        }
+    }
+
+    public func getValue<T>() -> T? {
+        switch value {
+        case .int(let v): return v as? T
+        case .double(let v): return v as? T
+        case .string(let v): return v as? T
+        case .bool(let v): return v as? T
+        case .array(let v): return v as? T
+        case .object(let v): return v as? T
+        case .null: return nil
+        }
+    }
+
+    // MARK: Initializers
+
+    public init(with value: JSONValue) {
+        self.value = value
+    }
+
+    public init(from string: String) throws {
+        let s = string.isEmpty ? "{}" : string
+        guard let data = s.data(using: .utf8) else {
+            throw BedrockLibraryError.encodingError("Could not encode String to Data")
+        }
+        try self.init(from: data)
+    }
+
+    public init(from data: Data) throws {
+        do {
+            print(String(decoding: data, as: UTF8.self))
+            self = try JSONDecoder().decode(JSON.self, from: data)
+        } catch {
+            throw BedrockLibraryError.decodingError("Failed to decode JSON: \(error)")
+        }
+    }
+
+    // Codable
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        value = try container.decode(JSONValue.self)
+    }
+
 }

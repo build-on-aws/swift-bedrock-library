@@ -24,7 +24,7 @@ extension ConverseReplyStreamTests {
     func converseStreamWithToolUse() async throws {
         let tool = try Tool(
             name: "toolName",
-            inputSchema: JSON(with: ["code": "string"]),
+            inputSchema: JSON(with: .object(["code": .string("string")])),
             description: "toolDescription"
         )
         var builder = try ConverseRequestBuilder(with: .nova_lite)
