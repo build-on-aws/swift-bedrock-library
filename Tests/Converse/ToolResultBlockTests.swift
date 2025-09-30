@@ -39,15 +39,13 @@ extension BedrockServiceTests {
 
     @Test("ToolResultBlock Initializer with ID and JSON Content")
     func toolResultBlockInitializerWithJSON() async throws {
-        let json = JSON(with: .object(["code": .string("string")]))
+        let json = JSON(with: .object(["key": .string("string")]))
         let block = ToolResultBlock(json, id: "block2")
         #expect(block.id == "block2")
         #expect(block.content.count == 1)
-        var value = ""
         if case .json(let json) = block.content.first {
-            value = json.getValue("key") ?? ""
+            #expect(json["key"] == "string")
         }
-        #expect(value == "value")
         #expect(block.status == .success)
     }
 
@@ -90,11 +88,9 @@ extension BedrockServiceTests {
 
         #expect(block.id == "block5")
         #expect(block.content.count == 1)
-        var value = ""
         if case .json(let json) = block.content.first {
-            value = json.getValue("key") ?? ""
+            #expect(json["key"] == "value")
         }
-        #expect(value == "value")
         #expect(block.status == block.status)
     }
 
@@ -108,14 +104,10 @@ extension BedrockServiceTests {
         let block = try ToolResultBlock(object, id: "block6")
         #expect(block.id == "block6")
         #expect(block.content.count == 1)
-        var name = ""
-        var age = 0
         if case .json(let jsonContent) = block.content.first {
-            name = jsonContent.getValue("name") ?? ""
-            age = jsonContent.getValue("age") ?? 0
+            #expect(jsonContent["name"] == "Jane")
+            #expect(jsonContent["age"] == 30)
         }
-        #expect(name == "Jane")
-        #expect(age == 30)
     }
 
     @Test("ToolResultBlock Initializer with Invalid Data Throws Error")

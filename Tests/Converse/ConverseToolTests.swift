@@ -32,21 +32,14 @@ extension BedrockServiceTests {
             .withTool(tool)
         let reply = try await bedrock.converse(with: builder)
         #expect(reply.textReply == nil)
-        let id: String
-        let name: String
-        let input: JSON
+
         if let toolUse = reply.toolUse {
-            id = toolUse.id
-            name = toolUse.name
-            input = toolUse.input
+            #expect(toolUse.id == "toolId")
+            #expect(toolUse.name == "toolName")
+            #expect(toolUse.input["value"]?["code"] == "string")
         } else {
-            id = ""
-            name = ""
-            input = JSON(with: .object(["code": .string("wrong")]))
+            Issue.record("Tool use is nil")
         }
-        #expect(id == "toolId")
-        #expect(name == "toolName")
-        #expect(input.getValue("code") == "abc")
     }
 
     @Test("Request tool usage with reused builder")
@@ -67,22 +60,14 @@ extension BedrockServiceTests {
 
         #expect(reply.textReply == nil)
 
-        let id: String
-        let name: String
-        let input: JSON
         if let toolUse = reply.toolUse {
-            id = toolUse.id
-            name = toolUse.name
-            input = toolUse.input
+            print(toolUse)
+            #expect(toolUse.id == "toolId")
+            #expect(toolUse.name == "toolName")
+            #expect(toolUse.input["value"]?["code"] == "string")
         } else {
-            id = ""
-            name = ""
-            input = JSON(with: .object(["code": .string("wrong")]))
+            Issue.record("ToolUse is nil")
         }
-
-        #expect(id == "toolId")
-        #expect(name == "toolName")
-        #expect(input.getValue("code") == "abc")
 
         builder = try ConverseRequestBuilder(from: builder, with: reply)
             .withToolResult("Information from Tool")

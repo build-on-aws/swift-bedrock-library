@@ -25,10 +25,10 @@ struct JSONTests {
     func jsonGetValueFromValidJSONString() async throws {
 
         let json = try jsonFromString()
-        #expect(json.getValue("name") == "Jane Doe")
-        #expect(json.getValue("age") == 30)
-        #expect(json.getValue("isMember") == true)
-        let t: String? = json.getValue("nonExistentKey")
+        #expect(json["name"] == "Jane Doe")
+        #expect(json["age"] == 30)
+        #expect(json["isMember"] == true)
+        let t: String? = json["nonExistentKey"]
         #expect(t == nil)
     }
 
@@ -36,10 +36,10 @@ struct JSONTests {
     func jsonGetValueFromDictionary() async throws {
         let json = try jsonFromDictionary()
 
-        #expect(json.getValue("name") == "Jane Doe")
-        #expect(json.getValue("age") == 30)
-        #expect(json.getValue("isMember") == true)
-        let t: String? = json.getValue("nonExistentKey")
+        #expect(json["name"] == "Jane Doe")
+        #expect(json["age"] == 30)
+        #expect(json["isMember"] == true)
+        let t: String? = json["nonExistentKey"]
         #expect(t == nil)
     }
 
@@ -47,10 +47,10 @@ struct JSONTests {
     func jsonGetValueNested() async throws {
 
         let json = try jsonFromDictionaryWithNested()
-        #expect(json.getValue("name") == "Jane Doe")
-        #expect(json.getValue("age") == 30)
-        #expect(json.getValue("isMember") == true)
-        let t: String? = json.getValue("nonExistentKey")
+        #expect(json["name"] == "Jane Doe")
+        #expect(json["age"] == 30)
+        #expect(json["isMember"] == true)
+        let t: String? = json["nonExistentKey"]
         #expect(t == nil)
         #expect(json["address"]?["street"] == "123 Main St")
         #expect(json["address"]?["city"] == "Anytown")
@@ -114,7 +114,7 @@ struct JSONTests {
     func emptyJSON() async throws {
         #expect(throws: Never.self) {
             let json = try JSON(from: "")
-            let t: String? = json.getValue("nonExistentKey")
+            let t: String? = json["nonExistentKey"]
             #expect(t == nil)
         }
     }

@@ -56,6 +56,9 @@ public enum JSONValue: Codable, Sendable {
         case let v as [JSONValue]:
             self = .array(v)
             break
+        case let v as JSONValue:
+            self = v
+            break
         default:
             fatalError("JSONValue: Unsupported type: \(type(of: value))")
         }
@@ -144,24 +147,6 @@ public struct JSON: Codable, Sendable {
             }
             return nil
         }
-    }
-
-    public func getValue<T>(_ key: String) -> T? {
-        if case let .object(dictionary) = value {
-            guard let v = dictionary[key] else {
-                return nil
-            }
-            switch v {
-            case .int(let val): return val as? T
-            case .double(let val): return val as? T
-            case .string(let val): return val as? T
-            case .bool(let val): return val as? T
-            case .array(let val): return val as? T
-            case .object(let val): return val as? T
-            case .null: return nil
-            }
-        }
-        return nil
     }
 
     public func getValue<T>() -> T? {
