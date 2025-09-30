@@ -3,13 +3,19 @@ name: Build, tests & soundness checks
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  swift-bedrock-library:
+  swift-bedrock-library-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Build
         run: swift build --configuration release
+
+  swift-bedrock-library-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Tests
         run: swift test
 
