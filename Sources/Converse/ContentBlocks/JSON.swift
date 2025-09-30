@@ -29,42 +29,44 @@ public enum JSONValue: Codable, Sendable {
     case object([String: JSONValue])
 
     public init(_ value: Any?) {
-        switch value {
-        case nil:
+
+        guard let value else {
             self = .null
+            return
+        }
+        switch value {
         case let v as Int:
             self = .int(v)
+            break
         case let v as Double:
             self = .double(v)
+            break
         case let v as String:
             self = .string(v)
+            break
         case let v as Bool:
             self = .bool(v)
+            break
         case let v as [Any]:
             self = .array(v.map { JSONValue($0) })
-        case let v as [String: Any]:
-            self = .object(v.mapValues { JSONValue($0) })
-        case let v as [String: JSON]:
-            self = .object(v.mapValues { $0.value })
-        case let v as [JSON]:
-            self = .array(v.map { $0.value })
-        case let v as JSONValue:
-            self = v
-        case let v as JSON:
-            self = v.value
+            break
+        case let v as [String: JSONValue]:
+            self = .object(v)
+            break
+        case let v as [JSONValue]:
+            self = .array(v)
+            break
         default:
             fatalError("JSONValue: Unsupported type: \(type(of: value))")
         }
     }
-}
-
-public struct JSON: Codable, Sendable {
-    public var value: JSONValue
 
     public subscript<T>(key: String) -> T? {
         get {
-            if case let .object(dictionary) = value {
-                let jsonValue = dictionary[key]
+            if case let .object(dictionary) = self {
+                guard let jsonValue = dictionary[key] else {
+                    return nil
+                }
                 switch jsonValue {
                 case .int(let v): return v as? T
                 case .double(let v): return v as? T
@@ -73,47 +75,90 @@ public struct JSON: Codable, Sendable {
                 case .array(let v): return v as? T
                 case .object(let v): return v as? T
                 case .null: return nil
-                case .none: return nil
                 }
             }
             return nil
         }
     }
 
-    public subscript(key: String) -> JSON? {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if container.decodeNil() {
+            self = .null
+        } else if let intValue = try? container.decode(Int.self) {
+            self = .int(intValue)
+        } else if let doubleValue = try? container.decode(Double.self) {
+            self = .double(doubleValue)
+        } else if let stringValue = try? container.decode(String.self) {
+            self = .string(stringValue)
+        } else if let boolValue = try? container.decode(Bool.self) {
+            self = .bool(boolValue)
+        } else if let arrayValue = try? container.decode([JSONValue].self) {
+            self = .array(arrayValue)
+        } else if let dictionaryValue = try? container.decode([String: JSONValue].self) {
+            self = .object(dictionaryValue)
+        } else {
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unsupported type")
+        }
+    }
+
+    // MARK: Public Methods
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .null:
+            try container.encodeNil()
+        case .int(let v):
+            try container.encode(v)
+        case .double(let v):
+            try container.encode(v)
+        case .string(let v):
+            try container.encode(v)
+        case .bool(let v):
+            try container.encode(v)
+        case .array(let v):
+            try container.encode(v)
+        case .object(let v):
+            try container.encode(v)
+        }
+    }
+
+}
+
+public struct JSON: Codable, Sendable {
+    public let value: JSONValue
+
+    public subscript<T>(key: String) -> T? {
+        get {
+            value[key]
+        }
+    }
+
+    public subscript(key: String) -> JSONValue? {
         get {
             if case let .object(dictionary) = value {
                 if let v = dictionary[key] {
-                    return JSON(with: v)
+                    return v
                 }
             }
             return nil
         }
     }
-    
-//    public subscript(key: String) -> JSONValue? {
-//        get {
-//            if case let .object(dictionary) = value {
-//                if let v = dictionary[key] {
-//                    return v
-//                }
-//            }
-//            return nil
-//        }
-//    }
 
     public func getValue<T>(_ key: String) -> T? {
         if case let .object(dictionary) = value {
-            if let v = dictionary[key] {
-                switch v {
-                case .int(let val): return val as? T
-                case .double(let val): return val as? T
-                case .string(let val): return val as? T
-                case .bool(let val): return val as? T
-                case .array(let val): return val as? T
-                case .object(let val): return val as? T
-                case .null: return nil
-                }
+            guard let v = dictionary[key] else {
+                return nil
+            }
+            switch v {
+            case .int(let val): return val as? T
+            case .double(let val): return val as? T
+            case .string(let val): return val as? T
+            case .bool(let val): return val as? T
+            case .array(let val): return val as? T
+            case .object(let val): return val as? T
+            case .null: return nil
             }
         }
         return nil
@@ -133,10 +178,6 @@ public struct JSON: Codable, Sendable {
 
     // MARK: Initializers
 
-    public init(with value: Any?) {
-        self.value = JSONValue(value)
-    }
-
     public init(with value: JSONValue) {
         self.value = value
     }
@@ -151,52 +192,18 @@ public struct JSON: Codable, Sendable {
 
     public init(from data: Data) throws {
         do {
+            print(String(decoding: data, as: UTF8.self))
             self = try JSONDecoder().decode(JSON.self, from: data)
         } catch {
             throw BedrockLibraryError.decodingError("Failed to decode JSON: \(error)")
         }
     }
 
+    // Codable
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        if container.decodeNil() {
-            self.value = .null
-        } else if let intValue = try? container.decode(Int.self) {
-            self.value = .int(intValue)
-        } else if let doubleValue = try? container.decode(Double.self) {
-            self.value = .double(doubleValue)
-        } else if let stringValue = try? container.decode(String.self) {
-            self.value = .string(stringValue)
-        } else if let boolValue = try? container.decode(Bool.self) {
-            self.value = .bool(boolValue)
-        } else if let arrayValue = try? container.decode([JSON].self) {
-            self.value = .array(arrayValue.map { $0.value })
-        } else if let dictionaryValue = try? container.decode([String: JSON].self) {
-            self.value = .object(dictionaryValue.mapValues { $0.value })
-        } else {
-            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unsupported type")
-        }
+        value = try container.decode(JSONValue.self)
     }
 
-    // MARK: Public Methods
-
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        switch value {
-        case .null:
-            try container.encodeNil()
-        case .int(let v):
-            try container.encode(v)
-        case .double(let v):
-            try container.encode(v)
-        case .string(let v):
-            try container.encode(v)
-        case .bool(let v):
-            try container.encode(v)
-        case .array(let v):
-            try container.encode(v.map { JSON(with: $0) })
-        case .object(let v):
-            try container.encode(v.mapValues { JSON(with: $0) })
-        }
-    }
 }

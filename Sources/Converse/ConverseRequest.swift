@@ -70,13 +70,21 @@ public struct ConverseRequest {
     }
 
     func getAdditionalModelRequestFields() throws -> Smithy.Document? {
+        //FIXME: this is incorrect. We should check for all Claude models
         if model == .claudev3_7_sonnet, let maxReasoningTokens {
-            let reasoningConfigJSON = JSON(with: [
-                "thinking": [
-                    "type": "enabled",
-                    "budget_tokens": maxReasoningTokens,
-                ]
-            ])
+            let reasoningConfigJSON = JSON(
+                with: .array(
+                    [
+                        .object([
+                            "thinking": .object([
+                                "type": .string("enabled"),
+                                "budget_tokens": .int(maxReasoningTokens),
+                            ])
+                        ])
+                    ]
+                )
+            )
+
             return try reasoningConfigJSON.toDocument()
         }
         return nil

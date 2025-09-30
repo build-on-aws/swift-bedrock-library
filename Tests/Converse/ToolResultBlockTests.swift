@@ -39,7 +39,7 @@ extension BedrockServiceTests {
 
     @Test("ToolResultBlock Initializer with ID and JSON Content")
     func toolResultBlockInitializerWithJSON() async throws {
-        let json = JSON(with: ["key": JSON(with: "value")])
+        let json = JSON(with: .object(["code": .string("string")]))
         let block = ToolResultBlock(json, id: "block2")
         #expect(block.id == "block2")
         #expect(block.content.count == 1)
