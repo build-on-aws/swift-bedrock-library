@@ -1,5 +1,7 @@
 name: Integration Tests
 
+permissions: read-all
+
 on:
   workflow_call:
     inputs:

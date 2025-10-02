@@ -56,7 +56,7 @@ struct JSONTests {
         #expect(json["address"]?["isSomething"] == true)
         #expect(json["nonExistentKey"] == nil)
     }
-    //
+
     @Test("JSON Subscript")
     func jsonSubscript() async throws {
         let json = try JSON(
@@ -71,7 +71,8 @@ struct JSONTests {
         #expect(json["name"] == "Jane Doe")
         #expect(json["age"] == 30)
         #expect(json["isMember"] == true)
-        #expect(json["nonExistentKey"] == nil)
+        let t: String? = json["nonExistentKey"]
+        #expect(t == nil)
     }
 
     @Test("JSON Subscript nested")
@@ -80,7 +81,8 @@ struct JSONTests {
         #expect(json["name"] == "Jane Doe")
         #expect(json["age"] == 30)
         #expect(json["isMember"] == true)
-        #expect(json["nonExistentKey"] == nil)
+        let t: String? = json["nonExistentKey"]
+        #expect(t == nil)
         #expect(json["address"]?["street"] == "123 Main St")
         #expect(json["address"]?["city"] == "Anytown")
         #expect(json["address"]?["state"] == "CA")
@@ -96,7 +98,6 @@ struct JSONTests {
                 "name": "Jane Doe",
                 "age": 30,
                 "isMember": true,
-
             """  // Note: trailing comma and no closing brace, making this invalid
         #expect(throws: BedrockLibraryError.self) {
             let _ = try JSON(from: invalidJSONString)

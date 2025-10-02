@@ -133,7 +133,9 @@ public struct JSON: Codable, Sendable {
     public let value: JSONValue
 
     public subscript<T>(key: String) -> T? {
-        value[key]
+        get {
+            value[key]
+        }
     }
 
     public subscript(key: String) -> JSONValue? {
