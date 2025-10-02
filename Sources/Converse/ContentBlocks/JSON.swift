@@ -133,9 +133,7 @@ public struct JSON: Codable, Sendable {
     public let value: JSONValue
 
     public subscript<T>(key: String) -> T? {
-        get {
-            value[key]
-        }
+        value[key]
     }
 
     public subscript(key: String) -> JSONValue? {
@@ -177,7 +175,6 @@ public struct JSON: Codable, Sendable {
 
     public init(from data: Data) throws {
         do {
-            print(String(decoding: data, as: UTF8.self))
             self = try JSONDecoder().decode(JSON.self, from: data)
         } catch {
             throw BedrockLibraryError.decodingError("Failed to decode JSON: \(error)")
