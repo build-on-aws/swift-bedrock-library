@@ -177,7 +177,6 @@ public struct JSON: Codable, Sendable {
 
     public init(from data: Data) throws {
         do {
-            print(String(decoding: data, as: UTF8.self))
             self = try JSONDecoder().decode(JSON.self, from: data)
         } catch {
             throw BedrockLibraryError.decodingError("Failed to decode JSON: \(error)")

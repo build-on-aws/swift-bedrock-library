@@ -28,8 +28,7 @@ struct JSONTests {
         #expect(json["name"] == "Jane Doe")
         #expect(json["age"] == 30)
         #expect(json["isMember"] == true)
-        let t: String? = json["nonExistentKey"]
-        #expect(t == nil)
+        #expect(json["nonExistentKey"] == nil)
     }
 
     @Test("JSON getValue from [String:JSONValue]")
@@ -39,8 +38,7 @@ struct JSONTests {
         #expect(json["name"] == "Jane Doe")
         #expect(json["age"] == 30)
         #expect(json["isMember"] == true)
-        let t: String? = json["nonExistentKey"]
-        #expect(t == nil)
+        #expect(json["nonExistentKey"] == nil)
     }
 
     @Test("JSON getValue nested")
@@ -50,17 +48,15 @@ struct JSONTests {
         #expect(json["name"] == "Jane Doe")
         #expect(json["age"] == 30)
         #expect(json["isMember"] == true)
-        let t: String? = json["nonExistentKey"]
-        #expect(t == nil)
+        #expect(json["nonExistentKey"] == nil)
         #expect(json["address"]?["street"] == "123 Main St")
         #expect(json["address"]?["city"] == "Anytown")
         #expect(json["address"]?["state"] == "CA")
         #expect(json["address"]?["zip"] == 12345)
         #expect(json["address"]?["isSomething"] == true)
-        let t2: String? = json["address"]?["nonExistentKey"]
-        #expect(t2 == nil)
+        #expect(json["nonExistentKey"] == nil)
     }
-    //
+
     @Test("JSON Subscript")
     func jsonSubscript() async throws {
         let json = try JSON(
@@ -92,8 +88,7 @@ struct JSONTests {
         #expect(json["address"]?["state"] == "CA")
         #expect(json["address"]?["zip"] == 12345)
         #expect(json["address"]?["isSomething"] == true)
-        let t2: String? = json["address"]?["nonExistentKey"]
-        #expect(t2 == nil)
+        #expect(json["nonExistentKey"] == nil)
     }
 
     @Test("JSON String Initializer with Invalid String")
@@ -103,7 +98,6 @@ struct JSONTests {
                 "name": "Jane Doe",
                 "age": 30,
                 "isMember": true,
-
             """  // Note: trailing comma and no closing brace, making this invalid
         #expect(throws: BedrockLibraryError.self) {
             let _ = try JSON(from: invalidJSONString)
@@ -114,24 +108,26 @@ struct JSONTests {
     func emptyJSON() async throws {
         #expect(throws: Never.self) {
             let json = try JSON(from: "")
-            let t: String? = json["nonExistentKey"]
-            #expect(t == nil)
+            #expect(json["nonExistentKey"] == nil)
         }
     }
 
     @Test("Nested JSONValue")
     func nestedJSONValue() {
-        JSON(
+        let json = JSON(
             with: JSONValue([
                 "name": JSONValue("Jane Doe"),
                 "age": JSONValue(30),
                 "isMember": JSONValue(true),
             ])
         )
-
+        #expect(json["name"] == "Jane Doe")
+        #expect(json["age"] == 30)
+        #expect(json["isMember"] == true)
     }
 }
 
+// Fixtures
 extension JSONTests {
     private func jsonFromString() throws -> JSON {
         try JSON(
