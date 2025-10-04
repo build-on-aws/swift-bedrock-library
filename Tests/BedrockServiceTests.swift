@@ -23,6 +23,10 @@ struct BedrockServiceTests {
     let bedrock: BedrockService
 
     init() async throws {
+        // this is a workaround for issue
+        // https://github.com/awslabs/aws-sdk-swift/issues/1984
+        CommonRuntimeKit.initialize()
+
         self.bedrock = try await BedrockService(
             bedrockClient: MockBedrockClient(),
             bedrockRuntimeClient: MockBedrockRuntimeClient()
