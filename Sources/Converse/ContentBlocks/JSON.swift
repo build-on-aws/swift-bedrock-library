@@ -189,5 +189,9 @@ public struct JSON: Codable, Sendable {
         let container = try decoder.singleValueContainer()
         value = try container.decode(JSONValue.self)
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        try value.encode(to: encoder)
+    }
 
 }

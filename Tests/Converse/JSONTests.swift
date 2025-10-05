@@ -13,6 +13,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import Foundation
 import Testing
 
 @testable import BedrockService
@@ -124,6 +125,23 @@ struct JSONTests {
         #expect(json["name"] == "Jane Doe")
         #expect(json["age"] == 30)
         #expect(json["isMember"] == true)
+    }
+
+    @Test("JSON encoding skips value wrapper")
+    func jsonEncodingSkipsValueWrapper() throws {
+        let json = JSON(with: .object(["test": .string("my_test")]))
+        let encoded = try JSONEncoder().encode(json)
+        let jsonString = String(data: encoded, encoding: .utf8)!
+        #expect(jsonString == "{\"test\":\"my_test\"}")
+        #expect(!jsonString.contains("\"value\":"))
+    }
+
+    @Test("JSON decoding skips value wrapper")
+    func jsonDecodingSkipsValueWrapper() throws {
+        let jsonString = "{\"test\":\"my_test\"}"
+        let data = jsonString.data(using: .utf8)!
+        let decoded = try JSONDecoder().decode(JSON.self, from: data)
+        #expect(decoded["test"] == "my_test")
     }
 }
 
