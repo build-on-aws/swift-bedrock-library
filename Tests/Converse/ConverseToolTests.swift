@@ -36,7 +36,7 @@ extension BedrockServiceTests {
         if let toolUse = reply.toolUse {
             #expect(toolUse.id == "toolId")
             #expect(toolUse.name == "toolName")
-            #expect(toolUse.input["value"]?["code"] == "string")
+            #expect(toolUse.input["code"] == "string")
         } else {
             Issue.record("Tool use is nil")
         }
@@ -64,7 +64,7 @@ extension BedrockServiceTests {
             print(toolUse)
             #expect(toolUse.id == "toolId")
             #expect(toolUse.name == "toolName")
-            #expect(toolUse.input["value"]?["code"] == "string")
+            #expect(toolUse.input["code"] == "string")
         } else {
             Issue.record("ToolUse is nil")
         }
