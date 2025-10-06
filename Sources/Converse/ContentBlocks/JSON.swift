@@ -190,4 +190,8 @@ public struct JSON: Codable, Sendable {
         value = try container.decode(JSONValue.self)
     }
 
+    public func encode(to encoder: Encoder) throws {
+        try value.encode(to: encoder)
+    }
+
 }
