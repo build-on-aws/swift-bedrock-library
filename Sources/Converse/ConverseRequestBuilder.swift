@@ -19,7 +19,7 @@ import FoundationEssentials
 import Foundation
 #endif
 
-public struct ConverseRequestBuilder {
+public struct ConverseRequestBuilder: Sendable {
 
     public private(set) var model: BedrockModel
     private var parameters: ConverseParameters
