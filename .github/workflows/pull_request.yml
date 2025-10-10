@@ -29,11 +29,42 @@ jobs:
       license_header_check_project_name: "Swift Bedrock Library"
       shell_check_enabled: false
       python_lint_check_enabled: false
-      api_breakage_check_enabled: true
-      api_breakage_check_container_image: "swift:6.2-amazonlinux2"
-      docs_check_container_image: "swift:6.2-amazonlinux2"
-      format_check_container_image: "swift:6.2-amazonlinux2"
+      # do not use this sub-action because the build requires 
+      # libssl-dev which is not installed on swift:6.2-noble
+      # Using swift:6.2-amazonlinux2 is not a solution
+      # because the @checkout action doesn't works on ALI2 (requires Node.js 20)
+      api_breakage_check_enabled: false 
+      api_breakage_check_container_image: "swift:6.2-noble"
+      docs_check_container_image: "swift:6.2-noble"
+      format_check_container_image: "swift:6.2-noble"
       yamllint_check_enabled: true
+
+  api-breakage-check:
+    name: API breakage check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # This is set to true since swift package diagnose-api-breaking-changes is
+          # cloning the repo again and without it being set to true this job won't work for
+          # private repos.
+          persist-credentials: true
+          submodules: true
+          fetch-tags: true
+          fetch-depth: 0  # Fetching tags requires fetch-depth: 0 (https://github.com/actions/checkout/issues/1471)
+      - name: Mark the workspace as safe
+        # https://github.com/actions/checkout/issues/766
+        run: git config --global --add safe.directory ${GITHUB_WORKSPACE}
+      - name: Run API breakage check
+        shell: bash
+        run: |
+          git fetch ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} ${GITHUB_BASE_REF}:pull-base-ref
+          BASELINE_REF='pull-base-ref'
+          echo "Using baseline: $BASELINE_REF"
+          swift package diagnose-api-breaking-changes "$BASELINE_REF"
+
 
   integration-tests:
     name: Integration Tests
