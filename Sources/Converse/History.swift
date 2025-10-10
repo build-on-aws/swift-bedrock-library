@@ -15,33 +15,33 @@
 
 public struct History: Codable, Sendable {
     private var messages: [Message] = []
-    
+
     public init() {}
-    
+
     public init(_ message: Message) {
         messages = [message]
     }
-    
+
     public init(_ messages: [Message]) {
         self.messages = messages
     }
-    
+
     public init(_ messages: Message...) {
         self.messages = messages
     }
-    
+
     public mutating func append(_ message: Message) {
         messages.append(message)
     }
-    
+
     /// Essentials functions from Array that History needs
     public var count: Int { messages.count }
-    
+
     public subscript(index: Int) -> Message {
         messages[index]
     }
 
-    public var last : Message? {
+    public var last: Message? {
         messages.last
     }
 

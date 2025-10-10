@@ -91,7 +91,6 @@ public struct ConverseRequestBuilder: Sendable {
     public func withHistory(_ history: [Message]) throws -> ConverseRequestBuilder {
         try withHistory(.init(history))
     }
-
     public func withHistory(_ history: History) throws -> ConverseRequestBuilder {
         if let lastMessage = history.last {
             guard lastMessage.role == .assistant else {
