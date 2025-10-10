@@ -30,6 +30,35 @@ public struct ConverseRequest {
     let systemPrompts: [String]?
     let maxReasoningTokens: Int?
 
+    @available(
+        *,
+        deprecated,
+        message: "Use the initializer that accepts a History instead of [Message]"
+    )
+    init(
+        model: BedrockModel,
+        messages: [Message],
+        maxTokens: Int?,
+        temperature: Double?,
+        topP: Double?,
+        stopSequences: [String]?,
+        systemPrompts: [String]?,
+        tools: [Tool]?,
+        maxReasoningTokens: Int?
+    ) {
+        self.init(
+            model: model,
+            messages: History(messages),
+            maxTokens: maxTokens,
+            temperature: temperature,
+            topP: topP,
+            stopSequences: stopSequences,
+            systemPrompts: systemPrompts,
+            tools: tools,
+            maxReasoningTokens: maxReasoningTokens
+        )
+    }
+
     init(
         model: BedrockModel,
         messages: History,

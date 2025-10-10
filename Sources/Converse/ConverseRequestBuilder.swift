@@ -89,7 +89,7 @@ public struct ConverseRequestBuilder: Sendable {
 
     // MARK - builder methods - history
     public func withHistory(_ history: [Message]) throws -> ConverseRequestBuilder {
-        try withHistory(.init(history))
+        try withHistory(History(history))
     }
     public func withHistory(_ history: History) throws -> ConverseRequestBuilder {
         if let lastMessage = history.last {
