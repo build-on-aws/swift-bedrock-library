@@ -24,7 +24,7 @@ public struct ConverseRequestBuilder: Sendable {
     public private(set) var model: BedrockModel
     private var parameters: ConverseParameters
 
-    public private(set) var history: [Message]
+    public private(set) var history: History
     public private(set) var tools: [Tool]?
 
     public private(set) var prompt: String?
@@ -88,8 +88,11 @@ public struct ConverseRequestBuilder: Sendable {
     // MARK - builder methods
 
     // MARK - builder methods - history
-
     public func withHistory(_ history: [Message]) throws -> ConverseRequestBuilder {
+        try withHistory(.init(history))
+    }
+
+    public func withHistory(_ history: History) throws -> ConverseRequestBuilder {
         if let lastMessage = history.last {
             guard lastMessage.role == .assistant else {
                 throw BedrockLibraryError.ConverseRequestBuilder("Last message in history must be from assistant.")

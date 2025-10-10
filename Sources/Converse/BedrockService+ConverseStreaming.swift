@@ -43,7 +43,7 @@ extension BedrockService {
     ///            or the low-level stream provided by the AWS SDK.
     public func converseStream(
         with model: BedrockModel,
-        conversation: [Message],
+        conversation: History,
         maxTokens: Int? = nil,
         temperature: Double? = nil,
         topP: Double? = nil,

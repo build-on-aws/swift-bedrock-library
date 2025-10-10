@@ -48,7 +48,7 @@ struct TextChat {
         var request: ConverseRequestBuilder? = nil
 
         // we keep track of the history of the conversation
-        var history: [Message] = []
+        var history: History = []
 
         // while the user doesn't type "exit" or "quit"
         while true {

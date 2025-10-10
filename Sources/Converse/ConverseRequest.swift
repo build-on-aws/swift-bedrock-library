@@ -24,7 +24,7 @@ import Foundation
 
 public struct ConverseRequest {
     let model: BedrockModel
-    let messages: [Message]
+    let messages: History
     let inferenceConfig: InferenceConfig?
     let toolConfig: ToolConfig?
     let systemPrompts: [String]?
@@ -32,7 +32,7 @@ public struct ConverseRequest {
 
     init(
         model: BedrockModel,
-        messages: [Message] = [],
+        messages: History,
         maxTokens: Int?,
         temperature: Double?,
         topP: Double?,

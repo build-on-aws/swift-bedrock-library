@@ -42,7 +42,7 @@ extension BedrockService {
     /// - Returns: A Message containing the model's response
     public func converse(
         with model: BedrockModel,
-        conversation: [Message],
+        conversation: History,
         maxTokens: Int? = nil,
         temperature: Double? = nil,
         topP: Double? = nil,

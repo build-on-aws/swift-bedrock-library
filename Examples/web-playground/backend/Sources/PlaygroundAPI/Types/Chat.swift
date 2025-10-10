@@ -21,7 +21,7 @@ extension Message: @retroactive ResponseCodable {}
 
 struct ChatInput: Codable {
     let prompt: String?
-    let history: [Message]?
+    let history: History?
     let imageFormat: ImageBlock.Format?
     let imageBytes: String?
     let documentName: String?
