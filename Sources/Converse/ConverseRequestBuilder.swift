@@ -88,6 +88,11 @@ public struct ConverseRequestBuilder: Sendable {
     // MARK - builder methods
 
     // MARK - builder methods - history
+    @available(
+        *,
+        deprecated,
+        message: "Use withHistory(_: [History])instead. This func will be removed in the next major version." 
+    )
     public func withHistory(_ history: [Message]) throws -> ConverseRequestBuilder {
         try withHistory(History(history))
     }

@@ -43,7 +43,7 @@ extension BedrockService {
     @available(
         *,
         deprecated,
-        message: "Use converse(with:conversation:...) that takes History instead of [Message]"
+        message: "Use converse(with:conversation:...) that takes History instead of [Message]. This func will be removed in the next major version."
     )
     public func converse(
         with model: BedrockModel,

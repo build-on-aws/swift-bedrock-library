@@ -44,7 +44,7 @@ extension BedrockService {
     @available(
         *,
         deprecated,
-        message: "Use converseStream(with:conversation:...) that takes History instead of [Message]"
+        message: "Use converseStream(with:conversation:...) that takes History instead of [Message]. This func will be removed in the next major version."
     )
     public func converseStream(
         with model: BedrockModel,
