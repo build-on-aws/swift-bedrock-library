@@ -33,7 +33,8 @@ public struct ConverseRequest {
     @available(
         *,
         deprecated,
-        message: "Use the initializer that accepts a History instead of [Message]. This func will be removed in the next major version."
+        message:
+            "Use the initializer that accepts a History instead of [Message]. This func will be removed in the next major version."
     )
     init(
         model: BedrockModel,
