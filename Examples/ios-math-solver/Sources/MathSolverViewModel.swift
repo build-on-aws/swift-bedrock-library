@@ -113,7 +113,7 @@ final class MathSolverViewModel: ObservableObject, @unchecked Sendable {
 
         // Make the streaming request
         Task {
-            var messages: [Message] = []
+            var messages: History = []
             do {
                 // Process the stream
                 let response = try await bedrockService.converseStream(with: promptBuilder)

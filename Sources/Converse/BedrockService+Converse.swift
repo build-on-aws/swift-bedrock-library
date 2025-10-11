@@ -40,9 +40,58 @@ extension BedrockService {
     ///           BedrockLibraryError.invalidModality for invalid modality from the selected model
     ///           BedrockLibraryError.invalidSDKResponse if the response body is missing
     /// - Returns: A Message containing the model's response
+    @available(
+        *,
+        deprecated,
+        message:
+            "Use converse(with:conversation:...) that takes History instead of [Message]. This func will be removed in the next major version."
+    )
     public func converse(
         with model: BedrockModel,
         conversation: [Message],
+        maxTokens: Int? = nil,
+        temperature: Double? = nil,
+        topP: Double? = nil,
+        stopSequences: [String]? = nil,
+        systemPrompts: [String]? = nil,
+        tools: [Tool]? = nil,
+        enableReasoning: Bool? = false,
+        maxReasoningTokens: Int? = nil
+    ) async throws -> Message {
+        let history = History(conversation)
+        return try await converse(
+            with: model,
+            conversation: history,
+            maxTokens: maxTokens,
+            temperature: temperature,
+            topP: topP,
+            stopSequences: stopSequences,
+            systemPrompts: systemPrompts,
+            tools: tools,
+            enableReasoning: enableReasoning,
+            maxReasoningTokens: maxReasoningTokens
+        )
+    }
+
+    /// Converse with a model using the Bedrock Converse API
+    /// - Parameters:
+    ///   - model: The BedrockModel to converse with
+    ///   - conversation: Array of previous messages in the conversation
+    ///   - maxTokens: Optional maximum number of tokens to generate
+    ///   - temperature: Optional temperature parameter for controlling randomness
+    ///   - topP: Optional top-p parameter for nucleus sampling
+    ///   - stopSequences: Optional array of sequences where generation should stop
+    ///   - systemPrompts: Optional array of system prompts to guide the conversation
+    ///   - tools: Optional array of tools the model can use
+    /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
+    ///           BedrockLibraryError.invalidParameter for invalid parameters
+    ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
+    ///           BedrockLibraryError.invalidModality for invalid modality from the selected model
+    ///           BedrockLibraryError.invalidSDKResponse if the response body is missing
+    /// - Returns: A Message containing the model's response
+    public func converse(
+        with model: BedrockModel,
+        conversation: History,
         maxTokens: Int? = nil,
         temperature: Double? = nil,
         topP: Double? = nil,
