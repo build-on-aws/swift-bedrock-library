@@ -17,6 +17,8 @@ import AWSBedrockRuntime
 
 public struct ResponseMetadata: Codable, Sendable {
     let metadata: Metadata
+    public var usage: Usage? { metadata.usage }
+    public var metrics: Metrics? { metadata.metrics }
 
     package init(from sdkMetadata: BedrockRuntimeClientTypes.ConverseStreamMetadataEvent) throws {
         self.metadata = try .init(usage: sdkMetadata.usage, metrics: sdkMetadata.metrics)
@@ -44,23 +46,23 @@ public struct ResponseMetadata: Codable, Sendable {
             }
 
         }
-        public struct Usage: Codable, Sendable {
-            package init(from sdkUsage: BedrockRuntimeClientTypes.TokenUsage) throws {
-                self.inputTokens = sdkUsage.inputTokens ?? 0
-                self.outputTokens = sdkUsage.outputTokens ?? 0
-                self.totalTokens = sdkUsage.totalTokens ?? 0
-            }
-
-            let inputTokens: Int
-            let outputTokens: Int
-            let totalTokens: Int
+    }
+    public struct Usage: Codable, Sendable {
+        package init(from sdkUsage: BedrockRuntimeClientTypes.TokenUsage) throws {
+            self.inputTokens = sdkUsage.inputTokens ?? 0
+            self.outputTokens = sdkUsage.outputTokens ?? 0
+            self.totalTokens = sdkUsage.totalTokens ?? 0
         }
 
-        public struct Metrics: Codable, Sendable {
-            package init(from sdkMetrics: BedrockRuntimeClientTypes.ConverseStreamMetrics) throws {
-                self.latencyMs = Int(sdkMetrics.latencyMs ?? 0)
-            }
-            let latencyMs: Int
+        let inputTokens: Int
+        let outputTokens: Int
+        let totalTokens: Int
+    }
+
+    public struct Metrics: Codable, Sendable {
+        package init(from sdkMetrics: BedrockRuntimeClientTypes.ConverseStreamMetrics) throws {
+            self.latencyMs = Int(sdkMetrics.latencyMs ?? 0)
         }
+        let latencyMs: Int
     }
 }
