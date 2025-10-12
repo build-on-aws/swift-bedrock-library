@@ -26,6 +26,13 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
     public let name: String
     public let modality: any Modality
 
+    public var maxPromptSize: Int? {
+        guard self.hasTextModality(),
+        let textModality = try? self.getTextModality() else { return nil }
+        
+        return textModality.getParameters().prompt.maxSize
+    }
+
     /// Creates a new BedrockModel instance
     /// - Parameters:
     ///   - id: The unique identifier for the model
