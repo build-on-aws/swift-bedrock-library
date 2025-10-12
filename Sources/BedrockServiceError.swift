@@ -41,6 +41,7 @@ public enum BedrockLibraryError: Error {
     case notSupported(String)
     case notFound(String)
     case authenticationFailed(String)
+    case inputTooLong(String)
     case unknownError(String)
 
     public var message: String {
@@ -86,6 +87,8 @@ public enum BedrockLibraryError: Error {
             return "Not found: \(message)"
         case .authenticationFailed(let message):
             return "Authentication failed: \(message)"
+        case .inputTooLong(let message):
+            return "Input too long: \(message)"
         case .unknownError(let message):
             return "Unknown error: \(message)"
         }
