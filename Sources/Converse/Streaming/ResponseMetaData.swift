@@ -54,15 +54,15 @@ public struct ResponseMetadata: Codable, Sendable {
             self.totalTokens = sdkUsage.totalTokens ?? 0
         }
 
-        let inputTokens: Int
-        let outputTokens: Int
-        let totalTokens: Int
+        public let inputTokens: Int
+        public let outputTokens: Int
+        public let totalTokens: Int
     }
 
     public struct Metrics: Codable, Sendable {
         package init(from sdkMetrics: BedrockRuntimeClientTypes.ConverseStreamMetrics) throws {
             self.latencyMs = Int(sdkMetrics.latencyMs ?? 0)
         }
-        let latencyMs: Int
+        public let latencyMs: Int
     }
 }
