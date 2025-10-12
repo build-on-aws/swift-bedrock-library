@@ -28,8 +28,9 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
 
     public var maxPromptSize: Int? {
         guard self.hasTextModality(),
-        let textModality = try? self.getTextModality() else { return nil }
-        
+            let textModality = try? self.getTextModality()
+        else { return nil }
+
         return textModality.getParameters().prompt.maxSize
     }
 
