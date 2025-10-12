@@ -97,14 +97,21 @@ public struct ConverseRequestBuilder: Sendable {
         try withHistory(History(history))
     }
     public func withHistory(_ history: History) throws -> ConverseRequestBuilder {
-        if let lastMessage = history.last {
+
+        if history.count > 0,
+            let lastMessage = history.last
+        {
             guard lastMessage.role == .assistant else {
                 throw BedrockLibraryError.ConverseRequestBuilder("Last message in history must be from assistant.")
             }
         }
-        if toolResult != nil {
+        if history.count > 0,
+            toolResult != nil
+        {
             guard case .toolUse(_) = history.last?.content.last else {
-                throw BedrockLibraryError.invalidPrompt("Tool result is defined but last message is not tool use.")
+                throw BedrockLibraryError.ConverseRequestBuilder(
+                    "Tool result is defined but last message is not tool use."
+                )
             }
         }
         var copy = self

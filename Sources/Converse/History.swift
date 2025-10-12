@@ -30,6 +30,10 @@ public struct History: Codable, Sendable {
         self.messages = messages
     }
 
+    public init(_ slide: Slice<History>) {
+        self.messages = Array(slide)
+    }
+
     public mutating func append(_ message: Message) {
         messages.append(message)
     }

@@ -223,6 +223,14 @@ public struct BedrockService: Sendable {
                     )
                 }
             }
+        } else if let validationError = error as? AWSBedrockRuntime.ValidationException {
+            logger.trace("ValidationException while \(context)", metadata: ["error": "\(error)"])
+            let message = validationError.properties.message ?? "Validation error occurred"
+            if message.contains("Input is too long") {
+                throw BedrockLibraryError.inputTooLong(message)
+            } else {
+                throw BedrockLibraryError.invalid(message)
+            }
         } else {
             logger.trace("Error while \(context)", metadata: ["error": "\(error)"])
             throw error
