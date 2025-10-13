@@ -16,6 +16,7 @@
 @preconcurrency import AWSBedrock
 @preconcurrency import AWSBedrockRuntime
 import AWSClientRuntime
+import AWSSSOOIDC
 import AwsCommonRuntimeKit
 import Logging
 
@@ -223,6 +224,13 @@ public struct BedrockService: Sendable {
                     )
                 }
             }
+        } else if let anotherAuthenticationError = error as? InvalidGrantException {
+            // FIXME: this doesn't work because the InvalidGrantException we're receiving is
+            // InternalAWSSSOOIDC.InvalidGrantException and it is marked as package in the SDK
+            // https://github.com/awslabs/aws-sdk-swift/blob/96c1dbb8eaa667c1feca7917a03d37a9cea4b868/Sources/Core/AWSSDKIdentity/InternalClients/InternalAWSSSOOIDC/Sources/InternalAWSSSOOIDC/Models.swift#L195
+            throw BedrockLibraryError.authenticationFailed(
+                "AWS SSO token expired: \(anotherAuthenticationError.message ?? "")"
+            )
         } else if let validationError = error as? AWSBedrockRuntime.ValidationException {
             logger.trace("ValidationException while \(context)", metadata: ["error": "\(error)"])
             let message = validationError.properties.message ?? "Validation error occurred"
@@ -232,8 +240,19 @@ public struct BedrockService: Sendable {
                 throw BedrockLibraryError.invalid(message)
             }
         } else {
-            logger.trace("Error while \(context)", metadata: ["error": "\(error)"])
-            throw error
+
+            //FIXME: apply ugly workaround to catch InternalAWSSSOOIDC.InvalidGrantException
+            // Workaround for https://github.com/awslabs/aws-sdk-swift/issues/2028
+            let errorDescription = String(describing: error)
+            if errorDescription.contains("InvalidGrantException") {
+                throw BedrockLibraryError.authenticationFailed(
+                    "AWS SSO token expired: \(errorDescription)"
+                )
+            } else {
+                logger.debug("Error while \(context)", metadata: ["error": "\(error)"])
+                throw error
+            }
+
         }
     }
 

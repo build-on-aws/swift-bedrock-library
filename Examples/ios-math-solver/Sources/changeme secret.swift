@@ -1,0 +1,20 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the Swift Bedrock Library open source project
+//
+// Copyright (c) 2025 Amazon.com, Inc. or its affiliates
+//                    and the Swift Bedrock Library project authors
+// Licensed under Apache License v2.0
+//
+// See LICENSE.txt for license information
+// See CONTRIBUTORS.txt for the list of Swift Bedrock Library project authors
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+//===----------------------------------------------------------------------===//
+
+// to integrate with Sign In With Apple (SIWA), you must prepare your AWS account
+// Follow instructions at https://docs.aws.amazon.com/sdk-for-swift/latest/developer-guide/apple-integration.html#apple-sign-in
+
+let awsAccountNumber = "486652066693"  // TODO: Replace with your AWS account number
+let awsIAMRoleName = "ios-swift-bedrock"  // TODO: Replace with your IAM role name
