@@ -20,7 +20,57 @@ import Foundation
 #endif
 
 //TODO: split in two structs : BedrockModelError and BedrockLibraryError
-public enum BedrockLibraryError: Error {
+public enum BedrockLibraryError: Error, Equatable {
+    public static func == (lhs: BedrockLibraryError, rhs: BedrockLibraryError) -> Bool {
+        switch (lhs, rhs) {
+        case (.invalidParameter(_, _), .invalidParameter(_, _)):
+            return true
+        case (.invalidModality(_, _, _), .invalidModality(_, _, _)):
+            return true
+        case (.invalidPrompt(_), .invalidPrompt(_)):
+            return true
+        case (.invalid(_), .invalid(_)):
+            return true
+        case (.invalidStopSequences(_, _), .invalidStopSequences(_, _)):
+            return true
+        case (.invalidURI(_), .invalidURI(_)):
+            return true
+        case (.invalidConverseReply(_), .invalidConverseReply(_)):
+            return true
+        case (.invalidName(_), .invalidName(_)):
+            return true
+        case (.streamingError(_), .streamingError(_)):
+            return true
+        case (.invalidSDKType(_), .invalidSDKType(_)):
+            return true
+        case (.ConverseRequestBuilder(_), .ConverseRequestBuilder(_)):
+            return true
+        case (.invalidSDKResponse(_), .invalidSDKResponse(_)):
+            return true
+        case (.invalidSDKResponseBody(_), .invalidSDKResponseBody(_)):
+            return true
+        case (.completionNotFound(_), .completionNotFound(_)):
+            return true
+        case (.encodingError(_), .encodingError(_)):
+            return true
+        case (.decodingError(_), .decodingError(_)):
+            return true
+        case (.notImplemented(_), .notImplemented(_)):
+            return true
+        case (.notSupported(_), .notSupported(_)):
+            return true
+        case (.notFound(_), .notFound(_)):
+            return true
+        case (.authenticationFailed(_), .authenticationFailed(_)):
+            return true
+        case (.inputTooLong(_), .inputTooLong(_)):
+            return true
+        case (.unknownError(_), .unknownError(_)):
+            return true
+        default:
+            return false
+        }
+    }
     case invalidParameter(ParameterName, String)
     case invalidModality(BedrockModel, Modality, String)
     case invalidPrompt(String)
