@@ -23,8 +23,11 @@ public protocol EmbeddingsModality: Modality {
 
     func getParameters() -> EmbeddingsParameters
 
-    func getEmbeddingsRequestBody(text: String, vectorSize: Int,
-        normalize: Bool) throws -> BedrockBodyCodable
+    func getEmbeddingsRequestBody(
+        text: String,
+        vectorSize: Int,
+        normalize: Bool
+    ) throws -> BedrockBodyCodable
 
     func getEmbeddingsResponseBody(from data: Data) throws -> ContainsEmbeddings
 }

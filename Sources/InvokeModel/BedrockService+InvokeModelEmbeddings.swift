@@ -106,7 +106,7 @@ extension BedrockService {
             logger.trace(
                 "Generated embeddings",
                 metadata: [
-                    "model": .string(model.id),
+                    "model": .string(model.id)
                 ]
             )
             return try invokemodelResponse.getEmbeddings()

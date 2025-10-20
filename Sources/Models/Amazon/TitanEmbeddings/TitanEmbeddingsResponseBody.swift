@@ -24,6 +24,6 @@ public struct TitanEmbeddingsResponseBody: ContainsEmbeddings {
     private let inputTextTokenCount: Int
 
     public func getEmbeddings() -> Embeddings {
-        return embedding
+        embedding
     }
 }

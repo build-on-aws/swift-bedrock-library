@@ -144,7 +144,7 @@ struct InvokeModelRequest {
         )
     }
 
-    // MARK: embeddings 
+    // MARK: embeddings
     /// Creates a BedrockRequest for an embeddings request with the specified text
     /// - Parameters:
     ///   - model: The Bedrock model to use for embeddings generation
@@ -162,7 +162,7 @@ struct InvokeModelRequest {
         let body = try modality.getEmbeddingsRequestBody(text: text, vectorSize: dimensions, normalize: normalize)
         self.init(model: model, body: body)
     }
-    
+
     /// Creates a BedrockRequest for an embeddings request with the specified text
     /// - Parameters:
     ///   - model: The Bedrock model to use for embeddings generation

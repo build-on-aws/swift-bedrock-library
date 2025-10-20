@@ -37,7 +37,7 @@ struct TitanEmbeddings: EmbeddingsModality {
         vectorSize: Int,
         normalize: Bool,
     ) throws -> BedrockBodyCodable {
-        return TitanEmbeddingsBody(
+        TitanEmbeddingsBody(
             prompt: text,
             dimensions: vectorSize,
             normalize: normalize
