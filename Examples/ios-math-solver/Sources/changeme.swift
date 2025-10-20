@@ -16,5 +16,5 @@
 // to integrate with Sign In With Apple (SIWA), you must prepare your AWS account
 // Follow instructions at https://docs.aws.amazon.com/sdk-for-swift/latest/developer-guide/apple-integration.html#apple-sign-in
 
-let awsAccountNumber = "0000000000"  // TODO: Replace with your AWS account number
-let awsIAMRoleName = "your-iam-ios-swift-bedrock-role-name"  // TODO: Replace with your IAM role name
+let awsAccountNumber = "486652066693"  // TODO: Replace with your AWS account number
+let awsIAMRoleName = "ios-swift-bedrock"  // TODO: Replace with your IAM role name

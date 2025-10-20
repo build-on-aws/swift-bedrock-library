@@ -19,16 +19,11 @@ import FoundationEssentials
 import Foundation
 #endif
 
-public protocol BedrockBodyCodable: Codable {}
+public struct TitanEmbeddingsResponseBody: ContainsEmbeddings {
+    private let embedding: Embeddings
+    private let inputTextTokenCount: Int
 
-public protocol ContainsTextCompletion: Codable {
-    func getTextCompletion() throws -> TextCompletion
-}
-
-public protocol ContainsImageGeneration: Codable {
-    func getGeneratedImage() -> ImageGenerationOutput
-}
-
-public protocol ContainsEmbeddings: Codable {
-    func getEmbeddings() -> Embeddings
+    public func getEmbeddings() -> Embeddings {
+        return embedding
+    }
 }

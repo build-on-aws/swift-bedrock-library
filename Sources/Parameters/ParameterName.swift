@@ -25,4 +25,9 @@ public enum ParameterName: Sendable {
     case seed
     case resolution
     case maxReasoningTokens
+
+    // embeddings model
+    case maxInputTextToken
+    case maxInputTextChar
+    case outputVectorSize
 }

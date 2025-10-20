@@ -135,7 +135,7 @@ extension BedrockService {
             )
             return try invokemodelResponse.getTextCompletion()
         } catch {
-            try handleCommonError(error, context: "listing foundation models")
+            try handleCommonError(error, context: "completing text")
         }
     }
 }

@@ -25,8 +25,11 @@ import Foundation
 public struct InvokeModelResponse {
     let model: BedrockModel
     let contentType: ContentType
+
+    // TODO: FIXME: trasnform to an enum
     let textCompletionBody: ContainsTextCompletion?
     let imageGenerationBody: ContainsImageGeneration?
+    let embeddingsBody: ContainsEmbeddings?
 
     private init(
         model: BedrockModel,
@@ -37,6 +40,7 @@ public struct InvokeModelResponse {
         self.contentType = contentType
         self.textCompletionBody = textCompletionBody
         self.imageGenerationBody = nil
+        self.embeddingsBody = nil
     }
 
     private init(
@@ -48,6 +52,19 @@ public struct InvokeModelResponse {
         self.contentType = contentType
         self.imageGenerationBody = imageGenerationBody
         self.textCompletionBody = nil
+        self.embeddingsBody = nil
+    }
+
+    private init(
+        model: BedrockModel,
+        contentType: ContentType = .json,
+        embeddingsBody: ContainsEmbeddings
+    ) {
+        self.model = model
+        self.contentType = contentType
+        self.embeddingsBody = embeddingsBody
+        self.textCompletionBody = nil
+        self.imageGenerationBody = nil
     }
 
     /// Creates a BedrockResponse from raw response data containing text completion
@@ -82,6 +99,17 @@ public struct InvokeModelResponse {
         }
     }
 
+    static func createEmbeddingsResponse(body data: Data, model: BedrockModel, logger: Logger) throws -> Self {
+        do {
+            let embeddingModality = try model.getEmbeddingsModality()
+            logger.trace("Raw response data:\n\(String(data: data, encoding: .utf8)?.prefix(100) ?? "")\n")
+            return self.init(model: model, embeddingsBody: try embeddingModality.getEmbeddingsResponseBody(from: data))
+        } catch {
+            throw BedrockLibraryError.invalidSDKResponseBody(data)
+        }
+
+    }
+
     /// Extracts the text completion from the response body
     /// - Returns: The text completion from the response
     /// - Throws: BedrockLibraryError.decodingError if the completion cannot be extracted
@@ -110,6 +138,19 @@ public struct InvokeModelResponse {
         } catch {
             throw BedrockLibraryError.decodingError(
                 "Something went wrong while decoding the request body to find the completion: \(error)"
+            )
+        }
+    }
+
+    public func getEmbeddings() throws -> Embeddings {
+        do {
+            guard let embeddingsBody else {
+                throw BedrockLibraryError.decodingError("No embeddings body found in the response")
+            }
+            return embeddingsBody.getEmbeddings()
+        } catch {
+            throw BedrockLibraryError.decodingError(
+                "Something went wrong while decoding the request body to find the embeddings: \(error)"
             )
         }
     }

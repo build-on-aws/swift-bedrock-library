@@ -19,16 +19,4 @@ import FoundationEssentials
 import Foundation
 #endif
 
-public protocol BedrockBodyCodable: Codable {}
-
-public protocol ContainsTextCompletion: Codable {
-    func getTextCompletion() throws -> TextCompletion
-}
-
-public protocol ContainsImageGeneration: Codable {
-    func getGeneratedImage() -> ImageGenerationOutput
-}
-
-public protocol ContainsEmbeddings: Codable {
-    func getEmbeddings() -> Embeddings
-}
+public typealias Embeddings = [Double]

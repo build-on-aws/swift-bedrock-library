@@ -19,16 +19,18 @@ import FoundationEssentials
 import Foundation
 #endif
 
-public protocol BedrockBodyCodable: Codable {}
+public struct TitanEmbeddingsBody: BedrockBodyCodable {
+    private let inputText: String
+    private let dimensions: Int
+    private let normalize: Bool
 
-public protocol ContainsTextCompletion: Codable {
-    func getTextCompletion() throws -> TextCompletion
-}
-
-public protocol ContainsImageGeneration: Codable {
-    func getGeneratedImage() -> ImageGenerationOutput
-}
-
-public protocol ContainsEmbeddings: Codable {
-    func getEmbeddings() -> Embeddings
+    public init(
+        prompt: String,
+        dimensions: Int,
+        normalize: Bool
+    ) {
+        self.inputText = prompt
+        self.dimensions = dimensions
+        self.normalize = normalize
+    }
 }

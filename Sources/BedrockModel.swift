@@ -91,6 +91,8 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
             self = BedrockModel.titan_image_g1_v2
         case BedrockModel.titan_image_g1_v1.id:
             self = BedrockModel.titan_image_g1_v1
+        case BedrockModel.titan_embed_text_v2.id:
+            self = BedrockModel.titan_embed_text_v2
         // nova
         case BedrockModel.nova_micro.id:
             self = BedrockModel.nova_micro
@@ -159,6 +161,27 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
             )
         }
         return textModality
+    }
+
+    // MARK - Embeddings
+
+    /// Checks if the model supports embeddings
+    /// - Returns: True if the model supports embeddings
+    public func hasEmbeddingsModality() -> Bool {
+        modality as? any EmbeddingsModality != nil
+    }
+
+    /// Checks if the model supports embeddings and returns EmbeddingsModality
+    /// - Returns: EmbeddingsModality if the model supports embeddings modality
+    public func getEmbeddingsModality() throws -> any EmbeddingsModality {
+        guard let embeddingsModality = modality as? any EmbeddingsModality else {
+            throw BedrockLibraryError.invalidModality(
+                self,
+                modality,
+                "Model \(id) does not support embeddings"
+            )
+        }
+        return embeddingsModality
     }
 
     // MARK - Image generation
