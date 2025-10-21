@@ -25,8 +25,14 @@ import Foundation
 public struct InvokeModelResponse {
     let model: BedrockModel
     let contentType: ContentType
-    let textCompletionBody: ContainsTextCompletion?
-    let imageGenerationBody: ContainsImageGeneration?
+
+    let body: BodyType
+
+    public enum BodyType {
+        case textCompletion(ContainsTextCompletion)
+        case imageGeneration(ContainsImageGeneration)
+        case embeddings(ContainsEmbeddings)
+    }
 
     private init(
         model: BedrockModel,
@@ -35,8 +41,7 @@ public struct InvokeModelResponse {
     ) {
         self.model = model
         self.contentType = contentType
-        self.textCompletionBody = textCompletionBody
-        self.imageGenerationBody = nil
+        self.body = .textCompletion(textCompletionBody)
     }
 
     private init(
@@ -46,8 +51,17 @@ public struct InvokeModelResponse {
     ) {
         self.model = model
         self.contentType = contentType
-        self.imageGenerationBody = imageGenerationBody
-        self.textCompletionBody = nil
+        self.body = .imageGeneration(imageGenerationBody)
+    }
+
+    private init(
+        model: BedrockModel,
+        contentType: ContentType = .json,
+        embeddingsBody: ContainsEmbeddings
+    ) {
+        self.model = model
+        self.contentType = contentType
+        self.body = .embeddings(embeddingsBody)
     }
 
     /// Creates a BedrockResponse from raw response data containing text completion
@@ -82,12 +96,23 @@ public struct InvokeModelResponse {
         }
     }
 
+    static func createEmbeddingsResponse(body data: Data, model: BedrockModel, logger: Logger) throws -> Self {
+        do {
+            let embeddingModality = try model.getEmbeddingsModality()
+            logger.trace("Raw response data:\n\(String(data: data, encoding: .utf8)?.prefix(100) ?? "")\n")
+            return self.init(model: model, embeddingsBody: try embeddingModality.getEmbeddingsResponseBody(from: data))
+        } catch {
+            throw BedrockLibraryError.invalidSDKResponseBody(data)
+        }
+
+    }
+
     /// Extracts the text completion from the response body
     /// - Returns: The text completion from the response
     /// - Throws: BedrockLibraryError.decodingError if the completion cannot be extracted
     public func getTextCompletion() throws -> TextCompletion {
         do {
-            guard let textCompletionBody = textCompletionBody else {
+            guard case .textCompletion(let textCompletionBody) = self.body else {
                 throw BedrockLibraryError.decodingError("No text completion body found in the response")
             }
             return try textCompletionBody.getTextCompletion()
@@ -103,13 +128,26 @@ public struct InvokeModelResponse {
     /// - Throws: BedrockLibraryError.decodingError if the image generation cannot be extracted
     public func getGeneratedImage() throws -> ImageGenerationOutput {
         do {
-            guard let imageGenerationBody = imageGenerationBody else {
+            guard case .imageGeneration(let imageGenerationBody) = self.body else {
                 throw BedrockLibraryError.decodingError("No image generation body found in the response")
             }
             return imageGenerationBody.getGeneratedImage()
         } catch {
             throw BedrockLibraryError.decodingError(
                 "Something went wrong while decoding the request body to find the completion: \(error)"
+            )
+        }
+    }
+
+    public func getEmbeddings() throws -> Embeddings {
+        do {
+            guard case .embeddings(let embeddingsBody) = self.body else {
+                throw BedrockLibraryError.decodingError("No embeddings body found in the response")
+            }
+            return embeddingsBody.getEmbeddings()
+        } catch {
+            throw BedrockLibraryError.decodingError(
+                "Something went wrong while decoding the request body to find the embeddings: \(error)"
             )
         }
     }

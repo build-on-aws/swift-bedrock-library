@@ -13,8 +13,24 @@
 //
 //===----------------------------------------------------------------------===//
 
-// to integrate with Sign In With Apple (SIWA), you must prepare your AWS account
-// Follow instructions at https://docs.aws.amazon.com/sdk-for-swift/latest/developer-guide/apple-integration.html#apple-sign-in
+#if canImport(FoundationEssentials)
+import FoundationEssentials
+#else
+import Foundation
+#endif
 
-let awsAccountNumber = "000000000000"  // TODO: Replace with your AWS account number
-let awsIAMRoleName = "ios-swift-bedrock"  // TODO: Replace with your IAM role name
+public struct TitanEmbeddingsBody: BedrockBodyCodable {
+    private let inputText: String
+    private let dimensions: Int
+    private let normalize: Bool
+
+    public init(
+        prompt: String,
+        dimensions: Int,
+        normalize: Bool
+    ) {
+        self.inputText = prompt
+        self.dimensions = dimensions
+        self.normalize = normalize
+    }
+}

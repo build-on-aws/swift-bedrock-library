@@ -1,8 +1,15 @@
 name: Build, tests & soundness checks
 
-on: [pull_request, workflow_dispatch]
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
 
 permissions: read-all
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   swift-bedrock-library-build:

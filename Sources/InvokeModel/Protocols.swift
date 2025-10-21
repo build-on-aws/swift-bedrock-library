@@ -28,3 +28,7 @@ public protocol ContainsTextCompletion: Codable {
 public protocol ContainsImageGeneration: Codable {
     func getGeneratedImage() -> ImageGenerationOutput
 }
+
+public protocol ContainsEmbeddings: Codable {
+    func getEmbeddings() -> Embeddings
+}

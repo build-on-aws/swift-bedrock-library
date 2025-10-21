@@ -144,6 +144,40 @@ struct InvokeModelRequest {
         )
     }
 
+    // MARK: embeddings
+    /// Creates a BedrockRequest for an embeddings request with the specified text
+    /// - Parameters:
+    ///   - model: The Bedrock model to use for embeddings generation
+    ///   - text: The input text to generate embeddings for
+    ///   - vectorSize: the size of the output vector
+    ///   - normalize: whether to return the normalized embedding or not
+    /// - Throws: BedrockLibraryError if the model doesn't support embeddings
+    public init(
+        model: BedrockModel,
+        text: String,
+        dimensions: Int,
+        normalize: Bool
+    ) throws {
+        let modality = try model.getEmbeddingsModality()
+        let body = try modality.getEmbeddingsRequestBody(text: text, vectorSize: dimensions, normalize: normalize)
+        self.init(model: model, body: body)
+    }
+
+    /// Creates a BedrockRequest for an embeddings request with the specified text
+    /// - Parameters:
+    ///   - model: The Bedrock model to use for embeddings generation
+    ///   - text: The input text to generate embeddings for
+    /// - Returns: A configured BedrockRequest for embeddings generation
+    /// - Throws: BedrockLibraryError if the model doesn't support embeddings
+    public static func createEmbeddingsRequest(
+        model: BedrockModel,
+        text: String,
+        dimensions: Int,
+        normalize: Bool
+    ) throws -> InvokeModelRequest {
+        try .init(model: model, text: text, dimensions: dimensions, normalize: normalize)
+    }
+
     // MARK: image variation
     /// Creates a BedrockRequest for a request to generate variations of an existing image
     /// - Parameters:
