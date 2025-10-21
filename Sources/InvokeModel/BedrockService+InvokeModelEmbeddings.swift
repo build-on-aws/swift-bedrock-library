@@ -63,7 +63,7 @@ extension BedrockService {
             let request: InvokeModelRequest = try InvokeModelRequest.createEmbeddingsRequest(
                 model: model,
                 text: text,
-                vectorSize: vectorSize,
+                dimensions: vectorSize,
                 normalize: normalize
             )
             let input: InvokeModelInput = try request.getInvokeModelInput(forRegion: self.region)
@@ -111,7 +111,6 @@ extension BedrockService {
             )
             return try invokemodelResponse.getEmbeddings()
         } catch {
-            print(error)
             try handleCommonError(error, context: "calling embeddings")
         }
     }

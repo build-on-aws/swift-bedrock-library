@@ -172,10 +172,10 @@ struct InvokeModelRequest {
     public static func createEmbeddingsRequest(
         model: BedrockModel,
         text: String,
-        vectorSize: Int,
+        dimensions: Int,
         normalize: Bool
     ) throws -> InvokeModelRequest {
-        try .init(model: model, text: text, dimensions: vectorSize, normalize: normalize)
+        try .init(model: model, text: text, dimensions: dimensions, normalize: normalize)
     }
 
     // MARK: image variation
