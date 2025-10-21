@@ -2,7 +2,7 @@
 
 A Swift library for interacting with [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) foundation models.
 
-📖 **[Complete Documentation](https://swiftpackageindex.com/build-on-aws/swift-bedrock-library/documentation)** - Comprehensive guides and API reference
+📖 **[Complete Documentation](https://swiftpackageindex.com/build-on-aws/swift-bedrock-library)** - Comprehensive guides and API reference
 
 ## TL;DR - Quick Start
 
@@ -27,7 +27,7 @@ Add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/build-on-aws/swift-bedrock-library.git", branch: "main")
+    .package(url: "https://github.com/build-on-aws/swift-bedrock-library.git", from: "1.5.0")
 ],
 targets: [
     .target(
@@ -43,7 +43,7 @@ Requires: `platforms: [.macOS(.v15), .iOS(.v18), .tvOS(.v18)]`
 
 ## Documentation
 
-📖 **[Complete Documentation](https://swiftpackageindex.com/build-on-aws/swift-bedrock-library/documentation)** - Comprehensive guides and API reference
+📖 **[Complete Documentation](https://swiftpackageindex.com/build-on-aws/swift-bedrock-library)** - Comprehensive guides and API reference
 
 Key topics:
 - [Authentication](https://swiftpackageindex.com/build-on-aws/swift-bedrock-library/documentation/bedrockservice/authentication) - Configure AWS credentials
