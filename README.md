@@ -857,6 +857,39 @@ let textCompletion = try await bedrock.completeText(
 
 Note that the minimum, maximum and default values for each parameter are model specific and defined when the BedrockModel is created. Some parameters might not be supported by certain models.
 
+## Generating embeddings using the InvokeModel API
+
+Choose a BedrockModel that supports embeddings generation - you can verify this using the `hasEmbeddingsModality` function. The `embed` function allows you to convert text into numerical vector representations that capture semantic meaning:
+
+```swift
+let model: BedrockModel = .titan_embed_text_v1
+
+let embeddings = try await bedrock.embed(
+    "Swift is a powerful programming language",
+    with: model
+)
+
+print("Generated embeddings with \(embeddings.count) dimensions")
+```
+
+Optionally specify the vector size:
+
+```swift
+let embeddings = try await bedrock.embed(
+    "Swift is a powerful programming language",
+    with: model,
+    vectorSize: 512
+)
+```
+
+Embeddings are returned as an array of Double values (`Embeddings` typealias) that can be used for:
+- Semantic similarity comparisons
+- Text clustering and classification
+- Retrieval-augmented generation (RAG) systems
+- Machine learning feature vectors
+
+Note that the available vector sizes and other parameters are model specific and defined when the BedrockModel is created.
+
 ## How to add a BedrockModel
 
 ### Converse
