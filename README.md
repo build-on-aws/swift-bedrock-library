@@ -4,14 +4,6 @@ A Swift library for interacting with [Amazon Bedrock](https://docs.aws.amazon.co
 
 📖 **[Complete Documentation](https://swiftpackageindex.com/build-on-aws/swift-bedrock-library/documentation)** - Comprehensive guides and API reference
 
-## Acknowledgment
-
-This library and playground have been written by [Mona Dierickx](https://www.linkedin.com/in/mona-dierickx/), during her last year of studies at [HoGent](https://www.hogent.be/), Belgium.
-
-Thank you for your enthusiasm and positive attitude during the three months we worked together (February 2025 - May 2025).
-
-Thank you Professor Steven Van Impe for allowing us to work with these young talents.
-
 ## TL;DR - Quick Start
 
 ```swift
@@ -68,3 +60,11 @@ Explore the [Examples](./Examples/) directory for complete sample applications i
 - Image generation
 - iOS math solver app
 - Web playground with frontend/backend
+
+## Acknowledgment
+
+This library and playground have been written by [Mona Dierickx](https://www.linkedin.com/in/mona-dierickx/), during her last year of studies at [HoGent](https://www.hogent.be/), Belgium.
+
+Thank you for your enthusiasm and positive attitude during the three months we worked together (February 2025 - May 2025).
+
+Thank you Professor Steven Van Impe for allowing us to work with these young talents.
