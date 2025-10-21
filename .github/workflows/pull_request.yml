@@ -40,9 +40,17 @@ jobs:
       # libssl-dev which is not installed on swift:6.2-noble
       # Using swift:6.2-amazonlinux2 is not a solution
       # because the @checkout action doesn't works on ALI2 (requires Node.js 20)
+      # will re-enable when Amazon Linux 2023 will be available
       api_breakage_check_enabled: false
       api_breakage_check_container_image: "swift:6.2-noble"
-      docs_check_container_image: "swift:6.2-noble"
+
+      # disabled because images needs libssl-dev (which excludes swift:6.2-noble)
+      # and Node 20+ (for the checkout action), whcih excludes Amazon Linux 2
+      # will re-enable when Amazon Linux 2023 will be available
+      docs_check_enabled: false
+      docs_check_container_image: "swift:6.2-amazonlinux2"
+
+      format_check_enabled: true
       format_check_container_image: "swift:6.2-noble"
       yamllint_check_enabled: true
 
@@ -83,7 +91,7 @@ jobs:
       # We pass the list of examples here, but we can't pass an array as argument
       # Instead, we pass a String with a valid JSON array.
       # The workaround is mentioned here https://github.com/orgs/community/discussions/11692
-      examples: "[ 'api-key', 'converse', 'converse-stream', 'openai', 'text_chat' ]"
+      examples: "[ 'api-key', 'converse', 'converse-stream', 'embeddings', 'openai', 'text_chat' ]"
 
   swift-6-language-mode:
     name: Swift 6 Language Mode

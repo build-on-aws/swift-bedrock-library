@@ -31,8 +31,12 @@ public struct AmazonImageRequestBody: BedrockBodyCodable {
     /// Creates a text-to-image generation request body
     /// - Parameters:
     ///   - prompt: The text description of the image to generate
-    ///   - nrOfImages: The number of images to generate
     ///   - negativeText: The text description of what to exclude from the generated image
+    ///   - nrOfImages: The number of images to generate
+    ///   - cfgScale: Configuration scale parameter for generation control
+    ///   - seed: Seed for reproducible generation
+    ///   - quality: Quality setting for the generated image
+    ///   - resolution: Resolution of the generated image
     /// - Returns: A configured AmazonImageRequestBody for text-to-image generation
     public static func textToImage(
         prompt: String,
@@ -79,8 +83,12 @@ public struct AmazonImageRequestBody: BedrockBodyCodable {
     /// Creates a text-to-image conditioned generation request body
     /// - Parameters:
     ///   - prompt: The text description of the image to generate
-    ///   - nrOfImages: The number of images to generate
     ///   - negativeText: The text description of what to exclude from the generated image
+    ///   - nrOfImages: The number of images to generate
+    ///   - cfgScale: Configuration scale parameter for generation control
+    ///   - seed: Seed for reproducible generation
+    ///   - quality: Quality setting for the generated image
+    ///   - resolution: Resolution of the generated image
     /// - Returns: A configured AmazonImageRequestBody for text-to-image generation
     public static func conditionedTextToImage(
         prompt: String,
@@ -135,10 +143,15 @@ public struct AmazonImageRequestBody: BedrockBodyCodable {
 
     /// Creates an image variation generation request
     /// - Parameters:
+    ///   - referenceImages: Array of base64-encoded strings of the source images
     ///   - prompt: The text description to guide the variation generation
-    ///   - referenceImage: The base64-encoded string of the source image
+    ///   - negativeText: Optional text describing what to avoid
     ///   - similarity: How similar the variations should be to the source image (0.2-1.0)
     ///   - nrOfImages: The number of variations to generate (default: 1)
+    ///   - seed: Seed for reproducible generation
+    ///   - quality: Quality setting for the generated image
+    ///   - cfgScale: Configuration scale parameter for generation control
+    ///   - resolution: Resolution of the generated image
     /// - Returns: A configured AmazonImageRequestBody for image variation generation
     public static func imageVariation(
         referenceImages: [String],
@@ -200,6 +213,10 @@ public struct AmazonImageRequestBody: BedrockBodyCodable {
     ///   - colors: A list of color codes that will be used in the image, expressed as hexadecimal values in the form “#RRGGBB”.
     ///   - negativeText: The text description of what to exclude from the generated image
     ///   - referenceImage: The base64-encoded string of the source image (colors in this image will also be used in the generated image)
+    ///   - cfgScale: Configuration scale parameter for generation control
+    ///   - seed: Seed for reproducible generation
+    ///   - quality: Quality setting for the generated image
+    ///   - resolution: Resolution of the generated image
     /// - Returns: A configured AmazonImageRequestBody for color guided image generation
     public static func colorGuidedGeneration(
         prompt: String,

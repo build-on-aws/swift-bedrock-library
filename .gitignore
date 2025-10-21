@@ -15,6 +15,7 @@ Package.resolved
 Makefile
 **/temp
 node_modules
+docc-output
 
 # **/backend
 **/backend/.DS_Store

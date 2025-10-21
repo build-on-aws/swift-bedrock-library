@@ -37,6 +37,7 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
     /// Creates a new BedrockModel instance
     /// - Parameters:
     ///   - id: The unique identifier for the model
+    ///   - name: The human-readable name of the model
     ///   - modality: The modality of the model
     public init(
         id: String,

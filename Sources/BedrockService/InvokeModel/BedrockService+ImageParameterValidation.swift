@@ -65,7 +65,11 @@ extension BedrockService {
 
     /// Validates parameters for text-to-image generation requests
     /// - Parameters:
-    ///   - modality: The text-to-image modality of the model to use
+    ///   - model: The text-to-image model to use
+    ///   - nrOfImages: Optional number of images to generate
+    ///   - cfgScale: Optional configuration scale parameter
+    ///   - resolution: Optional image resolution
+    ///   - seed: Optional seed for reproducible generation
     ///   - prompt: The input text prompt describing the desired image
     ///   - negativePrompt: Optional text describing what to avoid in the generated image
     /// - Throws: BedrockLibraryError if the parameters are invalid or exceed model constraints
@@ -103,7 +107,11 @@ extension BedrockService {
 
     /// Validates image variation generation parameters
     /// - Parameters:
-    ///   - modality: The image variation modality of the model
+    ///   - model: The image variation model
+    ///   - nrOfImages: Optional number of images to generate
+    ///   - cfgScale: Optional configuration scale parameter
+    ///   - resolution: Optional image resolution
+    ///   - seed: Optional seed for reproducible generation
     ///   - images: Array of base64 encoded images to use as reference
     ///   - prompt: Text prompt describing desired variations
     ///   - similarity: Optional parameter controlling variation similarity
