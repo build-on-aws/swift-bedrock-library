@@ -2,6 +2,8 @@
 
 A Swift library for interacting with [Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) foundation models.
 
+📖 **[Complete Documentation](https://swiftpackageindex.com/build-on-aws/swift-bedrock-library/documentation)** - Comprehensive guides and API reference
+
 ## Acknowledgment
 
 This library and playground have been written by [Mona Dierickx](https://www.linkedin.com/in/mona-dierickx/), during her last year of studies at [HoGent](https://www.hogent.be/), Belgium.
