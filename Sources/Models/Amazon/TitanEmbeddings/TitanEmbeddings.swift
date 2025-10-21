@@ -20,7 +20,7 @@ import Foundation
 #endif
 
 /// Implementation of EmbeddingsModality for Amazon Titan embedding models
-/// 
+///
 /// TitanEmbeddings provides text embedding generation capabilities using Amazon's Titan models,
 /// supporting configurable vector dimensions and normalization options.
 struct TitanEmbeddings: EmbeddingsModality {
@@ -49,6 +49,6 @@ struct TitanEmbeddings: EmbeddingsModality {
     }
 
     func getEmbeddingsResponseBody(from data: Data) throws -> ContainsEmbeddings {
-        return try JSONDecoder().decode(TitanEmbeddingsResponseBody.self, from: data)
+        try JSONDecoder().decode(TitanEmbeddingsResponseBody.self, from: data)
     }
 }

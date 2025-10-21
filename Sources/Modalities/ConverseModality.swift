@@ -20,7 +20,7 @@ import Foundation
 #endif
 
 /// A protocol defining the interface for models that support conversational interactions
-/// 
+///
 /// Converse modalities enable back-and-forth conversations with AI models,
 /// supporting features like system prompts, tool usage, and multi-modal content.
 public protocol ConverseModality: Modality {
@@ -32,14 +32,14 @@ public protocol ConverseModality: Modality {
     /// Returns the parameters configuration for converse operations
     /// - Returns: ConverseParameters containing model-specific parameter constraints
     func getConverseParameters() -> ConverseParameters
-    
+
     /// Returns the supported features for converse operations
     /// - Returns: Array of ConverseFeature indicating what capabilities are available
     func getConverseFeatures() -> [ConverseFeature]
 }
 
 /// A protocol for models that support both conversational interactions and streaming responses
-/// 
+///
 /// Streaming converse modalities can provide real-time, incremental responses
 /// during conversation, enabling more interactive user experiences.
 public protocol ConverseStreamingModality: ConverseModality, StreamingModality {}

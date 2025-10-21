@@ -20,7 +20,7 @@ import Foundation
 #endif
 
 /// A protocol defining the interface for models that support embeddings generation
-/// 
+///
 /// Embeddings modalities can convert text into numerical vector representations
 /// that capture semantic meaning for use in machine learning tasks.
 public protocol EmbeddingsModality: Modality {
