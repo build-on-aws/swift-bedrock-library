@@ -29,6 +29,7 @@ extension BedrockService {
     ///   - text: The input text to generate embeddings for
     ///   - model: The Bedrock model to use for embeddings generation
     ///   - vectorSize: The size of the output vector (default: 1024)
+    ///   - normalize: Whether to normalize the output vectors (default: true)
     /// - Returns: A TextCompletion containing the generated embeddings
     /// - Throws: BedrockLibraryError if the model doesn't support embeddings or if the request fails
     public func embed(

@@ -34,6 +34,8 @@ extension BedrockService {
     ///   - stopSequences: Optional array of sequences where generation should stop
     ///   - systemPrompts: Optional array of system prompts to guide the conversation
     ///   - tools: Optional array of tools the model can use
+    ///   - enableReasoning: Optional flag to enable reasoning output
+    ///   - maxReasoningTokens: Optional maximum number of reasoning tokens to generate
     /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
     ///           BedrockLibraryError.invalidParameter for invalid parameters
     ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
@@ -83,6 +85,8 @@ extension BedrockService {
     ///   - stopSequences: Optional array of sequences where generation should stop
     ///   - systemPrompts: Optional array of system prompts to guide the conversation
     ///   - tools: Optional array of tools the model can use
+    ///   - enableReasoning: Optional flag to enable reasoning output
+    ///   - maxReasoningTokens: Optional maximum number of reasoning tokens to generate
     /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
     ///           BedrockLibraryError.invalidParameter for invalid parameters
     ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
