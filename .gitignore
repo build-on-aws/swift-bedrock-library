@@ -12,7 +12,6 @@ Package.resolved
 .serverless
 .vscode
 .env
-Makefile
 **/temp
 node_modules
 
