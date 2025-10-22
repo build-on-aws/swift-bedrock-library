@@ -31,3 +31,4 @@ generate-docs:
 	
 	mv Package.swift.bak Package.swift
 	touch docs/.nojekyll
+	ls -alR docs
