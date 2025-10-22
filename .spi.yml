@@ -1,6 +1,6 @@
 version: 1
-builder:
-  configs:
-    - documentation_targets: [BedrockService]
+# builder:
+#   configs:
+#     - documentation_targets: [BedrockService]
 external_links:
   documentation: "https://build-on-aws.github.io/swift-bedrock-library/documentation/bedrockservice/"
