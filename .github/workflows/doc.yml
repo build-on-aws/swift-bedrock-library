@@ -23,11 +23,17 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    container:
+      image: swift:6.2-noble
     steps:
       - name: Checkout
         uses: actions/checkout@v5
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Install Swift SDK dependencies
+        run: |
+          apt-get -y update 
+          apt-get install -y libssl-dev make
       - name: Build DocC
         run: |
           make generate-docs
