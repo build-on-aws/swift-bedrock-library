@@ -15,7 +15,7 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: true
-  
+
 # A single job that builds and deploys the DocC documentation
 jobs:
   deploy:
