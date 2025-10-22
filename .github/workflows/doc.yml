@@ -32,16 +32,16 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install Swift SDK dependencies
         run: |
-          apt-get -y update 
+          apt-get -y update
           apt-get install -y libssl-dev make
       - name: Build DocC
         run: |
           make generate-docs
           echo "<script>window.location.href += \"/documentation/bedrockservice\"</script>" > docs/index.html;
-      - name: Sanity Check
+      - name: Check docc rendered files are present
         run: |
             echo "Checking for required static assets..."
-            find ./docs -name "css" -o -name "js" -o -name "favicon*" | head -10
+            find ./docs -name "css" -o -name "js" -o -name "favicon*"
             ls -la ./docs/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
