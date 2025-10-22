@@ -30,3 +30,4 @@ generate-docs:
 		--output-path ./docs
 	
 	mv Package.swift.bak Package.swift
+	touch docs/.nojekyll

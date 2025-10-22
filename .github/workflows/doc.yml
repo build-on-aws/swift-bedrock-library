@@ -31,7 +31,6 @@ jobs:
       - name: Build DocC
         run: |
           make generate-docs
-          touch docs/.nojekyll
           echo "<script>window.location.href += \"/documentation/bedrockservice\"</script>" > docs/index.html;
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
