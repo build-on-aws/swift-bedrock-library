@@ -41,3 +41,5 @@ Package.resolved
 **/*.entitlements
 .nojekyll
 docs/**
+.unacceptablelanguageignore
+Makefile
