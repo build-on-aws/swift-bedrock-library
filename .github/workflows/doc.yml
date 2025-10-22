@@ -32,7 +32,7 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Install Swift SDK dependencies
         run: |
-          apt-get -y update 
+          apt-get -y update
           apt-get install -y libssl-dev make
       - name: Build DocC
         run: |
