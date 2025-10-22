@@ -20,6 +20,8 @@ generate-docs:
 	done
 
 	touch .nojekyll
+	which swift
+	swift --version
 	swift package                         \
 		--allow-writing-to-directory ./docs \
 		generate-documentation              \
@@ -31,4 +33,4 @@ generate-docs:
 	
 	mv Package.swift.bak Package.swift
 	touch docs/.nojekyll
-	ls -alR docs
+	ls -al docs
