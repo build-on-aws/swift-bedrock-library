@@ -15,7 +15,6 @@ let package = Package(
         .package(url: "https://github.com/smithy-lang/smithy-swift", from: "0.158.0"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.6.4"),
         .package(url: "https://github.com/awslabs/aws-crt-swift", from: "0.53.0"),
-        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.0.0"),
     ],
     targets: [
         .target(
