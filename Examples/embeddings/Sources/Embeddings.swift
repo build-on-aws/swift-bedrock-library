@@ -144,7 +144,7 @@ struct Embeddings {
     func doc() async throws {
 
         // Create a document store that can search by meaning
-        let store = DocumentStore(bedrock: bedrock, model: model, similaryFn: cosineSimilarity)
+        let store = DocumentStore(bedrock: bedrock, model: model, similarityFn: cosineSimilarity)
 
         // Add some programming-related documents
         try await store.addDocument("Swift is a programming language developed by Apple", id: "doc1")
@@ -188,10 +188,10 @@ class DocumentStore {
     private let distanceFn: DistanceFn
 
     /// Initialize the document store with a Bedrock service and similarity function
-    init(bedrock: BedrockService, model: BedrockModel, similaryFn: @escaping DistanceFn) {
+    init(bedrock: BedrockService, model: BedrockModel, similarityFn: @escaping DistanceFn) {
         self.bedrock = bedrock
         self.model = model
-        self.distanceFn = similaryFn
+        self.distanceFn = similarityFn
     }
 
     /// Adds a new document to the store
