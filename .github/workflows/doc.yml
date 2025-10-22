@@ -38,10 +38,10 @@ jobs:
         run: |
           make generate-docs
           echo "<script>window.location.href += \"/documentation/bedrockservice\"</script>" > docs/index.html;
-      - name: Sanity Check
+      - name: Check docc rendered files are present
         run: |
             echo "Checking for required static assets..."
-            find ./docs -name "css" -o -name "js" -o -name "favicon*" | head -10
+            find ./docs -name "css" -o -name "js" -o -name "favicon*"
             ls -la ./docs/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
