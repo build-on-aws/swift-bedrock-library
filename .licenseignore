@@ -39,3 +39,7 @@ Package.resolved
 .DS_Store
 .licenseignore
 **/*.entitlements
+.nojekyll
+docs/**
+.unacceptablelanguageignore
+Makefile
