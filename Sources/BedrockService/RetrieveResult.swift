@@ -23,7 +23,7 @@ import Foundation
 
 public typealias RAGRetrievalResult = BedrockAgentRuntimeClientTypes.KnowledgeBaseRetrievalResult
 
-struct SerializableResult: Codable {
+internal struct SerializableResult: Codable {
     let content: String?
     let score: Double?
     let source: String?
