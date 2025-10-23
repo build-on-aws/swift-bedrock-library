@@ -39,7 +39,7 @@ public struct BedrockService: Sendable {
     package let logger: Logging.Logger
     package let bedrockClient: BedrockClientProtocol
     package let bedrockRuntimeClient: BedrockRuntimeClientProtocol
-    package let bedrockAgentRuntimeClient: BedrockAgentRuntimeProtocol
+    package let bedrockAgentRuntimeClient: BedrockRuntimeAgentProtocol
 
     // MARK: - Initialization
 
@@ -57,7 +57,7 @@ public struct BedrockService: Sendable {
         logger: Logging.Logger? = nil,
         bedrockClient: BedrockClientProtocol? = nil,
         bedrockRuntimeClient: BedrockRuntimeClientProtocol? = nil,
-        bedrockAgentRuntimeClient: BedrockAgentRuntimeProtocol? = nil,
+        bedrockAgentRuntimeClient: BedrockRuntimeAgentProtocol? = nil,
         authentication: BedrockAuthentication = .default
     ) async throws {
         self.logger = logger ?? BedrockService.createLogger("bedrock.service")

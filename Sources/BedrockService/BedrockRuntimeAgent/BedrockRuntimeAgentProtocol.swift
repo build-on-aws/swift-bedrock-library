@@ -22,11 +22,11 @@ import FoundationEssentials
 import Foundation
 #endif
 
-/// Protocol for Amazon Bedrock Agent Runtime operations
+/// Protocol for Amazon Bedrock Runtime Agent operations
 ///
 /// This protocol allows writing mocks for unit tests and provides a clean interface
 /// for knowledge base retrieval operations.
-public protocol BedrockAgentRuntimeProtocol: Sendable {
+public protocol BedrockRuntimeAgentProtocol: Sendable {
     /// Retrieves information from a knowledge base
     /// - Parameter input: The retrieve input containing query and configuration
     /// - Returns: RetrieveOutput with the retrieved results
@@ -34,4 +34,4 @@ public protocol BedrockAgentRuntimeProtocol: Sendable {
     func retrieve(input: RetrieveInput) async throws -> RetrieveOutput
 }
 
-extension BedrockAgentRuntimeClient: @retroactive @unchecked Sendable, BedrockAgentRuntimeProtocol {}
+extension BedrockAgentRuntimeClient: @retroactive @unchecked Sendable, BedrockRuntimeAgentProtocol {}
