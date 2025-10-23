@@ -15,6 +15,7 @@
 
 @preconcurrency import AWSBedrock
 @preconcurrency import AWSBedrockRuntime
+@preconcurrency import AWSBedrockAgentRuntime
 import AWSClientRuntime
 import AWSSSOOIDC
 import AwsCommonRuntimeKit
@@ -38,6 +39,7 @@ public struct BedrockService: Sendable {
     package let logger: Logging.Logger
     package let bedrockClient: BedrockClientProtocol
     package let bedrockRuntimeClient: BedrockRuntimeClientProtocol
+    package let bedrockAgentRuntimeClient: BedrockAgentRuntimeProtocol
 
     // MARK: - Initialization
 
@@ -47,6 +49,7 @@ public struct BedrockService: Sendable {
     ///   - logger: Optional custom logger instance
     ///   - bedrockClient: Optional custom Bedrock client
     ///   - bedrockRuntimeClient: Optional custom Bedrock Runtime client
+    ///   - bedrockAgentRuntimeClient: Optional custom Bedrock Agent Runtime client
     ///   - authentication: The authentication type to use (defaults to .default)
     /// - Throws: Error if client initialization fails
     public init(
@@ -54,6 +57,7 @@ public struct BedrockService: Sendable {
         logger: Logging.Logger? = nil,
         bedrockClient: BedrockClientProtocol? = nil,
         bedrockRuntimeClient: BedrockRuntimeClientProtocol? = nil,
+        bedrockAgentRuntimeClient: BedrockAgentRuntimeProtocol? = nil,
         authentication: BedrockAuthentication = .default
     ) async throws {
         self.logger = logger ?? BedrockService.createLogger("bedrock.service")
@@ -93,6 +97,22 @@ public struct BedrockService: Sendable {
                 metadata: ["authentication type": "\(authentication)"]
             )
         }
+        if bedrockAgentRuntimeClient != nil {
+            self.logger.trace("Using supplied bedrockAgentRuntimeClient")
+            self.bedrockAgentRuntimeClient = bedrockAgentRuntimeClient!
+        } else {
+            self.logger.trace("Creating bedrockAgentRuntimeClient")
+            self.bedrockAgentRuntimeClient = try await BedrockService.createBedrockAgentRuntimeClient(
+                region: region,
+                authentication: authentication,
+                logger: self.logger
+            )
+            self.logger.trace(
+                "Created bedrockAgentRuntimeClient",
+                metadata: ["authentication type": "\(authentication)"]
+            )
+        }
+        
         self.logger.trace(
             "Initialized SwiftBedrock",
             metadata: ["region": .string(region.rawValue)]

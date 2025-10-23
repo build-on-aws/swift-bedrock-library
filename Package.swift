@@ -23,6 +23,7 @@ let package = Package(
                 .product(name: "AWSClientRuntime", package: "aws-sdk-swift"),
                 .product(name: "AWSBedrock", package: "aws-sdk-swift"),
                 .product(name: "AWSBedrockRuntime", package: "aws-sdk-swift"),
+                .product(name: "AWSBedrockAgentRuntime", package: "aws-sdk-swift"),
                 .product(name: "AWSSSOOIDC", package: "aws-sdk-swift"),
                 .product(name: "Smithy", package: "smithy-swift"),
                 .product(name: "Logging", package: "swift-log"),
