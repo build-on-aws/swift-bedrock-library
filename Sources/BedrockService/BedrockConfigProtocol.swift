@@ -14,6 +14,7 @@
 //===----------------------------------------------------------------------===//
 
 import AWSBedrock
+import AWSBedrockAgentRuntime
 import AWSBedrockRuntime
 import ClientRuntime
 import SmithyHTTPAuthAPI
@@ -36,5 +37,8 @@ protocol BedrockConfigProtocol {
 }
 extension BedrockClient.BedrockClientConfiguration: @retroactive @unchecked Sendable, BedrockConfigProtocol {}
 extension BedrockRuntimeClient.BedrockRuntimeClientConfiguration: @retroactive @unchecked Sendable,
+    BedrockConfigProtocol
+{}
+extension BedrockAgentRuntimeClient.BedrockAgentRuntimeClientConfiguration: @retroactive @unchecked Sendable,
     BedrockConfigProtocol
 {}

@@ -34,6 +34,7 @@ BedrockService is a lightweight layer on top of the AWS SDK for Swift that provi
 - <doc:Documents>
 - <doc:Reasoning>
 - <doc:Streaming>
+- <doc:Retrieval>
 
 ### Extending the Library
 
