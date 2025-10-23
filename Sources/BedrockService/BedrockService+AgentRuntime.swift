@@ -37,10 +37,10 @@ extension BedrockService {
         return BedrockAgentRuntimeClient(config: config)
     }
     /// Retrieves information from a knowledge base for RAG applications
-    /// 
+    ///
     /// This method queries an Amazon Bedrock knowledge base to retrieve relevant information
     /// that can be used for Retrieval-Augmented Generation (RAG) applications.
-    /// 
+    ///
     /// - Parameters:
     ///   - knowledgeBaseId: The unique identifier of the knowledge base to query
     ///   - retrievalQuery: The query to search for in the knowledge base

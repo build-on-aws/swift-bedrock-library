@@ -23,7 +23,7 @@ import Foundation
 #endif
 
 /// Protocol for Amazon Bedrock Agent Runtime operations
-/// 
+///
 /// This protocol allows writing mocks for unit tests and provides a clean interface
 /// for knowledge base retrieval operations.
 public protocol BedrockAgentRuntimeProtocol: Sendable {

@@ -23,7 +23,7 @@ public struct RetrieveRequest: Sendable {
     public let retrievalQuery: String
     /// The number of results to return
     public let numberOfResults: Int
-    
+
     /// Creates a new retrieve request
     /// - Parameters:
     ///   - knowledgeBaseId: The unique identifier of the knowledge base to query
@@ -38,9 +38,9 @@ public struct RetrieveRequest: Sendable {
         self.retrievalQuery = retrievalQuery
         self.numberOfResults = numberOfResults
     }
-    
+
     internal var input: RetrieveInput {
-        return RetrieveInput(
+        RetrieveInput(
             knowledgeBaseId: knowledgeBaseId,
             retrievalConfiguration: BedrockAgentRuntimeClientTypes.KnowledgeBaseRetrievalConfiguration(
                 vectorSearchConfiguration: BedrockAgentRuntimeClientTypes.KnowledgeBaseVectorSearchConfiguration(
