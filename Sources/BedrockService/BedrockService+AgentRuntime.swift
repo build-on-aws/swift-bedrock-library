@@ -58,7 +58,8 @@ extension BedrockService {
 
         let input = RetrieveInput(
             knowledgeBaseId: knowledgeBaseId,
-            retrievalQuery: BedrockAgentRuntimeClientTypes.KnowledgeBaseQuery(text: retrievalQuery)
+            retrievalQuery: BedrockAgentRuntimeClientTypes.KnowledgeBaseQuery(text: retrievalQuery),
+            numberOfResults: numberOfResults
         )
 
         do {
