@@ -36,12 +36,16 @@ extension BedrockService {
         )
         return BedrockAgentRuntimeClient(config: config)
     }
-    /// Retrieves information from a knowledge base
+    /// Retrieves information from a knowledge base for RAG applications
+    /// 
+    /// This method queries an Amazon Bedrock knowledge base to retrieve relevant information
+    /// that can be used for Retrieval-Augmented Generation (RAG) applications.
+    /// 
     /// - Parameters:
     ///   - knowledgeBaseId: The unique identifier of the knowledge base to query
     ///   - retrievalQuery: The query to search for in the knowledge base
     ///   - numberOfResults: The number of results to return (optional, defaults to 3)
-    /// - Returns: RetrieveResult containing the retrieved results
+    /// - Returns: RetrieveResult containing the retrieved results with convenience methods
     /// - Throws: BedrockLibraryError or other errors from the underlying service
     public func retrieve(
         knowledgeBaseId: String,
