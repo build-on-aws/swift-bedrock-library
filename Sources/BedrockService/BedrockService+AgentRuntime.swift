@@ -56,14 +56,14 @@ extension BedrockService {
             ]
         )
 
-        let input = RetrieveInput(
+        let request = RetrieveRequest(
             knowledgeBaseId: knowledgeBaseId,
-            retrievalQuery: BedrockAgentRuntimeClientTypes.KnowledgeBaseQuery(text: retrievalQuery),
+            retrievalQuery: retrievalQuery,
             numberOfResults: numberOfResults
         )
 
         do {
-            let response = try await bedrockAgentRuntimeClient.retrieve(input: input)
+            let response = try await bedrockAgentRuntimeClient.retrieve(input: request.input)
             logger.trace("Successfully retrieved from knowledge base")
             return RetrieveResult(response)
         } catch {
