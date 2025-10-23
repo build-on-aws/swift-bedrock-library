@@ -31,22 +31,22 @@ struct SerializableResult: Codable {
 
 public struct RetrieveResult: Sendable {
     public let output: RetrieveOutput
-    
+
     public init(_ output: RetrieveOutput) {
         self.output = output
     }
-    
+
     public var results: [RAGRetrievalResult]? {
-        return output.retrievalResults
+        output.retrievalResults
     }
-    
+
     public func bestMatch() -> RAGRetrievalResult? {
-        return output.retrievalResults?.max { ($0.score ?? 0) < ($1.score ?? 0) }
+        output.retrievalResults?.max { ($0.score ?? 0) < ($1.score ?? 0) }
     }
-    
+
     public func toJSON() throws -> String {
         guard let results = output.retrievalResults else { return "[]" }
-        
+
         let serializableResults = results.map { result in
             SerializableResult(
                 content: result.content?.text,
@@ -54,7 +54,7 @@ public struct RetrieveResult: Sendable {
                 source: result.location?.s3Location?.uri
             )
         }
-        
+
         let jsonData = try JSONEncoder().encode(serializableResults)
         return String(data: jsonData, encoding: .utf8) ?? "[]"
     }

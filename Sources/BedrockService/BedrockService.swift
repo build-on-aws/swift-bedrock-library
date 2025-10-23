@@ -14,8 +14,8 @@
 //===----------------------------------------------------------------------===//
 
 @preconcurrency import AWSBedrock
-@preconcurrency import AWSBedrockRuntime
 @preconcurrency import AWSBedrockAgentRuntime
+@preconcurrency import AWSBedrockRuntime
 import AWSClientRuntime
 import AWSSSOOIDC
 import AwsCommonRuntimeKit
@@ -112,7 +112,7 @@ public struct BedrockService: Sendable {
                 metadata: ["authentication type": "\(authentication)"]
             )
         }
-        
+
         self.logger.trace(
             "Initialized SwiftBedrock",
             metadata: ["region": .string(region.rawValue)]

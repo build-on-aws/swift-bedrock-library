@@ -25,7 +25,7 @@ struct Main {
             print("Error:\n\(error)")
         }
     }
-    
+
     static func retrieve() async throws {
         var logger = Logger(label: "Retrieve")
         logger.logLevel = .debug
@@ -33,8 +33,8 @@ struct Main {
         let bedrock = try await BedrockService(
             region: .uswest2,
             logger: logger
-            // uncomment if you use SSO with AWS Identity Center
-            // authentication: .sso
+                // uncomment if you use SSO with AWS Identity Center
+                // authentication: .sso
         )
 
         let knowledgeBaseId = "EQ13XRVPLE"
@@ -54,7 +54,7 @@ struct Main {
         )
 
         print("Retrieved \(response.results?.count ?? 0) results:")
-        
+
         // Show best match using convenience function
         if let bestMatch = response.bestMatch() {
             print("\n--- Best Match (Score: \(bestMatch.score ?? 0)) ---")
@@ -62,7 +62,7 @@ struct Main {
                 print("Content: \(content)")
             }
         }
-        
+
         // Show all results using convenience property
         // if let results = response.results {
         //     for (index, result) in results.enumerated() {

@@ -14,8 +14,8 @@
 //===----------------------------------------------------------------------===//
 
 import AWSBedrock
-import AWSBedrockRuntime
 import AWSBedrockAgentRuntime
+import AWSBedrockRuntime
 import ClientRuntime
 import SmithyHTTPAuthAPI
 import SmithyIdentity

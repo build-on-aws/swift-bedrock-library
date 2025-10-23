@@ -48,10 +48,13 @@ extension BedrockService {
         retrievalQuery: String,
         numberOfResults: Int = 3
     ) async throws -> RetrieveResult {
-        logger.trace("Retrieving from knowledge base", metadata: [
-            "knowledgeBaseId": .string(knowledgeBaseId),
-            "numberOfResults": .stringConvertible(numberOfResults)
-        ])
+        logger.trace(
+            "Retrieving from knowledge base",
+            metadata: [
+                "knowledgeBaseId": .string(knowledgeBaseId),
+                "numberOfResults": .stringConvertible(numberOfResults),
+            ]
+        )
 
         let input = RetrieveInput(
             knowledgeBaseId: knowledgeBaseId,
