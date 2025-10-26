@@ -52,6 +52,24 @@ public struct RetrieveResult: Sendable {
         output.retrievalResults?.max { ($0.score ?? 0) < ($1.score ?? 0) }
     }
 
+    /// Returns the retrieval result with the highest relevance score, as a JSON String
+    /// - Returns: The best matching result as a JSON String, or an empty JSON object.
+    public func bestMatchAsJSON() throws -> String {
+        let match = self.bestMatch()
+
+        let serializableResults = results.map { result in
+            SerializableResult(
+                content: match?.content?.text,
+                score: match?.score,
+                source: match?.location?.s3Location?.uri
+            )
+        }
+
+        let jsonData = try JSONEncoder().encode(serializableResults)
+        return String(data: jsonData, encoding: .utf8) ?? "{}"
+        
+    }
+
     /// Converts the retrieval results to JSON format for use with language models
     /// - Returns: JSON string representation of the results
     /// - Throws: Error if JSON encoding fails
@@ -67,6 +85,6 @@ public struct RetrieveResult: Sendable {
         }
 
         let jsonData = try JSONEncoder().encode(serializableResults)
-        return String(data: jsonData, encoding: .utf8) ?? "[]"
+        return String(data: jsonData, encoding: .utf8) ?? "{}"
     }
 }
