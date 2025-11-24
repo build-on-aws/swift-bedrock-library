@@ -74,7 +74,8 @@ extension BedrockService {
             systemPrompts: systemPrompts,
             tools: tools,
             enableReasoning: enableReasoning,
-            maxReasoningTokens: maxReasoningTokens
+            maxReasoningTokens: maxReasoningTokens,
+            serviceTier: .default
         )
     }
 
@@ -109,7 +110,7 @@ extension BedrockService {
         tools: [Tool]? = nil,
         enableReasoning: Bool? = false,
         maxReasoningTokens: Int? = nil,
-        serviceTier: ServiceTier = .default
+        serviceTier: ServiceTier
     ) async throws -> ConverseReplyStream {
         do {
             guard model.hasConverseStreamingModality() else {
@@ -224,7 +225,8 @@ extension BedrockService {
                 stopSequences: builder.stopSequences,
                 systemPrompts: builder.systemPrompts,
                 tools: builder.tools,
-                maxReasoningTokens: builder.maxReasoningTokens
+                maxReasoningTokens: builder.maxReasoningTokens,
+                serviceTier: builder.serviceTier
             )
             return streamingResponse
         } catch {

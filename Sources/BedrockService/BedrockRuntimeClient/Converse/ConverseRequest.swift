@@ -57,7 +57,8 @@ public struct ConverseRequest {
             stopSequences: stopSequences,
             systemPrompts: systemPrompts,
             tools: tools,
-            maxReasoningTokens: maxReasoningTokens
+            maxReasoningTokens: maxReasoningTokens,
+            serviceTier: .default
         )
     }
 
@@ -71,7 +72,7 @@ public struct ConverseRequest {
         systemPrompts: [String]?,
         tools: [Tool]?,
         maxReasoningTokens: Int?,
-        serviceTier: ServiceTier = .default
+        serviceTier: ServiceTier
     ) {
         self.messages = messages
         self.model = model
