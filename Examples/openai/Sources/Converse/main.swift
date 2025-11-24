@@ -17,7 +17,7 @@ import BedrockService
 import Logging
 
 var logger = Logger(label: "OpenAIConverse")
-logger.logLevel = .trace
+logger.logLevel = .debug
 
 let bedrock = try await BedrockService(
     region: .uswest2,
