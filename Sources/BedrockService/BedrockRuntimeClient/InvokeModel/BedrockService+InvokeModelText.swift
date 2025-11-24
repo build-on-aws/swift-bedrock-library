@@ -49,7 +49,7 @@ extension BedrockService {
         topP: Double? = nil,
         topK: Int? = nil,
         stopSequences: [String]? = nil,
-        serviceTier: ServiceTier
+        serviceTier: ServiceTier = .default
     ) async throws -> TextCompletion {
         logger.trace(
             "Generating text completion",
