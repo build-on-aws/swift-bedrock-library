@@ -26,7 +26,8 @@ let bedrock = try await BedrockService(
 
 let textCompletion = try await bedrock.completeText(
     "Who are you?",
-    with: .openai_gpt_oss_20b
+    with: .openai_gpt_oss_20b,
+    // serviceTier: .default
 )
 
 if let reasoning = textCompletion.reasoning {

@@ -26,6 +26,7 @@ let bedrock = try await BedrockService(
 
 var builder = try ConverseRequestBuilder(with: .openai_gpt_oss_20b)
     .withPrompt("Who are you?")
+    .withServiceTier(.priority)
 
 var reply = try await bedrock.converse(with: builder)
 

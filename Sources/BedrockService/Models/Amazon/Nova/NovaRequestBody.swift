@@ -29,14 +29,16 @@ public struct NovaRequestBody: BedrockBodyCodable {
         temperature: Double?,
         topP: Double?,
         topK: Int?,
-        stopSequences: [String]?
+        stopSequences: [String]?,
+        serviceTier: ServiceTier
     ) {
         self.inferenceConfig = InferenceConfig(
             maxTokens: maxTokens,
             temperature: temperature,
             topP: topP,
             topK: topK,
-            stopSequences: stopSequences
+            stopSequences: stopSequences,
+            serviceTier: serviceTier
         )
         self.messages = [Message(role: .user, content: [Content(text: prompt)])]
     }
@@ -47,6 +49,7 @@ public struct NovaRequestBody: BedrockBodyCodable {
         let topP: Double?
         let topK: Int?
         let stopSequences: [String]?
+        let serviceTier: ServiceTier
     }
 
     private struct Message: Codable {

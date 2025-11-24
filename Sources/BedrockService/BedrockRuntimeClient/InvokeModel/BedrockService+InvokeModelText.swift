@@ -33,6 +33,7 @@ extension BedrockService {
     ///   - topP: Optional top-p parameter for nucleus sampling
     ///   - topK: Optional top-k parameter for filtering
     ///   - stopSequences: Optional array of sequences where generation should stop
+    ///   - serviceTier: An optional service tier .default | .priority | .flex
     /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
     ///           BedrockLibraryError.invalidParameter for invalid parameters
     ///           BedrockLibraryError.invalidPrompt for a prompt that is empty or too long
@@ -47,7 +48,8 @@ extension BedrockService {
         temperature: Double? = nil,
         topP: Double? = nil,
         topK: Int? = nil,
-        stopSequences: [String]? = nil
+        stopSequences: [String]? = nil,
+        serviceTier: ServiceTier = .default
     ) async throws -> TextCompletion {
         logger.trace(
             "Generating text completion",
@@ -60,6 +62,7 @@ extension BedrockService {
                 "topP": .stringConvertible(topP ?? "not defined"),
                 "topK": .stringConvertible(topK ?? "not defined"),
                 "stopSequences": .stringConvertible(stopSequences ?? "not defined"),
+                "serviceTier": .string(serviceTier.rawValue),
             ]
         )
         do {
@@ -88,7 +91,8 @@ extension BedrockService {
                 temperature: temperature,
                 topP: topP,
                 topK: topK,
-                stopSequences: stopSequences
+                stopSequences: stopSequences,
+                serviceTier: serviceTier
             )
             let input: InvokeModelInput = try request.getInvokeModelInput(forRegion: self.region)
             logger.trace(

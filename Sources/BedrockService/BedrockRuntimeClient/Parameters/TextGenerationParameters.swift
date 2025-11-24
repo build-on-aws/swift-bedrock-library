@@ -26,6 +26,7 @@ public struct TextGenerationParameters: Parameters {
     public let topK: Parameter<Int>
     public let prompt: PromptParams
     public let stopSequences: StopSequenceParams
+    public let serviceTier: ServiceTier
 
     public init(
         temperature: Parameter<Double>,
@@ -33,7 +34,8 @@ public struct TextGenerationParameters: Parameters {
         topP: Parameter<Double>,
         topK: Parameter<Int>,
         stopSequences: StopSequenceParams,
-        maxPromptSize: Int?
+        maxPromptSize: Int?,
+        serviceTier: ServiceTier = .default
     ) {
         self.temperature = temperature
         self.maxTokens = maxTokens
@@ -41,6 +43,7 @@ public struct TextGenerationParameters: Parameters {
         self.topK = topK
         self.prompt = PromptParams(maxSize: maxPromptSize)
         self.stopSequences = stopSequences
+        self.serviceTier = serviceTier
     }
 
     package func validate(

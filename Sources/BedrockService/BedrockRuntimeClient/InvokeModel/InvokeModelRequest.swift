@@ -55,7 +55,8 @@ struct InvokeModelRequest {
         temperature: Double?,
         topP: Double?,
         topK: Int?,
-        stopSequences: [String]?
+        stopSequences: [String]?,
+        serviceTier: ServiceTier
     ) throws -> InvokeModelRequest {
         try .init(
             model: model,
@@ -64,7 +65,8 @@ struct InvokeModelRequest {
             temperature: temperature,
             topP: topP,
             topK: topK,
-            stopSequences: stopSequences
+            stopSequences: stopSequences,
+            serviceTier: serviceTier
         )
     }
 
@@ -75,7 +77,8 @@ struct InvokeModelRequest {
         temperature: Double?,
         topP: Double?,
         topK: Int?,
-        stopSequences: [String]?
+        stopSequences: [String]?,
+        serviceTier: ServiceTier
     ) throws {
         let textModality = try model.getTextModality()
         let body: BedrockBodyCodable = try textModality.getTextRequestBody(
@@ -84,7 +87,8 @@ struct InvokeModelRequest {
             temperature: temperature,
             topP: topP,
             topK: topK,
-            stopSequences: stopSequences
+            stopSequences: stopSequences,
+            serviceTier: serviceTier
         )
         self.init(model: model, body: body)
     }

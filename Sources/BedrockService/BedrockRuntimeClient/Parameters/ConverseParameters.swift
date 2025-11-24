@@ -26,6 +26,7 @@ public struct ConverseParameters: Parameters {
     public let prompt: PromptParams
     public let stopSequences: StopSequenceParams
     public let maxReasoningTokens: Parameter<Int>
+    public let serviceTier: ServiceTier
 
     public init(
         temperature: Parameter<Double>,
@@ -33,7 +34,8 @@ public struct ConverseParameters: Parameters {
         topP: Parameter<Double>,
         stopSequences: StopSequenceParams,
         maxPromptSize: Int?,
-        maxReasoningTokens: Parameter<Int> = .notSupported(.maxReasoningTokens)
+        maxReasoningTokens: Parameter<Int> = .notSupported(.maxReasoningTokens),
+        serviceTier: ServiceTier = .default
     ) {
         self.temperature = temperature
         self.maxTokens = maxTokens
@@ -41,6 +43,7 @@ public struct ConverseParameters: Parameters {
         self.prompt = PromptParams(maxSize: maxPromptSize)
         self.stopSequences = stopSequences
         self.maxReasoningTokens = maxReasoningTokens
+        self.serviceTier = serviceTier
     }
 
     public init(
@@ -53,6 +56,7 @@ public struct ConverseParameters: Parameters {
         self.prompt = textGenerationParameters.prompt
         self.stopSequences = textGenerationParameters.stopSequences
         self.maxReasoningTokens = maxReasoningTokens
+        self.serviceTier = textGenerationParameters.serviceTier
     }
 
     package func validate(
