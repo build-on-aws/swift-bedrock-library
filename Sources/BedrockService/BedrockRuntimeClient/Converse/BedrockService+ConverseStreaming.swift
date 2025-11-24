@@ -90,6 +90,7 @@ extension BedrockService {
     ///   - tools: Optional array of tools the model can use
     ///   - enableReasoning: Optional flag to enable reasoning capabilities
     ///   - maxReasoningTokens: Optional maximum number of tokens for reasoning
+    ///   - serviceTier: Optional. The service tier to serve this request (.default | .priority | .flex)
     /// - Throws: BedrockLibraryError.notSupported for parameters or functionalities that are not supported
     ///           BedrockLibraryError.invalidParameter for invalid parameters
     ///           BedrockLibraryError.invalidPrompt if the prompt is empty or too long
@@ -107,7 +108,8 @@ extension BedrockService {
         systemPrompts: [String]? = nil,
         tools: [Tool]? = nil,
         enableReasoning: Bool? = false,
-        maxReasoningTokens: Int? = nil
+        maxReasoningTokens: Int? = nil,
+        serviceTier: ServiceTier = .default
     ) async throws -> ConverseReplyStream {
         do {
             guard model.hasConverseStreamingModality() else {
@@ -138,6 +140,7 @@ extension BedrockService {
                     "stopSequences": "\(String(describing: stopSequences))",
                     "systemPrompts": "\(String(describing: systemPrompts))",
                     "tools": "\(String(describing: tools))",
+                    "serviceTier": "\(serviceTier.rawValue)",
                 ]
             )
             let converseRequest = ConverseStreamingRequest(
@@ -149,7 +152,8 @@ extension BedrockService {
                 stopSequences: stopSequences,
                 systemPrompts: systemPrompts,
                 tools: tools,
-                maxReasoningTokens: maxReasoningTokens
+                maxReasoningTokens: maxReasoningTokens,
+                serviceTier: serviceTier
             )
 
             logger.trace("Creating ConverseStreamingInput")

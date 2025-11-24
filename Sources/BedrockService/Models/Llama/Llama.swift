@@ -45,7 +45,8 @@ struct LlamaText: TextModality, ConverseModality, ConverseStreamingModality, Cro
         temperature: Double?,
         topP: Double?,
         topK: Int?,
-        stopSequences: [String]?
+        stopSequences: [String]?,
+        serviceTier: ServiceTier
     ) throws -> BedrockBodyCodable {
         guard topK == nil else {
             throw BedrockLibraryError.notSupported("TopK is not supported for Llama text completion")
@@ -59,6 +60,9 @@ struct LlamaText: TextModality, ConverseModality, ConverseStreamingModality, Cro
             temperature: temperature ?? parameters.temperature.defaultValue,
             topP: topP ?? parameters.topP.defaultValue
         )
+
+        // service tier is ignored as per
+        // https://docs.aws.amazon.com/bedrock/latest/userguide/service-tiers-inference.html
     }
 
     func getTextResponseBody(from data: Data) throws -> ContainsTextCompletion {

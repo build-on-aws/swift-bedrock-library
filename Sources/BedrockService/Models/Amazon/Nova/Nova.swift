@@ -42,7 +42,8 @@ struct NovaText: TextModality, ConverseModality, ConverseStreamingModality, Cros
         temperature: Double?,
         topP: Double?,
         topK: Int?,
-        stopSequences: [String]?
+        stopSequences: [String]?,
+        serviceTier: ServiceTier
     ) throws -> BedrockBodyCodable {
         if topP != nil && temperature != nil {
             throw BedrockLibraryError.notSupported("Alter either topP or temperature, but not both.")
@@ -53,7 +54,8 @@ struct NovaText: TextModality, ConverseModality, ConverseStreamingModality, Cros
             temperature: temperature ?? parameters.temperature.defaultValue,
             topP: topP ?? parameters.topP.defaultValue,
             topK: topK ?? parameters.topK.defaultValue,
-            stopSequences: stopSequences ?? parameters.stopSequences.defaultValue
+            stopSequences: stopSequences ?? parameters.stopSequences.defaultValue,
+            serviceTier: serviceTier
         )
     }
 

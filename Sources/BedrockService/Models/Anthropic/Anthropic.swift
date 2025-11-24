@@ -55,7 +55,8 @@ struct AnthropicText: TextModality, ConverseModality, ConverseStreamingModality,
         temperature: Double?,
         topP: Double?,
         topK: Int?,
-        stopSequences: [String]?
+        stopSequences: [String]?,
+        serviceTier: ServiceTier
     ) throws -> BedrockBodyCodable {
         guard let maxTokens = maxTokens ?? parameters.maxTokens.defaultValue else {
             throw BedrockLibraryError.notFound("No value was given for maxTokens and no default value was found")
@@ -71,6 +72,8 @@ struct AnthropicText: TextModality, ConverseModality, ConverseStreamingModality,
             topK: topK ?? parameters.topK.defaultValue,
             stopSequences: stopSequences ?? parameters.stopSequences.defaultValue
         )
+        // service tier is ignored as per
+        // https://docs.aws.amazon.com/bedrock/latest/userguide/service-tiers-inference.html
     }
 
     func getTextResponseBody(from data: Data) throws -> ContainsTextCompletion {

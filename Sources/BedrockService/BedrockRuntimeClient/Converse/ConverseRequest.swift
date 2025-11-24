@@ -29,6 +29,7 @@ public struct ConverseRequest {
     let toolConfig: ToolConfig?
     let systemPrompts: [String]?
     let maxReasoningTokens: Int?
+    let serviceTier: ServiceTier
 
     @available(
         *,
@@ -69,7 +70,8 @@ public struct ConverseRequest {
         stopSequences: [String]?,
         systemPrompts: [String]?,
         tools: [Tool]?,
-        maxReasoningTokens: Int?
+        maxReasoningTokens: Int?,
+        serviceTier: ServiceTier = .default
     ) {
         self.messages = messages
         self.model = model
@@ -86,6 +88,7 @@ public struct ConverseRequest {
         } else {
             self.toolConfig = nil
         }
+        self.serviceTier = serviceTier
     }
 
     func getConverseInput(forRegion region: Region) throws -> ConverseInput {
@@ -94,6 +97,7 @@ public struct ConverseRequest {
             inferenceConfig: inferenceConfig?.getSDKInferenceConfig(),
             messages: try getSDKMessages(),
             modelId: model.getModelIdWithCrossRegionInferencePrefix(region: region),
+            serviceTier: BedrockRuntimeClientTypes.ServiceTier(type: .init(rawValue: serviceTier.rawValue)),
             system: getSDKSystemPrompts(),
             toolConfig: try toolConfig?.getSDKToolConfig()
         )

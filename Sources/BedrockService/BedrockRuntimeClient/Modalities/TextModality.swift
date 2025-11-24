@@ -29,7 +29,8 @@ public protocol TextModality: Modality {
         temperature: Double?,
         topP: Double?,
         topK: Int?,
-        stopSequences: [String]?
+        stopSequences: [String]?,
+        serviceTier: ServiceTier
     ) throws -> BedrockBodyCodable
 
     func getTextResponseBody(from data: Data) throws -> ContainsTextCompletion

@@ -24,12 +24,14 @@ public struct OpenAIRequestBody: BedrockBodyCodable {
     private let temperature: Double?
     private let top_p: Double?
     private let messages: [OpenAIMessage]
+    private let service_tier: ServiceTier
 
     public init(
         prompt: String,
         maxTokens: Int,
         temperature: Double?,
-        topP: Double?
+        topP: Double?,
+        serviceTier: ServiceTier
     ) {
         self.max_completion_tokens = maxTokens
         self.temperature = temperature
@@ -37,6 +39,7 @@ public struct OpenAIRequestBody: BedrockBodyCodable {
             OpenAIMessage(role: .user, content: prompt)
         ]
         self.top_p = topP
+        self.service_tier = serviceTier
     }
 
     private struct OpenAIMessage: Codable {

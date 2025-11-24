@@ -17,7 +17,7 @@ import BedrockService
 import Logging
 
 var logger = Logger(label: "OpenAIInvoke")
-logger.logLevel = .debug
+logger.logLevel = .trace
 
 let bedrock = try await BedrockService(
     region: .uswest2,
@@ -26,7 +26,8 @@ let bedrock = try await BedrockService(
 
 let textCompletion = try await bedrock.completeText(
     "Who are you?",
-    with: .openai_gpt_oss_20b
+    with: .openai_gpt_oss_20b,
+    // serviceTier: .default
 )
 
 if let reasoning = textCompletion.reasoning {
