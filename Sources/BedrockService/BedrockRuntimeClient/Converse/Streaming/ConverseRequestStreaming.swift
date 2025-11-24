@@ -23,6 +23,7 @@ extension ConverseStreamingRequest {
             inferenceConfig: inferenceConfig?.getSDKInferenceConfig(),
             messages: try getSDKMessages(),
             modelId: model.getModelIdWithCrossRegionInferencePrefix(region: region),
+            serviceTier: BedrockRuntimeClientTypes.ServiceTier(type: .init(rawValue: serviceTier.rawValue)),
             system: getSDKSystemPrompts(),
             toolConfig: try toolConfig?.getSDKToolConfig()
         )
