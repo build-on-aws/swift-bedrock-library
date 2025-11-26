@@ -81,6 +81,8 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
             self = BedrockModel.claude_opus_v4
         case BedrockModel.claude_sonnet_v4_5.id:
             self = BedrockModel.claude_sonnet_v4_5
+        case BedrockModel.claude_opus_v4_5.id:
+            self = BedrockModel.claude_opus_v4_5
         // titan
         case BedrockModel.titan_text_g1_premier.id:
             self = BedrockModel.titan_text_g1_premier
@@ -132,13 +134,21 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
 
     // MARK: Cross region inference
     public func getModelIdWithCrossRegionInferencePrefix(region: Region) -> String {
-        // If the model does not support cross region inference, return the model ID as is
-        guard let crossRegionInferenceModality = modality as? CrossRegionInferenceModality else {
-            return id
+
+        // If the model support global cross region inference, return the global ID first
+        if let globalCrossRegionInferenceModality = modality as? GlobalCrossRegionInferenceModality {
+            let prefix = globalCrossRegionInferenceModality.crossRegionPrefix()
+            return "\(prefix)\(id)"
         }
-        // If the model supports cross region inference, return the model ID with the appropriate prefix
-        let prefix = crossRegionInferenceModality.crossRegionPrefix(forRegion: region)
-        return "\(prefix)\(id)"
+
+        // If the model support cross region inference, return the regional ID
+        if let crossRegionInferenceModality = modality as? CrossRegionInferenceModality {
+            let prefix = crossRegionInferenceModality.crossRegionPrefix(forRegion: region)
+            return "\(prefix)\(id)"
+        }
+
+        // otherwise, returns the Id
+        return id
     }
 
     // MARK: Modality checks

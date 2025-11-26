@@ -67,8 +67,8 @@ struct AnthropicText: TextModality, ConverseModality, ConverseStreamingModality,
         return AnthropicRequestBody(
             prompt: prompt,
             maxTokens: maxTokens,
-            temperature: temperature ?? parameters.temperature.defaultValue,
-            topP: topP ?? parameters.topP.defaultValue,
+            temperature: temperature,
+            topP: topP,
             topK: topK ?? parameters.topK.defaultValue,
             stopSequences: stopSequences ?? parameters.stopSequences.defaultValue
         )
