@@ -13,6 +13,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+// https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html
+
 public protocol CrossRegionInferenceModality: Sendable {}
 extension CrossRegionInferenceModality {
     public func crossRegionPrefix(forRegion region: Region) -> String {
@@ -21,4 +23,9 @@ extension CrossRegionInferenceModality {
         if region.isAPRegion() { return "ap." }
         return ""
     }
+}
+
+public protocol GlobalCrossRegionInferenceModality: Sendable {}
+extension GlobalCrossRegionInferenceModality {
+    public func crossRegionPrefix() -> String { "global." }
 }
