@@ -160,4 +160,3 @@ struct Claude_Opus_v4_6: TextModality, ConverseModality, ConverseStreamingModali
         try anthropicText.getTextResponseBody(from: data)
     }
 }
-
