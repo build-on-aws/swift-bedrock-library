@@ -83,6 +83,8 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
             self = BedrockModel.claude_sonnet_v4_5
         case BedrockModel.claude_opus_v4_5.id:
             self = BedrockModel.claude_opus_v4_5
+        case BedrockModel.claude_opus_v4_6.id:
+            self = BedrockModel.claude_opus_v4_6
         // titan
         case BedrockModel.titan_text_g1_premier.id:
             self = BedrockModel.titan_text_g1_premier
