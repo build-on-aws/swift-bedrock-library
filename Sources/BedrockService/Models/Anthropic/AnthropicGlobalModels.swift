@@ -161,7 +161,6 @@ struct Claude_Opus_v4_6: TextModality, ConverseModality, ConverseStreamingModali
     }
 }
 
-
 struct Claude_Opus_v4_7: TextModality, ConverseModality, ConverseStreamingModality,
     GlobalCrossRegionInferenceModality
 {
