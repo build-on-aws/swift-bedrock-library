@@ -89,8 +89,8 @@ extension BedrockServiceTests {
 
         // when
         // create bedrock configuration with API Key authentication
-        let config: BedrockClient.BedrockClientConfiguration = try await BedrockService.prepareConfig(
-            initialConfig: BedrockClient.BedrockClientConfiguration(
+        let config: BedrockClient.BedrockClientConfig = try await BedrockService.prepareConfig(
+            initialConfig: BedrockClient.BedrockClientConfig(
                 region: "us-east-1"  // default region
             ),
             authentication: auth,
@@ -156,8 +156,8 @@ extension BedrockServiceTests {
         #expect(ProcessInfo.processInfo.environment["AWS_BEARER_TOKEN_BEDROCK"] == "some-bearer-token")
 
         // when
-        let _: BedrockClient.BedrockClientConfiguration = try await BedrockService.prepareConfig(
-            initialConfig: BedrockClient.BedrockClientConfiguration(
+        let _: BedrockClient.BedrockClientConfig = try await BedrockService.prepareConfig(
+            initialConfig: BedrockClient.BedrockClientConfig(
                 region: "us-east-1"  // default region
             ),
             authentication: auth,

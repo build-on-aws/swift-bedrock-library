@@ -146,8 +146,8 @@ public struct BedrockService: Sendable {
     ) async throws
         -> BedrockClient
     {
-        let config: BedrockClient.BedrockClientConfiguration = try await prepareConfig(
-            initialConfig: BedrockClient.BedrockClientConfiguration(region: region.rawValue),
+        let config: BedrockClient.BedrockClientConfig = try await prepareConfig(
+            initialConfig: BedrockClient.BedrockClientConfig(region: region.rawValue),
             authentication: authentication,
             logger: logger
         )
@@ -168,8 +168,8 @@ public struct BedrockService: Sendable {
         async throws
         -> BedrockRuntimeClient
     {
-        let config: BedrockRuntimeClient.BedrockRuntimeClientConfiguration = try await prepareConfig(
-            initialConfig: BedrockRuntimeClient.BedrockRuntimeClientConfiguration(
+        let config: BedrockRuntimeClient.BedrockRuntimeClientConfig = try await prepareConfig(
+            initialConfig: BedrockRuntimeClient.BedrockRuntimeClientConfig(
                 region: region.rawValue
             ),
             authentication: authentication,

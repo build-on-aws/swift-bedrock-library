@@ -33,9 +33,10 @@ concurrency:
 
 jobs:
   test-examples:
-    name: Test Examples/${{ matrix.examples }} on ${{ matrix.swift.swift_version }}
+    name: Test Examples/${{ matrix.examples }} on
     if: ${{ inputs.examples_enabled }}
     runs-on: ubuntu-latest
+    container: swift:6.3-amazonlinux2023
     strategy:
       fail-fast: false
       matrix:
@@ -43,6 +44,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Cache SPM dependencies
+        uses: actions/cache@v4
+        with:
+          path: Examples/${{ matrix.examples }}/.build
+          key: spm-${{ runner.os }}-${{ matrix.examples }}-${{ hashFiles(format('Examples/{0}/Package.swift', matrix.examples)) }}
+          restore-keys: |
+            spm-${{ runner.os }}-${{ matrix.examples }}-
 
       - name: Mark the workspace as safe
         run: git config --global --add safe.directory ${GITHUB_WORKSPACE}
@@ -56,9 +65,17 @@ jobs:
 
   playground-backend:
     runs-on: ubuntu-latest
+    container: swift:6.3-amazonlinux2023
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Cache SPM dependencies
+        uses: actions/cache@v4
+        with:
+          path: Examples/web-playground/backend/.build
+          key: spm-${{ runner.os }}-playground-backend-${{ hashFiles('Examples/web-playground/backend/Package.swift') }}
+          restore-keys: |
+            spm-${{ runner.os }}-playground-backend-
       - name: Web playground backend build
         working-directory: Examples/web-playground/backend
         run: swift build

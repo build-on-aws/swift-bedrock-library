@@ -31,4 +31,4 @@ public protocol BedrockClientProtocol: Sendable {
         -> ListFoundationModelsOutput
 }
 
-extension BedrockClient: @retroactive @unchecked Sendable, BedrockClientProtocol {}
+extension BedrockClient: BedrockClientProtocol {}

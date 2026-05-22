@@ -29,8 +29,8 @@ extension BedrockService {
         authentication: BedrockAuthentication,
         logger: Logging.Logger
     ) async throws -> BedrockAgentRuntimeClient {
-        let config: BedrockAgentRuntimeClient.BedrockAgentRuntimeClientConfiguration = try await prepareConfig(
-            initialConfig: BedrockAgentRuntimeClient.BedrockAgentRuntimeClientConfiguration(region: region.rawValue),
+        let config: BedrockAgentRuntimeClient.BedrockAgentRuntimeClientConfig = try await prepareConfig(
+            initialConfig: BedrockAgentRuntimeClient.BedrockAgentRuntimeClientConfig(region: region.rawValue),
             authentication: authentication,
             logger: logger
         )
