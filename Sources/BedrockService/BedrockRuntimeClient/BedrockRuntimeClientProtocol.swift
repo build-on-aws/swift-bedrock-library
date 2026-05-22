@@ -30,4 +30,4 @@ public protocol BedrockRuntimeClientProtocol: Sendable {
     func converseStream(input: ConverseStreamInput) async throws -> ConverseStreamOutput
 }
 
-extension BedrockRuntimeClient: @retroactive @unchecked Sendable, BedrockRuntimeClientProtocol {}
+extension BedrockRuntimeClient: BedrockRuntimeClientProtocol {}

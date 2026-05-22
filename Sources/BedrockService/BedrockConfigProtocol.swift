@@ -35,10 +35,6 @@ protocol BedrockConfigProtocol {
     var clientLogMode: ClientRuntime.ClientLogMode { get set }
 
 }
-extension BedrockClient.BedrockClientConfiguration: @retroactive @unchecked Sendable, BedrockConfigProtocol {}
-extension BedrockRuntimeClient.BedrockRuntimeClientConfiguration: @retroactive @unchecked Sendable,
-    BedrockConfigProtocol
-{}
-extension BedrockAgentRuntimeClient.BedrockAgentRuntimeClientConfiguration: @retroactive @unchecked Sendable,
-    BedrockConfigProtocol
-{}
+extension BedrockClient.BedrockClientConfig: BedrockConfigProtocol {}
+extension BedrockRuntimeClient.BedrockRuntimeClientConfig: BedrockConfigProtocol {}
+extension BedrockAgentRuntimeClient.BedrockAgentRuntimeClientConfig: BedrockConfigProtocol {}

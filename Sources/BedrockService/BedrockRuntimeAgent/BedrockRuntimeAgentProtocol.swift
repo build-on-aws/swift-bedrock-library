@@ -34,4 +34,4 @@ public protocol BedrockRuntimeAgentProtocol: Sendable {
     func retrieve(input: RetrieveInput) async throws -> RetrieveOutput
 }
 
-extension BedrockAgentRuntimeClient: @retroactive @unchecked Sendable, BedrockRuntimeAgentProtocol {}
+extension BedrockAgentRuntimeClient: BedrockRuntimeAgentProtocol {}
