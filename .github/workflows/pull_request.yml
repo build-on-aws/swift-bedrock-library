@@ -3,6 +3,8 @@ name: Build, tests & soundness checks
 on:
   pull_request:
     types: [opened, reopened, synchronize]
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions: read-all
