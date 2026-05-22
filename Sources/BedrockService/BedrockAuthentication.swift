@@ -25,10 +25,12 @@ import SmithyIdentity
 ///      Because `webidentity` is often used by application presenting a user interface. This method of authentication allows you to pass an optional closure that will be called when the credentials are retrieved. This is useful for updating the UI or notifying the user. The closure is called on the main (UI) thread.
 /// - `static`: Use static AWS credentials. We strongly recommend to not use this option in production. This might be useful in some rare cases when testing and debugging.
 /// - `apiKey`: Use an API key to authenticate. This is useful for applications that do not require full AWS credentials and only need to access specific APIs. The API key is passed as a string. API Keys are generated in the AWS console.
+/// - `login`: Use console credentials via `aws login` (AWS CLI v2.32.0+). This opens a browser-based sign-in flow and caches temporary credentials locally. The credentials auto-refresh every 15 minutes, valid up to 12 hours. Run `aws login` or `aws login --profile <profile_name>` before using this method. This works for non-sandboxed applications on machines with AWS CLI configured. See https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sign-in.html for more information.
 public enum BedrockAuthentication: Sendable, CustomStringConvertible {
     case `default`
     case profile(profileName: String = "default")
     case sso(profileName: String = "default")
+    case login(profileName: String = "default")
     case webIdentity(token: String, roleARN: String, region: Region, notification: @Sendable () -> Void = {})
     case `static`(accessKey: String, secretKey: String, sessionToken: String)
     case apiKey(key: String)
@@ -41,6 +43,8 @@ public enum BedrockAuthentication: Sendable, CustomStringConvertible {
             return "profile: \(profileName)"
         case .sso(let profileName):
             return "sso: \(profileName)"
+        case .login(let profileName):
+            return "login: \(profileName)"
         case .webIdentity(let token, let roleARN, let region, _):
             return "webIdentity: \(redactingSecret(secret: token)), roleARN: \(roleARN), region: \(region)"
         case .static(let accessKey, let secretKey, _):
@@ -69,6 +73,12 @@ public enum BedrockAuthentication: Sendable, CustomStringConvertible {
             return ProfileAWSCredentialIdentityResolver(profileName: profileName)
         case .sso(let profileName):
             return try? SSOAWSCredentialIdentityResolver(profileName: profileName)
+        case .login(let profileName):
+            return try LoginAWSCredentialIdentityResolver(
+                profileName: profileName,
+                configFilePath: nil,
+                credentialsFilePath: nil
+            )
         case .webIdentity(let token, let roleARN, let region, let notification):
             return try await webIdentityCredentialResolver(
                 withWebIdentity: token,

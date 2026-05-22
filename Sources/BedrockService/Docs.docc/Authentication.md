@@ -47,6 +47,21 @@ let bedrock = try await BedrockService(
 )
 ```
 
+## Console Login Authentication
+
+Use credentials from `aws login` (AWS CLI v2.32.0+). This opens a browser-based sign-in flow using your AWS Management Console credentials and caches temporary credentials locally. Run `aws login` first:
+
+```swift
+let bedrock = try await BedrockService(
+    region: .uswest2,
+    authentication: .login(profileName: "default")
+)
+```
+
+Credentials auto-refresh every 15 minutes and are valid up to 12 hours. After expiration, run `aws login` again.
+
+> Note: The `.default` authentication also picks up `aws login` credentials automatically through the credential provider chain. Use `.login` when you want to explicitly require console login credentials.
+
 ## Web Identity Token Authentication
 
 Use JWT tokens from external identity providers (ideal for iOS/macOS apps):
