@@ -30,6 +30,7 @@ public struct ConverseRequest {
     let systemPrompts: [String]?
     let maxReasoningTokens: Int?
     let serviceTier: ServiceTier
+    let outputFormat: OutputFormat?
 
     @available(
         *,
@@ -72,7 +73,8 @@ public struct ConverseRequest {
         systemPrompts: [String]?,
         tools: [Tool]?,
         maxReasoningTokens: Int?,
-        serviceTier: ServiceTier
+        serviceTier: ServiceTier,
+        outputFormat: OutputFormat? = nil
     ) {
         self.messages = messages
         self.model = model
@@ -90,14 +92,25 @@ public struct ConverseRequest {
             self.toolConfig = nil
         }
         self.serviceTier = serviceTier
+        self.outputFormat = outputFormat
     }
 
     func getConverseInput(forRegion region: Region) throws -> ConverseInput {
-        ConverseInput(
+        let sdkOutputConfig: BedrockRuntimeClientTypes.OutputConfig?
+        if let outputFormat {
+            sdkOutputConfig = BedrockRuntimeClientTypes.OutputConfig(
+                textFormat: try outputFormat.getSDKOutputFormat()
+            )
+        } else {
+            sdkOutputConfig = nil
+        }
+
+        return ConverseInput(
             additionalModelRequestFields: try getAdditionalModelRequestFields(),
             inferenceConfig: inferenceConfig?.getSDKInferenceConfig(),
             messages: try getSDKMessages(),
             modelId: model.getModelIdWithCrossRegionInferencePrefix(region: region),
+            outputConfig: sdkOutputConfig,
             serviceTier: BedrockRuntimeClientTypes.ServiceTier(type: .init(rawValue: serviceTier.rawValue)),
             system: getSDKSystemPrompts(),
             toolConfig: try toolConfig?.getSDKToolConfig()

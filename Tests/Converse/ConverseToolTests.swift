@@ -17,6 +17,82 @@ import Testing
 
 @testable import BedrockService
 
+// MARK: - Tool strict parameter tests
+
+@Suite("Tool Strict Parameter Tests")
+struct ToolStrictParameterTests {
+
+    @Test("Tool with strict true stores strict as true")
+    func toolWithStrictTrue() throws {
+        let tool = try Tool(
+            name: "my_tool",
+            inputSchema: JSON(with: .object(["type": .string("object")])),
+            description: "A test tool",
+            strict: true
+        )
+
+        #expect(tool.strict == true)
+    }
+
+    @Test("Tool without strict parameter defaults to false")
+    func toolWithoutStrictDefaultsToFalse() throws {
+        let tool = try Tool(
+            name: "my_tool",
+            inputSchema: JSON(with: .object(["type": .string("object")])),
+            description: "A test tool"
+        )
+
+        #expect(tool.strict == false)
+    }
+
+    @Test("getSDKToolSpecification returns strict true when strict is true")
+    func sdkToolSpecStrictTrue() throws {
+        let tool = try Tool(
+            name: "my_tool",
+            inputSchema: JSON(with: .object(["type": .string("object")])),
+            description: "A test tool",
+            strict: true
+        )
+
+        let spec = try tool.getSDKToolSpecification()
+
+        #expect(spec.strict == true)
+    }
+
+    @Test("getSDKToolSpecification returns strict nil when strict is false")
+    func sdkToolSpecStrictNil() throws {
+        let tool = try Tool(
+            name: "my_tool",
+            inputSchema: JSON(with: .object(["type": .string("object")])),
+            description: "A test tool",
+            strict: false
+        )
+
+        let spec = try tool.getSDKToolSpecification()
+
+        #expect(spec.strict == nil)
+    }
+
+    @Test("Backward compatibility: existing initializer without strict compiles and works")
+    func backwardCompatibility() throws {
+        // This test verifies that the existing initializer signature
+        // Tool(name:inputSchema:description:) still works without the strict parameter
+        let tool = try Tool(
+            name: "legacy_tool",
+            inputSchema: JSON(with: .object(["type": .string("object")])),
+            description: "A legacy tool"
+        )
+
+        #expect(tool.name == "legacy_tool")
+        #expect(tool.toolDescription == "A legacy tool")
+        #expect(tool.strict == false)
+
+        // Also verify the SDK spec omits strict (nil) for backward-compatible tools
+        let spec = try tool.getSDKToolSpecification()
+        #expect(spec.strict == nil)
+    }
+}
+
 // Converse tools
 extension BedrockServiceTests {
 

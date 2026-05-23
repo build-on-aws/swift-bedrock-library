@@ -18,11 +18,21 @@
 public typealias ConverseStreamingRequest = ConverseRequest
 extension ConverseStreamingRequest {
     func getConverseStreamingInput(forRegion region: Region) throws -> ConverseStreamInput {
-        ConverseStreamInput(
+        let sdkOutputConfig: BedrockRuntimeClientTypes.OutputConfig?
+        if let outputFormat {
+            sdkOutputConfig = BedrockRuntimeClientTypes.OutputConfig(
+                textFormat: try outputFormat.getSDKOutputFormat()
+            )
+        } else {
+            sdkOutputConfig = nil
+        }
+
+        return ConverseStreamInput(
             additionalModelRequestFields: try getAdditionalModelRequestFields(),
             inferenceConfig: inferenceConfig?.getSDKInferenceConfig(),
             messages: try getSDKMessages(),
             modelId: model.getModelIdWithCrossRegionInferencePrefix(region: region),
+            outputConfig: sdkOutputConfig,
             serviceTier: BedrockRuntimeClientTypes.ServiceTier(type: .init(rawValue: serviceTier.rawValue)),
             system: getSDKSystemPrompts(),
             toolConfig: try toolConfig?.getSDKToolConfig()
