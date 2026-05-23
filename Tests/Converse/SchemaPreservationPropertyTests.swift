@@ -106,26 +106,26 @@ struct SchemaPreservationPropertyTests {
         let innerProperties: [String: JSONValue] = [
             "street": .object(["type": .string("string")]),
             "city": .object(["type": .string("string")]),
-            "zip": .object(["type": .string("string")])
+            "zip": .object(["type": .string("string")]),
         ]
 
         let innerSchema: [String: JSONValue] = [
             "type": .string("object"),
             "properties": .object(innerProperties),
-            "required": .array([.string("street"), .string("city")])
+            "required": .array([.string("street"), .string("city")]),
         ]
 
         let outerProperties: [String: JSONValue] = [
             "name": .object(["type": .string("string")]),
             "age": .object(["type": .string("integer")]),
-            "address": .object(innerSchema)
+            "address": .object(innerSchema),
         ]
 
         let schemaObject: [String: JSONValue] = [
             "type": .string("object"),
             "properties": .object(outerProperties),
             "required": .array([.string("name")]),
-            "additionalProperties": .bool(false)
+            "additionalProperties": .bool(false),
         ]
 
         return JSON(with: .object(schemaObject))
@@ -143,16 +143,16 @@ struct SchemaPreservationPropertyTests {
 
         let arrayProp: [String: JSONValue] = [
             "type": .string("array"),
-            "items": .object(itemsSchema)
+            "items": .object(itemsSchema),
         ]
 
         let schemaObject: [String: JSONValue] = [
             "type": .string("object"),
             "properties": .object([
                 "items_list": .object(arrayProp),
-                "count": .object(["type": .string("integer")])
+                "count": .object(["type": .string("integer")]),
             ]),
-            "required": .array([.string("items_list")])
+            "required": .array([.string("items_list")]),
         ]
 
         return JSON(with: .object(schemaObject))

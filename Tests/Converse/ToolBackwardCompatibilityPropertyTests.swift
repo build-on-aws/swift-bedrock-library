@@ -94,11 +94,17 @@ struct ToolBackwardCompatibilityPropertyTests {
             )
 
             // Assert: strict defaults to false
-            #expect(tool.strict == false, "Tool created without strict parameter should have strict == false, but got true for name: \(name)")
+            #expect(
+                tool.strict == false,
+                "Tool created without strict parameter should have strict == false, but got true for name: \(name)"
+            )
 
             // Assert: SDK specification has strict == nil
             let spec = try tool.getSDKToolSpecification()
-            #expect(spec.strict == nil, "Tool created without strict parameter should have SDK strict == nil, but got \(String(describing: spec.strict)) for name: \(name)")
+            #expect(
+                spec.strict == nil,
+                "Tool created without strict parameter should have SDK strict == nil, but got \(String(describing: spec.strict)) for name: \(name)"
+            )
         }
     }
 

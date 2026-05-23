@@ -24,12 +24,14 @@ struct ConverseRequestBuilderOutputFormatTests {
 
     @Test("withOutputFormat stores the format on a supported model")
     func withOutputFormatStoresFormat() throws {
-        let schema = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "name": .object(["type": .string("string")])
+        let schema = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "name": .object(["type": .string("string")])
+                ]),
             ])
-        ]))
+        )
 
         let outputFormat = try OutputFormat(schema: schema, name: "test_schema", description: "A test schema")
 
@@ -43,12 +45,14 @@ struct ConverseRequestBuilderOutputFormatTests {
 
     @Test("withOutputFormat convenience with JSON schema stores the format")
     func withOutputFormatConvenienceJSON() throws {
-        let schema = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "age": .object(["type": .string("integer")])
+        let schema = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "age": .object(["type": .string("integer")])
+                ]),
             ])
-        ]))
+        )
 
         let builder = try ConverseRequestBuilder(with: .claudev3_5_sonnet)
             .withOutputFormat(schema: schema, name: "age_schema", description: "Age extraction")
@@ -152,13 +156,19 @@ struct ConverseRequestBuilderOutputFormatTests {
 
     @Test("init(from:) preserves outputFormat from source builder")
     func initFromPreservesOutputFormat() throws {
-        let schema = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "name": .object(["type": .string("string")])
+        let schema = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "name": .object(["type": .string("string")])
+                ]),
             ])
-        ]))
-        let outputFormat = try OutputFormat(schema: schema, name: "preserved_schema", description: "Should be preserved")
+        )
+        let outputFormat = try OutputFormat(
+            schema: schema,
+            name: "preserved_schema",
+            description: "Should be preserved"
+        )
 
         let sourceBuilder = try ConverseRequestBuilder(with: .claudev3_5_sonnet)
             .withPrompt("Test prompt")
@@ -185,18 +195,22 @@ struct ConverseRequestBuilderOutputFormatTests {
 
     @Test("Multiple withOutputFormat calls use the last one")
     func multipleWithOutputFormatUsesLast() throws {
-        let schema1 = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "name": .object(["type": .string("string")])
+        let schema1 = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "name": .object(["type": .string("string")])
+                ]),
             ])
-        ]))
-        let schema2 = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "age": .object(["type": .string("integer")])
+        )
+        let schema2 = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "age": .object(["type": .string("integer")])
+                ]),
             ])
-        ]))
+        )
 
         let format1 = try OutputFormat(schema: schema1, name: "first_schema", description: "First")
         let format2 = try OutputFormat(schema: schema2, name: "second_schema", description: "Second")

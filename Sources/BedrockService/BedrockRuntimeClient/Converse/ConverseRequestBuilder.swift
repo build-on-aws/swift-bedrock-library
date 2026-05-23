@@ -767,7 +767,11 @@ public struct ConverseRequestBuilder: Sendable {
     /// - Throws: `BedrockLibraryError.invalidModality` if the model doesn't support structured output.
     /// - Throws: `BedrockLibraryError.invalidName` if name is empty or contains invalid characters.
     /// - Throws: `BedrockLibraryError.invalid` if schema is null.
-    public func withOutputFormat(schema: JSON, name: String, description: String? = nil) throws
+    public func withOutputFormat(
+        schema: JSON,
+        name: String,
+        description: String? = nil
+    ) throws
         -> ConverseRequestBuilder
     {
         let format = try OutputFormat(schema: schema, name: name, description: description)
@@ -786,7 +790,11 @@ public struct ConverseRequestBuilder: Sendable {
     /// - Throws: `BedrockLibraryError.invalidModality` if the model doesn't support structured output.
     /// - Throws: `BedrockLibraryError.decodingError` if the schema string is not valid JSON.
     /// - Throws: `BedrockLibraryError.invalidName` if name is empty or contains invalid characters.
-    public func withOutputFormat(schema: String, name: String, description: String? = nil) throws
+    public func withOutputFormat(
+        schema: String,
+        name: String,
+        description: String? = nil
+    ) throws
         -> ConverseRequestBuilder
     {
         let format = try OutputFormat(schema: schema, name: name, description: description)

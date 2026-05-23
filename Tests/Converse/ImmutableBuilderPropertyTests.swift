@@ -40,7 +40,9 @@ struct ImmutableBuilderPropertyTests {
     /// Generates a random optional description
     private static func generateDescription() -> String? {
         guard Bool.random() else { return nil }
-        let words = ["extraction", "schema", "output", "format", "data", "result", "response", "model", "test", "config"]
+        let words = [
+            "extraction", "schema", "output", "format", "data", "result", "response", "model", "test", "config",
+        ]
         let wordCount = Int.random(in: 1...5)
         return (0..<wordCount).map { _ in words.randomElement()! }.joined(separator: " ")
     }

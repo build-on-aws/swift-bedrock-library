@@ -13,9 +13,9 @@
 //
 //===----------------------------------------------------------------------===//
 
+@preconcurrency import AWSBedrockRuntime
 import Testing
 
-@preconcurrency import AWSBedrockRuntime
 @testable import BedrockService
 
 @Suite("ConverseRequest OutputFormat Propagation Tests")
@@ -25,12 +25,14 @@ struct ConverseRequestOutputFormatTests {
 
     @Test("getConverseInput includes outputConfig when outputFormat is set")
     func getConverseInputIncludesOutputFormat() throws {
-        let schema = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "name": .object(["type": .string("string")])
+        let schema = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "name": .object(["type": .string("string")])
+                ]),
             ])
-        ]))
+        )
         let outputFormat = try OutputFormat(schema: schema, name: "test_schema", description: "A test")
 
         let message = Message("Hello")
@@ -59,12 +61,14 @@ struct ConverseRequestOutputFormatTests {
 
     @Test("getConverseInput outputConfig contains correct schema name and description")
     func getConverseInputOutputFormatDetails() throws {
-        let schema = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "age": .object(["type": .string("integer")])
+        let schema = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "age": .object(["type": .string("integer")])
+                ]),
             ])
-        ]))
+        )
         let outputFormat = try OutputFormat(schema: schema, name: "age_schema", description: "Age extraction")
 
         let message = Message("Extract age")
@@ -151,12 +155,14 @@ struct ConverseRequestOutputFormatTests {
 
     @Test("getConverseStreamingInput includes outputConfig when outputFormat is set")
     func getConverseStreamingInputIncludesOutputFormat() throws {
-        let schema = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "items": .object(["type": .string("array")])
+        let schema = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "items": .object(["type": .string("array")])
+                ]),
             ])
-        ]))
+        )
         let outputFormat = try OutputFormat(schema: schema, name: "items_schema")
 
         let message = Message("List items")
@@ -185,12 +191,14 @@ struct ConverseRequestOutputFormatTests {
 
     @Test("getConverseStreamingInput outputConfig contains correct schema details")
     func getConverseStreamingInputOutputFormatDetails() throws {
-        let schema = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "result": .object(["type": .string("string")])
+        let schema = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "result": .object(["type": .string("string")])
+                ]),
             ])
-        ]))
+        )
         let outputFormat = try OutputFormat(schema: schema, name: "stream_schema", description: "Streaming test")
 
         let message = Message("Stream this")

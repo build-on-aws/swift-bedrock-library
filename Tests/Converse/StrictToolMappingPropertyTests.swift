@@ -95,7 +95,10 @@ struct StrictToolMappingPropertyTests {
             #expect(tool.strict == true, "Tool created with strict: true should have strict == true for name: \(name)")
 
             let spec = try tool.getSDKToolSpecification()
-            #expect(spec.strict == true, "Tool with strict: true should have SDK strict == true, but got \(String(describing: spec.strict)) for name: \(name)")
+            #expect(
+                spec.strict == true,
+                "Tool with strict: true should have SDK strict == true, but got \(String(describing: spec.strict)) for name: \(name)"
+            )
         }
     }
 
@@ -114,10 +117,16 @@ struct StrictToolMappingPropertyTests {
                 strict: false
             )
 
-            #expect(tool.strict == false, "Tool created with strict: false should have strict == false for name: \(name)")
+            #expect(
+                tool.strict == false,
+                "Tool created with strict: false should have strict == false for name: \(name)"
+            )
 
             let spec = try tool.getSDKToolSpecification()
-            #expect(spec.strict == nil, "Tool with strict: false should have SDK strict == nil, but got \(String(describing: spec.strict)) for name: \(name)")
+            #expect(
+                spec.strict == nil,
+                "Tool with strict: false should have SDK strict == nil, but got \(String(describing: spec.strict)) for name: \(name)"
+            )
         }
     }
 

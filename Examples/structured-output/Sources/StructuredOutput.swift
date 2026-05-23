@@ -59,18 +59,18 @@ struct Main {
     static func demonstrateJsonSchemaOutput(bedrock: BedrockService, model: BedrockModel) async throws {
         // Define a JSON schema with multiple properties and required fields
         let schema = """
-        {
-            "type": "object",
-            "properties": {
-                "title": { "type": "string", "description": "The book title" },
-                "author": { "type": "string", "description": "The author name" },
-                "year": { "type": "integer", "description": "Publication year" },
-                "genre": { "type": "string", "description": "The book genre" }
-            },
-            "required": ["title", "author", "year"],
-            "additionalProperties": false
-        }
-        """
+            {
+                "type": "object",
+                "properties": {
+                    "title": { "type": "string", "description": "The book title" },
+                    "author": { "type": "string", "description": "The author name" },
+                    "year": { "type": "integer", "description": "Publication year" },
+                    "genre": { "type": "string", "description": "The book genre" }
+                },
+                "required": ["title", "author", "year"],
+                "additionalProperties": false
+            }
+            """
 
         let builder = try ConverseRequestBuilder(with: model)
             .withPrompt("Give me information about the novel '1984' by George Orwell. Return the data as JSON.")
@@ -87,17 +87,19 @@ struct Main {
         // Define a tool with strict: true for validated input parameters
         let tool = try Tool(
             name: "get_weather",
-            inputSchema: try JSON(from: """
-            {
-                "type": "object",
-                "properties": {
-                    "location": { "type": "string", "description": "City name" },
-                    "unit": { "type": "string", "enum": ["celsius", "fahrenheit"], "description": "Temperature unit" }
-                },
-                "required": ["location", "unit"],
-                "additionalProperties": false
-            }
-            """),
+            inputSchema: try JSON(
+                from: """
+                    {
+                        "type": "object",
+                        "properties": {
+                            "location": { "type": "string", "description": "City name" },
+                            "unit": { "type": "string", "enum": ["celsius", "fahrenheit"], "description": "Temperature unit" }
+                        },
+                        "required": ["location", "unit"],
+                        "additionalProperties": false
+                    }
+                    """
+            ),
             description: "Get the current weather for a location",
             strict: true
         )

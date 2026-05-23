@@ -26,12 +26,14 @@ struct OutputFormatTests {
 
     @Test("Create OutputFormat with valid JSON schema and valid name")
     func createWithValidJSONAndName() throws {
-        let schema = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "name": .object(["type": .string("string")])
+        let schema = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "name": .object(["type": .string("string")])
+                ]),
             ])
-        ]))
+        )
 
         let outputFormat = try OutputFormat(schema: schema, name: "test_schema")
 
@@ -206,12 +208,14 @@ struct OutputFormatTests {
 
     @Test("getSDKOutputFormat returns SDK type with .jsonSchema type")
     func sdkOutputFormatHasJsonSchemaType() throws {
-        let schema = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "name": .object(["type": .string("string")])
+        let schema = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "name": .object(["type": .string("string")])
+                ]),
             ])
-        ]))
+        )
 
         let outputFormat = try OutputFormat(schema: schema, name: "test_schema")
         let sdkFormat = try outputFormat.getSDKOutputFormat()
@@ -221,14 +225,16 @@ struct OutputFormatTests {
 
     @Test("getSDKOutputFormat schema string round-trips correctly")
     func sdkOutputFormatSchemaRoundTrips() throws {
-        let schema = JSON(with: .object([
-            "type": .string("object"),
-            "properties": .object([
-                "name": .object(["type": .string("string")]),
-                "age": .object(["type": .string("integer")])
-            ]),
-            "required": .array([.string("name"), .string("age")])
-        ]))
+        let schema = JSON(
+            with: .object([
+                "type": .string("object"),
+                "properties": .object([
+                    "name": .object(["type": .string("string")]),
+                    "age": .object(["type": .string("integer")]),
+                ]),
+                "required": .array([.string("name"), .string("age")]),
+            ])
+        )
 
         let outputFormat = try OutputFormat(schema: schema, name: "person_schema")
         let sdkFormat = try outputFormat.getSDKOutputFormat()
