@@ -26,12 +26,13 @@ public struct Tool: Codable, CustomStringConvertible, Sendable {
     public let name: String
     public let inputSchema: JSON
     public let toolDescription: String?
+    public let strict: Bool
 
-    public init(name: String, inputSchema: JSON, description: String? = nil) throws {
+    public init(name: String, inputSchema: JSON, description: String? = nil, strict: Bool = false) throws {
         guard !name.isEmpty else {
             throw BedrockLibraryError.invalidName("Tool name is not allowed to be empty")
         }
-        guard name.contains(/[a-zA-Z0-9_-]+/) else {
+        guard name.wholeMatch(of: /[a-zA-Z0-9_-]+/) != nil else {
             throw BedrockLibraryError.invalidName(
                 "Tool name must consist of only lowercase letter, uppercase letters, digits, underscores and hyphens"
             )
@@ -39,6 +40,7 @@ public struct Tool: Codable, CustomStringConvertible, Sendable {
         self.name = name
         self.inputSchema = inputSchema
         self.toolDescription = description
+        self.strict = strict
     }
 
     public init(from sdkToolSpecification: BedrockRuntimeClientTypes.ToolSpecification) throws {
@@ -61,15 +63,17 @@ public struct Tool: Codable, CustomStringConvertible, Sendable {
         self = try Tool(
             name: name,
             inputSchema: inputSchema,
-            description: sdkToolSpecification.description
+            description: sdkToolSpecification.description,
+            strict: sdkToolSpecification.strict ?? false
         )
     }
 
     public func getSDKToolSpecification() throws -> BedrockRuntimeClientTypes.ToolSpecification {
         BedrockRuntimeClientTypes.ToolSpecification(
-            description: description,
+            description: toolDescription,
             inputSchema: .json(try inputSchema.toDocument()),
-            name: name
+            name: name,
+            strict: strict ? true : nil
         )
     }
 

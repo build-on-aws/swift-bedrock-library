@@ -138,7 +138,7 @@ extension BedrockModel {
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
                 maxPromptSize: 200_000
             ),
-            features: [.textGeneration, .systemPrompts, .document, .toolUse]
+            features: [.textGeneration, .systemPrompts, .document, .toolUse, .structuredOutput]
         )
     )
     public static let claudev3_5_sonnet: BedrockModel = BedrockModel(
@@ -153,7 +153,7 @@ extension BedrockModel {
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
                 maxPromptSize: 200_000
             ),
-            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse]
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .structuredOutput]
         )
     )
     public static let claudev3_5_sonnet_v2: BedrockModel = BedrockModel(
@@ -168,7 +168,7 @@ extension BedrockModel {
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
                 maxPromptSize: 200_000
             ),
-            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse]
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .structuredOutput]
         )
     )
     public static let claudev3_7_sonnet: BedrockModel = BedrockModel(
@@ -183,7 +183,7 @@ extension BedrockModel {
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
                 maxPromptSize: 200_000
             ),
-            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning],
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning, .structuredOutput],
             maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
         )
     )
@@ -199,7 +199,7 @@ extension BedrockModel {
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
                 maxPromptSize: 200_000
             ),
-            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning],
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning, .structuredOutput],
             maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
         )
     )
@@ -215,7 +215,7 @@ extension BedrockModel {
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
                 maxPromptSize: 200_000
             ),
-            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning],
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning, .structuredOutput],
             maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
         )
     )
@@ -231,7 +231,7 @@ extension BedrockModel {
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
                 maxPromptSize: 200_000
             ),
-            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning],
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning, .structuredOutput],
             maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
         )
     )
@@ -247,7 +247,7 @@ extension BedrockModel {
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
                 maxPromptSize: 200_000
             ),
-            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning],
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning, .structuredOutput],
             maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
         )
     )
@@ -263,7 +263,7 @@ extension BedrockModel {
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
                 maxPromptSize: 200_000
             ),
-            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning],
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning, .structuredOutput],
             maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
         )
     )
@@ -279,7 +279,7 @@ extension BedrockModel {
                 stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
                 maxPromptSize: 1_000_000
             ),
-            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning],
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning, .structuredOutput],
             maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
         )
     )

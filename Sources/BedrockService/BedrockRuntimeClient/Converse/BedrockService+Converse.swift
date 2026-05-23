@@ -176,9 +176,19 @@ extension BedrockService {
             var history = builder.history
             let userMessage = try builder.getUserMessage()
             history.append(userMessage)
-            let assistantMessage: Message = try await converse(
-                with: builder.model,
-                conversation: history,
+
+            let modality = try builder.model.getConverseModality()
+            let parameters = modality.getConverseParameters()
+            try parameters.validate(
+                maxTokens: builder.maxTokens,
+                temperature: builder.temperature,
+                topP: builder.topP,
+                stopSequences: builder.stopSequences
+            )
+
+            let converseRequest = ConverseRequest(
+                model: builder.model,
+                messages: history,
                 maxTokens: builder.maxTokens,
                 temperature: builder.temperature,
                 topP: builder.topP,
@@ -186,8 +196,14 @@ extension BedrockService {
                 systemPrompts: builder.systemPrompts,
                 tools: builder.tools,
                 maxReasoningTokens: builder.maxReasoningTokens,
-                serviceTier: builder.serviceTier
+                serviceTier: builder.serviceTier,
+                outputFormat: builder.outputFormat
             )
+
+            let input = try converseRequest.getConverseInput(forRegion: self.region)
+            let response: ConverseOutput = try await self.bedrockRuntimeClient.converse(input: input)
+
+            let assistantMessage = try Message(response)
             history.append(assistantMessage)
             logger.trace(
                 "Received message",
@@ -195,8 +211,7 @@ extension BedrockService {
             )
             return try ConverseReply(history)
         } catch {
-            logger.trace("Error while conversing", metadata: ["error": "\(error)"])
-            throw error
+            try handleCommonError(error, context: "invoking converse")
         }
     }
 }

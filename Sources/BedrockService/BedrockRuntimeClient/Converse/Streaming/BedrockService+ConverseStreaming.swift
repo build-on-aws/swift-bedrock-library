@@ -216,9 +216,26 @@ extension BedrockService {
             var history = builder.history
             let userMessage = try builder.getUserMessage()
             history.append(userMessage)
-            let streamingResponse = try await converseStream(
-                with: builder.model,
-                conversation: history,
+
+            guard builder.model.hasConverseStreamingModality() else {
+                throw BedrockLibraryError.invalidModality(
+                    builder.model,
+                    try builder.model.getConverseModality(),
+                    "This model does not support converse streaming."
+                )
+            }
+            let modality = try builder.model.getConverseModality()
+            let parameters = modality.getConverseParameters()
+            try parameters.validate(
+                maxTokens: builder.maxTokens,
+                temperature: builder.temperature,
+                topP: builder.topP,
+                stopSequences: builder.stopSequences
+            )
+
+            let converseRequest = ConverseStreamingRequest(
+                model: builder.model,
+                messages: history,
                 maxTokens: builder.maxTokens,
                 temperature: builder.temperature,
                 topP: builder.topP,
@@ -226,12 +243,23 @@ extension BedrockService {
                 systemPrompts: builder.systemPrompts,
                 tools: builder.tools,
                 maxReasoningTokens: builder.maxReasoningTokens,
-                serviceTier: builder.serviceTier
+                serviceTier: builder.serviceTier,
+                outputFormat: builder.outputFormat
             )
-            return streamingResponse
+
+            let input = try converseRequest.getConverseStreamingInput(forRegion: self.region)
+            let response: ConverseStreamOutput = try await self.bedrockRuntimeClient.converseStream(input: input)
+
+            guard let sdkStream = response.stream else {
+                throw BedrockLibraryError.invalidSDKResponse(
+                    "The response stream is missing. This error should never happen."
+                )
+            }
+
+            let reply = try ConverseReplyStream(sdkStream, logger: logger)
+            return reply
         } catch {
-            logger.trace("Error while conversing", metadata: ["error": "\(error)"])
-            throw error
+            try handleCommonError(error, context: "invoking converse stream")
         }
     }
 }

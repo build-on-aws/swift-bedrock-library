@@ -53,7 +53,7 @@ struct ExampleTests {
 
 - Use `swift format` (not `swift-format`) for formatting.
 - Use `swift build` and `swift test` for building and testing.
-- Run SPM commands (`swift build`, `swift test`, `swift package`) sequentially — never in parallel. SPM applies a directory-level lock, so concurrent invocations will fail.
+- Run SPM commands (`swift build`, `swift test`, `swift package`) sequentially — never in parallel. SPM applies a directory-level lock, so concurrent invocations will timeout.
 
 ## API Design (Swift conventions)
 

@@ -38,6 +38,7 @@ Package.resolved
 **/*.code-snippets
 .DS_Store
 .licenseignore
+**/*.kiro
 **/*.entitlements
 .nojekyll
 docs/**

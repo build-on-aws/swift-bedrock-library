@@ -70,6 +70,9 @@ public struct ConverseRequestBuilder: Sendable {
     /// The service tier for the inference request.
     public private(set) var serviceTier: ServiceTier = .default
 
+    /// The structured output format configuration, if any.
+    public private(set) var outputFormat: OutputFormat?
+
     // MARK - Initializers
 
     /// Creates a new builder for the specified Bedrock model.
@@ -100,7 +103,7 @@ public struct ConverseRequestBuilder: Sendable {
     /// - Parameter builder: The builder to copy configuration from.
     /// - Throws: `BedrockLibraryError` if validation fails during configuration copy.
     public init(from builder: ConverseRequestBuilder) throws {
-        self = try ConverseRequestBuilder(with: builder.model)
+        var copy = try ConverseRequestBuilder(with: builder.model)
             .withHistory(builder.history)
             .withTemperature(builder.temperature)
             .withTopP(builder.topP)
@@ -110,6 +113,8 @@ public struct ConverseRequestBuilder: Sendable {
             .withTools(builder.tools)
             .withReasoning(enabled: builder.enableReasoning, maxReasoningTokens: builder.maxReasoningTokens)
             .withServiceTier(builder.serviceTier)
+        copy.outputFormat = builder.outputFormat
+        self = copy
     }
 
     /// Creates a new builder from an existing builder with updated conversation history from a reply.
@@ -731,6 +736,69 @@ public struct ConverseRequestBuilder: Sendable {
         var copy = self
         copy.serviceTier = serviceTier
         return copy
+    }
+
+    // MARK - builder methods - structured output
+
+    /// Sets the structured output format for the request.
+    ///
+    /// Structured output constrains the model's response to conform to the specified JSON schema.
+    /// The model must support the `.structuredOutput` converse feature.
+    ///
+    /// - Parameter outputFormat: The output format configuration containing the JSON schema.
+    /// - Returns: A new builder with the output format set.
+    /// - Throws: `BedrockLibraryError.invalidModality` if the model doesn't support structured output.
+    public func withOutputFormat(_ outputFormat: OutputFormat) throws -> ConverseRequestBuilder {
+        try validateFeature(.structuredOutput)
+        var copy = self
+        copy.outputFormat = outputFormat
+        return copy
+    }
+
+    /// Sets the structured output format from a JSON schema value.
+    ///
+    /// Convenience method that creates an `OutputFormat` and configures the builder.
+    ///
+    /// - Parameters:
+    ///   - schema: A valid JSON value representing the schema.
+    ///   - name: A name for the schema matching `[a-zA-Z0-9_-]+`.
+    ///   - description: An optional description of what the schema represents.
+    /// - Returns: A new builder with the output format set.
+    /// - Throws: `BedrockLibraryError.invalidModality` if the model doesn't support structured output.
+    /// - Throws: `BedrockLibraryError.invalidName` if name is empty or contains invalid characters.
+    /// - Throws: `BedrockLibraryError.invalid` if schema is null.
+    public func withOutputFormat(
+        schema: JSON,
+        name: String,
+        description: String? = nil
+    ) throws
+        -> ConverseRequestBuilder
+    {
+        let format = try OutputFormat(schema: schema, name: name, description: description)
+        return try self.withOutputFormat(format)
+    }
+
+    /// Sets the structured output format from a JSON schema string.
+    ///
+    /// Convenience method that parses the JSON string, creates an `OutputFormat`, and configures the builder.
+    ///
+    /// - Parameters:
+    ///   - schema: A syntactically valid JSON string representing the schema.
+    ///   - name: A name for the schema matching `[a-zA-Z0-9_-]+`.
+    ///   - description: An optional description of what the schema represents.
+    /// - Returns: A new builder with the output format set.
+    /// - Throws: `BedrockLibraryError.invalidModality` if the model doesn't support structured output.
+    /// - Throws: `BedrockLibraryError.decodingError` if the schema string is not valid JSON.
+    /// - Throws: `BedrockLibraryError.invalidName` if name is empty or contains invalid characters.
+    public func withOutputFormat(
+        schema: String,
+        name: String,
+        description: String? = nil
+    ) throws
+        -> ConverseRequestBuilder
+    {
+        let format = try OutputFormat(schema: schema, name: name, description: description)
+        return try self.withOutputFormat(format)
     }
 
     // MARK - public methods
