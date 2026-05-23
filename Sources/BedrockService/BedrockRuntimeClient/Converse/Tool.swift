@@ -32,7 +32,7 @@ public struct Tool: Codable, CustomStringConvertible, Sendable {
         guard !name.isEmpty else {
             throw BedrockLibraryError.invalidName("Tool name is not allowed to be empty")
         }
-        guard name.contains(/[a-zA-Z0-9_-]+/) else {
+        guard name.wholeMatch(of: /[a-zA-Z0-9_-]+/) != nil else {
             throw BedrockLibraryError.invalidName(
                 "Tool name must consist of only lowercase letter, uppercase letters, digits, underscores and hyphens"
             )

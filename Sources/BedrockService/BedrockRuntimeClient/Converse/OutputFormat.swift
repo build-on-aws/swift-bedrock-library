@@ -43,7 +43,7 @@ public struct OutputFormat: Codable, Sendable {
         guard !name.isEmpty else {
             throw BedrockLibraryError.invalidName("OutputFormat name is not allowed to be empty")
         }
-        guard name.contains(/[a-zA-Z0-9_-]+/) else {
+        guard name.wholeMatch(of: /[a-zA-Z0-9_-]+/) != nil else {
             throw BedrockLibraryError.invalidName(
                 "OutputFormat name must consist of only lowercase letter, uppercase letters, digits, underscores and hyphens"
             )
