@@ -186,6 +186,8 @@ public struct MockBedrockRuntimeClient: BedrockRuntimeClientProtocol {
         switch model?.modality.getName() {
         case "Amazon Image Generation":
             return InvokeModelOutput(body: try getImageGeneration(body: inputBody))
+        case "Stability Image Generation":
+            return InvokeModelOutput(body: try getStabilityImageGeneration(body: inputBody))
         case "Nova Text Generation":
             return InvokeModelOutput(body: try invokeNovaModel(body: inputBody))
         case "Titan Text Generation":
@@ -221,6 +223,26 @@ public struct MockBedrockRuntimeClient: BedrockRuntimeClientProtocol {
                 "images": [
                     \(imageArray.joined(separator: ",\n                "))
                 ]
+            }
+            """.data(using: .utf8)!
+    }
+
+    private func getStabilityImageGeneration(body: Data) throws -> Data {
+        guard
+            let json = try? JSONSerialization.jsonObject(with: body, options: []) as? [String: Any],
+            json["prompt"] as? String != nil
+        else {
+            throw AWSBedrockRuntime.ValidationException(
+                message: "Malformed input request, please reformat your input and try again."
+            )
+        }
+        let mockBase64Image =
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+        return """
+            {
+                "seeds": [0],
+                "finish_reasons": [null],
+                "images": ["\(mockBase64Image)"]
             }
             """.data(using: .utf8)!
     }

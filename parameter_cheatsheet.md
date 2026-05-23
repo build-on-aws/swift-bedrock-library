@@ -226,3 +226,41 @@
 | negativePrompt | 512       |
 | colors         | 10        |
 
+### Stability AI
+
+[user guide](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-stability-diffusion.html)
+
+Stability models on Bedrock are available in `us-west-2` only. They generate
+exactly **one image per call** (no `numberOfImages` field). They do not accept
+`cfgScale` or `quality`. Resolutions are expressed via `aspect_ratio`; the
+library maps `ImageResolution` to the closest supported ratio.
+
+Supported aspect ratios: `16:9`, `1:1`, `21:9`, `2:3`, `3:2`, `4:5`, `5:4`,
+`9:16`, `9:21`.
+
+#### Common to all Stability models
+
+| parameter  | minValue | maxValue      | defaultValue |
+| ---------- | -------- | ------------- | ------------ |
+| nrOfImages | 1        | 1             | 1            |
+| seed       | 0        | 4_294_967_295 | 0            |
+
+| parameter | supported |
+| --------- | --------- |
+| cfgScale  | no        |
+| quality   | no        |
+
+#### `stability.stable-image-core-v1:1` / `stability.stable-image-ultra-v1:1`
+
+| parameter      | maxLength | supported |
+| -------------- | --------- | --------- |
+| prompt         | 10_000    | yes       |
+| negativePrompt | -         | no        |
+
+#### `stability.sd3-5-large-v1:0`
+
+| parameter      | maxLength | supported |
+| -------------- | --------- | --------- |
+| prompt         | 10_000    | yes       |
+| negativePrompt | 10_000    | yes       |
+

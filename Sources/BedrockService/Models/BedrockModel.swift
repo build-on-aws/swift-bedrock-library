@@ -131,6 +131,10 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
         // OpenAI
         case BedrockModel.openai_gpt_oss_20b.id: self = BedrockModel.openai_gpt_oss_20b
         case BedrockModel.openai_gpt_oss_120b.id: self = BedrockModel.openai_gpt_oss_120b
+        // stability
+        case BedrockModel.stable_image_core.id: self = BedrockModel.stable_image_core
+        case BedrockModel.stable_image_ultra.id: self = BedrockModel.stable_image_ultra
+        case BedrockModel.sd3_5_large.id: self = BedrockModel.sd3_5_large
         default:
             return nil
         }

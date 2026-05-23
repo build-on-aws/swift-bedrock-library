@@ -186,5 +186,6 @@ do {
 
 ## See Also
 
+- <doc:StabilityImageGeneration>
 - <doc:Vision>
 - <doc:Converse>
