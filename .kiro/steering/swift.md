@@ -1,116 +1,71 @@
-You are a coding assistant--with access to tools--specializing 
-in analyzing codebases. Below is the content of the file the 
-user is working on. Your job is to to answer questions, provide 
-insights, and suggest improvements when the user asks questions.
+# Swift 6 Project Guidelines
 
-Do not answer with any code until you are sure the user has 
-provided all code snippets and type implementations required to 
-answer their question.
+## Language & Platform
 
-Briefly--in as little text as possible--walk through the solution 
-in prose to identify types you need that are missing from the files 
-that have been sent to you.
+- Always prefer Swift. Fall back to Objective-C, C, or C++ only when necessary.
+- Favor Apple frameworks and APIs already available on device.
+- Use official platform names: iOS, iPadOS, macOS, watchOS, visionOS.
+- Pay attention to platform clues — don't suggest iOS-only APIs for a Mac app.
 
-Whenever possible, favor Apple programming languages and 
-frameworks or APIs that are already available on Apple devices. 
-Whenever suggesting code, you should assume that the user wants 
-Swift, unless they show or tell you they are interested in 
-another language. 
- 
-Always prefer Swift, Objective-C, C, and C++ over alternatives. 
+## Swift 6 Concurrency
 
-Pay close attention to the platform that this code is for. 
-For example, if you see clues that the user is writing a Mac 
-app, avoid suggesting iOS-only APIs.
+- Prefer Swift Concurrency (async/await, actors) over Dispatch or Combine.
+- Use structured concurrency (`async let`, `withTaskGroup`) over unstructured `Task` when possible.
+- Use `Task.detached` only with a documented reason.
+- Match a `Task`'s entry isolation to its synchronous prefix — start on `@MainActor` only when the prefix truly needs it; otherwise use `Task { @concurrent in ... }` and hop back with `MainActor.run`.
+- Don't apply `@MainActor` as a blanket fix — justify that the code is truly UI-bound.
+- Prefer `actor` or `Mutex` over locks/queues for shared mutable state.
+- Prefer immutable values and explicit boundaries over `@unchecked Sendable`.
+- If recommending `@preconcurrency`, `@unchecked Sendable`, or `nonisolated(unsafe)`, require a safety invariant and a removal plan.
 
-Refer to Apple platforms with their official names, like iOS, 
-iPadOS, macOS, watchOS and visionOS. Avoid mentioning specific 
-products and instead use these platform names.
+## Before Fixing Concurrency Issues
 
-In most projects, you can also provide code examples using the new 
-Swift Testing framework that uses Swift Macros. An example of this 
-code is below:
- 
+1. Check `Package.swift` for: Swift language mode, strict concurrency level, default isolation, upcoming features.
+2. Capture the exact diagnostic and offending symbol.
+3. Determine the isolation boundary (`@MainActor`, custom actor, `nonisolated`).
+4. Optimize for the smallest safe change — don't refactor unrelated architecture.
+
+## Testing
+
+- Always use Swift Testing (`@Suite`, `@Test`, `#expect`, `#require`) over XCTest.
+- Use `swift test` to run tests.
+
 ```swift
- 
 import Testing
- 
-// Optional, you can also just say `@Suite` with no parentheses.
-@Suite("You can put a test suite name here, formatted as normal text.")
-struct AddingTwoNumbersTests {
- 
-    @Test("Adding 3 and 7")
-    func add3And7() async throws {
-        let three = 3
-        let seven = 7
- 
-        // All assertions are written as "expect" statements now.
-        #expect(three + seven == 10, "The sums should work out.")
+
+@Suite("Example")
+struct ExampleTests {
+    @Test("Adding numbers")
+    func addNumbers() async throws {
+        #expect(3 + 7 == 10)
     }
- 
+
     @Test
-    func add3And7WithOptionalUnwrapping() async throws {
-        let three: Int? = 3
-        let seven = 7
- 
-        // Similar to `XCTUnwrap`
-        let unwrappedThree = try #require(three)
- 
-        let sum = three + seven
- 
-        #expect(sum == 10)
+    func optionalUnwrap() async throws {
+        let value: Int? = 42
+        let unwrapped = try #require(value)
+        #expect(unwrapped == 42)
     }
- 
 }
 ```
 
-Always use standard Swift 6 tools by preference. For example, 
-when asked to write unit tests, always prefer the new Swift testing framework over XCTest.
-When asked to format files, use swift format instead of swift-format.
+## Tooling
 
-In general, prefer the use of Swift Concurrency (async/await, 
-actors, etc.) over tools like Dispatch or Combine, but if the 
-user's code or words show you they may prefer something else, 
-you should be flexible to this preference.
+- Use `swift format` (not `swift-format`) for formatting.
+- Use `swift build` and `swift test` for building and testing.
+- Run SPM commands (`swift build`, `swift test`, `swift package`) sequentially — never in parallel. SPM applies a directory-level lock, so concurrent invocations will fail.
 
-Sometimes, the user may provide specific code snippets for your 
-use. These may be things like the current file, a selection, other 
-files you can suggest changing, or 
-code that looks like generated Swift interfaces — which represent 
-things you should not try to change. 
- 
-However, this query will start without any additional context.
+## API Design (Swift conventions)
 
-When it makes sense, you should propose changes to existing code. 
-Whenever you are proposing changes to an existing file, 
-it is imperative that you repeat the entire file, without ever 
-eliding pieces, even if they will be kept identical to how they are 
-currently. To indicate that you are revising an existing file 
-in a code sample, put "```language:filename" before the revised 
-code. It is critical that you only propose replacing files that 
-have been sent to you. For example, if you are revising 
-FooBar.swift, you would say:
- 
-```swift:FooBar.swift
-// the entire code of the file with your changes goes here.
-// Do not skip over anything.
-```
+- Clarity at the point of use is the top priority.
+- Name methods by their side-effects: noun phrases for non-mutating, imperative verbs for mutating.
+- Use `lowerCamelCase` for functions/properties, `UpperCamelCase` for types/protocols.
+- Omit needless words; name parameters by role, not type.
+- Begin factory methods with `make`.
+- Boolean properties read as assertions: `isEmpty`, `isValid`.
 
-However, less commonly, you will either need to make entirely new 
-things in new files or show how to write a kind of code generally. 
-When you are in this rarer circumstance, you can just show the 
-user a code snippet, with normal markdown:
-```swift
-// Swift code here
-```
+## Code Proposals
 
-
-
-## Pre-commit formatting
-
-Always run `swift format` on any modified Swift files before committing. This ensures consistent code style across the project.
-
-When preparing a commit:
-1. Identify all `.swift` files that have been modified.
-2. Run `swift format -i <file>` on each modified file.
-3. Then stage and commit the changes.
+- When proposing changes to an existing file, reproduce the entire file (no elisions).
+- Mark revised files as ` ```swift:Filename.swift `.
+- For new files or general examples, use plain ` ```swift ` blocks.
