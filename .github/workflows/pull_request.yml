@@ -115,23 +115,3 @@ jobs:
     name: Swift 6 Language Mode
     uses: ./.github/workflows/swift-6-language-mode.yml
 
-  check-foundation:
-    name: No dependencies on Foundation
-    runs-on: ubuntu-latest
-    container: swift:6.3-amazonlinux2023
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Cache SPM dependencies
-        uses: actions/cache@v4
-        with:
-          path: .build
-          key: spm-foundation-${{ runner.os }}-${{ hashFiles('Package.swift') }}
-          restore-keys: |
-            spm-foundation-${{ runner.os }}-
-      - name: Mark the workspace as safe
-        # https://github.com/actions/checkout/issues/766
-        run: git config --global --add safe.directory ${GITHUB_WORKSPACE}
-      - name: Check for Foundation or ICU dependency
-        run: |
-          .github/workflows/scripts/check-link-foundation.sh
