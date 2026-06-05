@@ -33,6 +33,10 @@ public struct Role: Codable, Sendable, Equatable, CustomStringConvertible {
         switch sdkConversationRole {
         case .user: self.type = .user
         case .assistant: self.type = .assistant
+        case .system:
+            throw BedrockLibraryError.notImplemented(
+                "Role system is not yet supported by the Swift Bedrock Library"
+            )
         case .sdkUnknown(let unknownRole):
             throw BedrockLibraryError.notImplemented(
                 "Role \(unknownRole) is not implemented by BedrockRuntimeClientTypes"
