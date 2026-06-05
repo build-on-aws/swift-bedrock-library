@@ -37,6 +37,10 @@ public struct Role: Codable, Sendable, Equatable, CustomStringConvertible {
             throw BedrockLibraryError.notImplemented(
                 "Role \(unknownRole) is not implemented by BedrockRuntimeClientTypes"
             )
+        @unknown default:
+            throw BedrockLibraryError.notImplemented(
+                "Role \(sdkConversationRole) is not implemented by BedrockRuntimeClientTypes"
+            )
         }
     }
 
