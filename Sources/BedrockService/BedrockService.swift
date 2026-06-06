@@ -216,11 +216,13 @@ public struct BedrockService: Sendable {
             logger.trace("Using AWS credentials for authentication")
         }
 
-        //We uncheck AWS_BEARER_TOKEN_BEDROCK to avoid conflict with future AWS SDK version
-        //see https://docs.aws.amazon.com/bedroswift buildck/latest/userguide/getting-started-api-keys.html
-        //FIXME: there is a risk of side effect here - what other ways we have to ignore this variable ?
-        unsetenv("AWS_BEARER_TOKEN_BEDROCK")
-        logger.warning("AWS_BEARER_TOKEN_BEDROCK was removed from the environment to prevent conflicts with the AWS SDK. Read this variable before initializing BedrockService if you need its value.")
+        // We unset AWS_BEARER_TOKEN_BEDROCK to avoid conflict with future AWS SDK version
+        // see https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started-api-keys.html
+        // FIXME: there is a risk of side effect here - what other ways we have to ignore this variable ?
+        if ProcessInfo.processInfo.environment["AWS_BEARER_TOKEN_BEDROCK"] != nil {
+            unsetenv("AWS_BEARER_TOKEN_BEDROCK")
+            logger.warning("AWS_BEARER_TOKEN_BEDROCK was removed from the environment to prevent conflicts with the AWS SDK. Read this variable before initializing BedrockService if you need its value.")
+        }
 
         return config
     }
