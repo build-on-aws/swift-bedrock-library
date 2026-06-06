@@ -13,6 +13,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import AWSSDKIdentity
+
 #if canImport(FoundationEssentials)
 import FoundationEssentials
 #else
@@ -25,14 +27,16 @@ extension BedrockService {
     /// - Parameters:
     ///   - input: The user message text
     ///   - model: A BedrockModel that supports ResponsesModality
-    ///   - authentication: Authentication method (.apiKey or .sigV4)
+    ///   - authentication: Authentication method — uses the same BedrockAuthentication as the rest of the library.
+    ///     For `.apiKey`, the key is sent as a Bearer token. For all other methods (`.default`, `.profile`, `.sso`, etc.),
+    ///     credentials are resolved and used for SigV4 signing.
     ///   - store: Whether to store the response for multi-turn conversations (default: nil, uses server default)
     ///   - mantleClient: Optional custom client for testing
     /// - Returns: A ResponsesOutput containing the model's text reply and usage info
     public func createResponse(
         _ input: String,
         with model: BedrockModel,
-        authentication: BedrockMantleAuthentication,
+        authentication: BedrockAuthentication,
         store: Bool? = nil,
         mantleClient: BedrockMantleClientProtocol? = nil
     ) async throws -> ResponsesOutput {
@@ -61,11 +65,13 @@ extension BedrockService {
             ]
         )
 
-        let client = mantleClient ?? BedrockMantleClient(logger: self.logger)
+        let mantleAuth = try await resolveMantleAuthentication(authentication)
+
+        let client = mantleClient ?? BedrockMantleClient(region: region.rawValue, logger: self.logger)
         let responseData = try await client.sendRequest(
             body: bodyData,
             url: url,
-            authentication: authentication
+            authentication: mantleAuth
         )
 
         let decoder = JSONDecoder()
@@ -84,5 +90,19 @@ extension BedrockService {
         )
 
         return output
+    }
+
+    private func resolveMantleAuthentication(
+        _ authentication: BedrockAuthentication
+    ) async throws -> BedrockMantleAuthentication {
+        switch authentication {
+        case .apiKey(let key):
+            return .apiKey(key)
+        default:
+            guard let resolver = try await authentication.getAWSCredentialIdentityResolver(logger: logger) else {
+                return .sigV4(DefaultAWSCredentialIdentityResolverChain())
+            }
+            return .sigV4(resolver)
+        }
     }
 }

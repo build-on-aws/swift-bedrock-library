@@ -36,7 +36,7 @@ struct ResponsesServiceTests {
         let output = try await bedrock.createResponse(
             "What is Bedrock?",
             with: .openai_gpt_5_5,
-            authentication: .apiKey("test-key"),
+            authentication: .apiKey(key: "test-key"),
             mantleClient: MockBedrockMantleClient()
         )
 
@@ -52,7 +52,7 @@ struct ResponsesServiceTests {
         let output = try await bedrock.createResponse(
             "Hello",
             with: .openai_gpt_5_4,
-            authentication: .apiKey("test-key"),
+            authentication: .apiKey(key: "test-key"),
             mantleClient: MockBedrockMantleClient()
         )
 
@@ -65,7 +65,7 @@ struct ResponsesServiceTests {
         let output = try await bedrock.createResponse(
             "Who are you?",
             with: .openai_gpt_oss_20b,
-            authentication: .apiKey("test-key"),
+            authentication: .apiKey(key: "test-key"),
             mantleClient: MockBedrockMantleClient()
         )
 
@@ -79,7 +79,7 @@ struct ResponsesServiceTests {
             _ = try await bedrock.createResponse(
                 "Hello",
                 with: .nova_micro,
-                authentication: .apiKey("test-key"),
+                authentication: .apiKey(key: "test-key"),
                 mantleClient: MockBedrockMantleClient()
             )
         }

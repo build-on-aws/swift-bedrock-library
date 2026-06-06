@@ -13,7 +13,9 @@
 //
 //===----------------------------------------------------------------------===//
 
+import SmithyIdentity
+
 public enum BedrockMantleAuthentication: Sendable {
     case apiKey(String)
-    case sigV4
+    case sigV4(any AWSCredentialIdentityResolver)
 }

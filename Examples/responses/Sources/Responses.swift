@@ -31,11 +31,27 @@ struct Main {
         var logger = Logger(label: "Responses")
         logger.logLevel = .debug
 
-        // Set your Bedrock API key here or via environment variable
-        guard let apiKey = ProcessInfo.processInfo.environment["AWS_BEARER_TOKEN_BEDROCK"] else {
-            print("Error: Set AWS_BEARER_TOKEN_BEDROCK environment variable")
-            print("Create an API key at: https://console.aws.amazon.com/bedrock/home#/api-keys")
-            return
+        print("Choose authentication method:")
+        print("  1. API Key (set AWS_BEARER_TOKEN_BEDROCK environment variable)")
+        print("  2. SigV4 (uses default AWS credential provider chain)")
+        print()
+        print("Enter 1 or 2: ", terminator: "")
+
+        let choice = readLine()?.trimmingCharacters(in: .whitespaces) ?? "1"
+
+        let authentication: BedrockAuthentication
+        switch choice {
+        case "2":
+            print("Using SigV4 with default credential provider chain")
+            authentication = .default
+        default:
+            guard let apiKey = ProcessInfo.processInfo.environment["AWS_BEARER_TOKEN_BEDROCK"] else {
+                print("Error: Set AWS_BEARER_TOKEN_BEDROCK environment variable")
+                print("Create an API key at: https://console.aws.amazon.com/bedrock/home#/api-keys")
+                return
+            }
+            print("Using API Key authentication")
+            authentication = .apiKey(key: apiKey)
         }
 
         let bedrock = try await BedrockService(
@@ -43,15 +59,14 @@ struct Main {
             logger: logger
         )
 
-        // GPT 5.5 via the Responses API
         let reply = try await bedrock.createResponse(
             "Can you explain the features of Amazon Bedrock?",
             with: .openai_gpt_5_5,
-            authentication: .apiKey(apiKey),
+            authentication: authentication,
             store: false
         )
 
-        print("Model: \(reply.model.name)")
+        print("\nModel: \(reply.model.name)")
         print("Response ID: \(reply.id)")
         print("Tokens: \(reply.usage.inputTokens) in / \(reply.usage.outputTokens) out")
         print("\nAssistant: \(reply.text)")
