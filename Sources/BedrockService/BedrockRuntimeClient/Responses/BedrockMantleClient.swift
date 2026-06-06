@@ -63,7 +63,9 @@ public struct BedrockMantleClient: BedrockMantleClientProtocol {
             }
         }
 
-        request.body = .bytes(ByteBuffer(data: body))
+        var buffer = ByteBuffer()
+        buffer.writeBytes(body)
+        request.body = .bytes(buffer)
 
         logger.trace(
             "Sending request to bedrock-mantle",
@@ -73,7 +75,7 @@ public struct BedrockMantleClient: BedrockMantleClientProtocol {
         let response = try await httpClient.execute(request, timeout: .seconds(120))
 
         let responseBody = try await response.body.collect(upTo: 10 * 1024 * 1024)
-        let responseData = Data(buffer: responseBody)
+        let responseData = Data(responseBody.readableBytesView)
 
         guard (200..<300).contains(response.status.code) else {
             let errorMessage = String(data: responseData, encoding: .utf8) ?? "Unknown error"
