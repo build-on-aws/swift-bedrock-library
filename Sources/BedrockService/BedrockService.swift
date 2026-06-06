@@ -221,7 +221,9 @@ public struct BedrockService: Sendable {
         // FIXME: there is a risk of side effect here - what other ways we have to ignore this variable ?
         if ProcessInfo.processInfo.environment["AWS_BEARER_TOKEN_BEDROCK"] != nil {
             unsetenv("AWS_BEARER_TOKEN_BEDROCK")
-            logger.warning("AWS_BEARER_TOKEN_BEDROCK was removed from the environment to prevent conflicts with the AWS SDK. Read this variable before initializing BedrockService if you need its value.")
+            logger.warning(
+                "AWS_BEARER_TOKEN_BEDROCK was removed from the environment to prevent conflicts with the AWS SDK. Read this variable before initializing BedrockService if you need its value."
+            )
         }
 
         return config
