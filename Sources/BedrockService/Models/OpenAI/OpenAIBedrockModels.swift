@@ -52,4 +52,14 @@ extension BedrockModel {
             features: [.textGeneration, .systemPrompts, .document]
         )
     )
+    public static let openai_gpt_5_5: BedrockModel = BedrockModel(
+        id: "openai.gpt-5.5",
+        name: "OpenAI GPT 5.5",
+        modality: OpenAIResponses(responsesPath: "/openai/v1/responses")
+    )
+    public static let openai_gpt_5_4: BedrockModel = BedrockModel(
+        id: "openai.gpt-5.4",
+        name: "OpenAI GPT 5.4",
+        modality: OpenAIResponses(responsesPath: "/openai/v1/responses")
+    )
 }
