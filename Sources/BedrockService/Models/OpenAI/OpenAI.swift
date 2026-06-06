@@ -19,13 +19,14 @@ import FoundationEssentials
 import Foundation
 #endif
 
-struct OpenAIText: TextModality, ConverseModality {
+struct OpenAIText: TextModality, ConverseModality, ResponsesModality {
     let parameters: TextGenerationParameters
     let converseParameters: ConverseParameters
     let converseFeatures: [ConverseFeature]
     let maxReasoningTokens: Parameter<Int>
 
     func getName() -> String { "OpenAI Text Generation" }
+    func getResponsesPath() -> String { "/v1/responses" }
 
     init(
         parameters: TextGenerationParameters,

@@ -15,6 +15,7 @@ let package = Package(
         .package(url: "https://github.com/smithy-lang/smithy-swift", from: "0.209.0"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.12.0"),
         .package(url: "https://github.com/awslabs/aws-crt-swift", from: "0.58.1"),
+        .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.24.0"),
     ],
     targets: [
         .target(
@@ -28,6 +29,7 @@ let package = Package(
                 .product(name: "Smithy", package: "smithy-swift"),
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "AwsCommonRuntimeKit", package: "aws-crt-swift"),
+                .product(name: "AsyncHTTPClient", package: "async-http-client"),
             ]
         ),
         .testTarget(

@@ -133,6 +133,8 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
         // OpenAI
         case BedrockModel.openai_gpt_oss_20b.id: self = BedrockModel.openai_gpt_oss_20b
         case BedrockModel.openai_gpt_oss_120b.id: self = BedrockModel.openai_gpt_oss_120b
+        case BedrockModel.openai_gpt_5_5.id: self = BedrockModel.openai_gpt_5_5
+        case BedrockModel.openai_gpt_5_4.id: self = BedrockModel.openai_gpt_5_4
         // stability
         case BedrockModel.stable_image_core.id: self = BedrockModel.stable_image_core
         case BedrockModel.stable_image_ultra.id: self = BedrockModel.stable_image_ultra
@@ -268,6 +270,27 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
     /// - Returns: True if the model supports conditioned text to image generation
     public func hasConditionedTextToImageModality() -> Bool {
         modality as? any ConditionedTextToImageModality != nil
+    }
+
+    // MARK - Responses
+
+    /// Checks if the model supports the Responses API (bedrock-mantle)
+    /// - Returns: True if the model supports the Responses API
+    public func hasResponsesModality() -> Bool {
+        modality as? any ResponsesModality != nil
+    }
+
+    /// Checks if the model supports the Responses API and returns ResponsesModality
+    /// - Returns: ResponsesModality if the model supports the Responses API
+    public func getResponsesModality() throws -> any ResponsesModality {
+        guard let responsesModality = modality as? any ResponsesModality else {
+            throw BedrockLibraryError.invalidModality(
+                self,
+                modality,
+                "Model \(id) does not support the Responses API"
+            )
+        }
+        return responsesModality
     }
 
     // MARK - Converse
