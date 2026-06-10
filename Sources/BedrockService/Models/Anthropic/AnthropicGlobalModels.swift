@@ -256,3 +256,52 @@ struct Claude_Opus_v4_8: TextModality, ConverseModality, ConverseStreamingModali
         try anthropicText.getTextResponseBody(from: data)
     }
 }
+
+struct Claude_Fable_v5: TextModality, ConverseModality, ConverseStreamingModality,
+    GlobalCrossRegionInferenceModality, MessagesModality
+{
+    private let anthropicText: AnthropicText
+
+    let converseParameters: ConverseParameters
+    let converseFeatures: [ConverseFeature]
+
+    init(parameters: TextGenerationParameters, features: [ConverseFeature], maxReasoningTokens: Parameter<Int>) {
+        self.anthropicText = AnthropicText(
+            parameters: parameters,
+            features: features,
+            maxReasoningTokens: maxReasoningTokens
+        )
+        self.converseParameters = anthropicText.converseParameters
+        self.converseFeatures = anthropicText.converseFeatures
+    }
+
+    func getName() -> String { anthropicText.getName() }
+    func getParameters() -> TextGenerationParameters { anthropicText.getParameters() }
+    func getConverseParameters() -> ConverseParameters { anthropicText.getConverseParameters() }
+    func getConverseFeatures() -> [ConverseFeature] { anthropicText.getConverseFeatures() }
+    func getMessagesPath() -> String { "/anthropic/v1/messages" }
+
+    func getTextRequestBody(
+        prompt: String,
+        maxTokens: Int?,
+        temperature: Double?,
+        topP: Double?,
+        topK: Int?,
+        stopSequences: [String]?,
+        serviceTier: ServiceTier
+    ) throws -> BedrockBodyCodable {
+        try anthropicText.getTextRequestBody(
+            prompt: prompt,
+            maxTokens: maxTokens,
+            temperature: temperature,
+            topP: topP,
+            topK: topK,
+            stopSequences: stopSequences,
+            serviceTier: serviceTier
+        )
+    }
+
+    func getTextResponseBody(from data: Data) throws -> ContainsTextCompletion {
+        try anthropicText.getTextResponseBody(from: data)
+    }
+}
