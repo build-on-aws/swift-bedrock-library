@@ -54,15 +54,14 @@ print("Tokens: \(reply.usage.inputTokens) in / \(reply.usage.outputTokens) out")
 
 ## Multi-Turn Conversations
 
-The Messages API is stateless — you send the full conversation history with each request. Use the `[AnthropicMessage]` overload and `MessagesOutput.asMessage` to build up conversations:
+The Messages API is stateless — you send the full conversation history with each request. The library provides convenience `append` overloads on `[AnthropicMessage]` so you can append a `String` (as a user message) or a `MessagesOutput` (as an assistant message) directly:
 
 ```swift
 let bedrock = try await BedrockService(region: .useast1)
 
 // Start a conversation
-var conversation: [AnthropicMessage] = [
-    AnthropicMessage(role: .user, content: "What is quantum computing?")
-]
+var conversation: [AnthropicMessage] = []
+conversation.append("What is quantum computing?")
 
 let reply1 = try await bedrock.createMessage(
     conversation,
@@ -71,8 +70,8 @@ let reply1 = try await bedrock.createMessage(
 )
 
 // Append the assistant's reply and ask a follow-up
-conversation.append(reply1.asMessage)
-conversation.append(AnthropicMessage(role: .user, content: "Can you give a real-world example?"))
+conversation.append(reply1)
+conversation.append("Can you give a real-world example?")
 
 let reply2 = try await bedrock.createMessage(
     conversation,
@@ -139,7 +138,6 @@ The ``MessagesOutput`` contains:
 - `model` — The model identifier string returned by the API
 - `stopReason` — Why generation stopped (`end_turn`, `max_tokens`, `refusal`)
 - `usage` — Token usage with `inputTokens` and `outputTokens`
-- `asMessage` — Convenience property returning an ``AnthropicMessage`` for conversation building
 
 ## Content Restrictions
 

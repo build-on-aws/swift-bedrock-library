@@ -91,9 +91,8 @@ struct Main {
         )
 
         // Turn 1: initial question
-        var conversation: [AnthropicMessage] = [
-            AnthropicMessage(role: .user, content: "Explain quantum computing in two sentences.")
-        ]
+        var conversation: [AnthropicMessage] = []
+        conversation.append("Explain quantum computing in two sentences.")
 
         print("\n--- Turn 1 ---")
         print("User: \(conversation[0].content)")
@@ -110,10 +109,8 @@ struct Main {
         print("(\(reply1.usage.inputTokens) in / \(reply1.usage.outputTokens) out)")
 
         // Turn 2: follow-up using conversation history
-        conversation.append(reply1.asMessage)
-        conversation.append(
-            AnthropicMessage(role: .user, content: "Now explain it to a 5 year old in one sentence.")
-        )
+        conversation.append(reply1)
+        conversation.append("Now explain it to a 5 year old in one sentence.")
 
         print("\n--- Turn 2 ---")
         print("User: \(conversation.last!.content)")

@@ -69,3 +69,13 @@ public struct AnthropicMessage: Codable, Sendable {
         self.content = content
     }
 }
+
+extension [AnthropicMessage] {
+    public mutating func append(_ output: MessagesOutput) {
+        append(AnthropicMessage(role: .assistant, content: output.text))
+    }
+
+    public mutating func append(_ userMessage: String) {
+        append(AnthropicMessage(role: .user, content: userMessage))
+    }
+}

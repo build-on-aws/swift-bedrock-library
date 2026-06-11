@@ -42,9 +42,6 @@ public struct MessagesOutput: Sendable {
         self.text = text
     }
 
-    public var asMessage: AnthropicMessage {
-        AnthropicMessage(role: .assistant, content: text)
-    }
 }
 
 public struct MessagesUsage: Sendable {
