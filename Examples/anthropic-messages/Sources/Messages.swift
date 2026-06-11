@@ -74,7 +74,7 @@ struct Main {
         case "2":
             print("Using SigV4 with default credential provider chain")
             authentication = .default
-            // authentication = .profile(profileName: "pro")
+        // authentication = .profile(profileName: "pro")
         default:
             guard let apiKey = ProcessInfo.processInfo.environment["AWS_BEARER_TOKEN_BEDROCK"] else {
                 print("Error: Set AWS_BEARER_TOKEN_BEDROCK environment variable")
