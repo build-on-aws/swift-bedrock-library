@@ -89,6 +89,8 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
             self = BedrockModel.claude_opus_v4_7
         case BedrockModel.claude_opus_v4_8.id:
             self = BedrockModel.claude_opus_v4_8
+        case BedrockModel.claude_fable_v5.id:
+            self = BedrockModel.claude_fable_v5
         // titan
         case BedrockModel.titan_text_g1_premier.id:
             self = BedrockModel.titan_text_g1_premier
@@ -270,6 +272,27 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
     /// - Returns: True if the model supports conditioned text to image generation
     public func hasConditionedTextToImageModality() -> Bool {
         modality as? any ConditionedTextToImageModality != nil
+    }
+
+    // MARK - Messages
+
+    /// Checks if the model supports the Messages API (bedrock-mantle)
+    /// - Returns: True if the model supports the Messages API
+    public func hasMessagesModality() -> Bool {
+        modality as? any MessagesModality != nil
+    }
+
+    /// Checks if the model supports the Messages API and returns MessagesModality
+    /// - Returns: MessagesModality if the model supports the Messages API
+    public func getMessagesModality() throws -> any MessagesModality {
+        guard let messagesModality = modality as? any MessagesModality else {
+            throw BedrockLibraryError.invalidModality(
+                self,
+                modality,
+                "Model \(id) does not support the Messages API"
+            )
+        }
+        return messagesModality
     }
 
     // MARK - Responses
