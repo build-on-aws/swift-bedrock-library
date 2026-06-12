@@ -194,6 +194,8 @@ public struct MockBedrockRuntimeClient: BedrockRuntimeClientProtocol {
             return InvokeModelOutput(body: try invokeTitanModel(body: inputBody))
         case "Anthropic Text Generation":
             return InvokeModelOutput(body: try invokeAnthropicModel(body: inputBody))
+        case "Gemma 3 Text Generation":
+            return InvokeModelOutput(body: try invokeGemma3Model(body: inputBody))
         default:
             throw AWSBedrockRuntime.ValidationException(
                 message: "Malformed input request, please reformat your input and try again."
@@ -358,6 +360,39 @@ public struct MockBedrockRuntimeClient: BedrockRuntimeClientProtocol {
                     "usage":{
                         "input_tokens":12,
                         "output_tokens":100}
+                }
+                """.data(using: .utf8)!
+        } else {
+            throw AWSBedrockRuntime.ValidationException(
+                message: "Malformed input request, please reformat your input and try again."
+            )
+        }
+    }
+
+    private func invokeGemma3Model(body: Data) throws -> Data? {
+        guard
+            let json: [String: Any] = try? JSONSerialization.jsonObject(
+                with: body,
+                options: []
+            )
+                as? [String: Any]
+        else {
+            throw AWSBedrockRuntime.ValidationException(
+                message: "Malformed input request, please reformat your input and try again."
+            )
+        }
+        if let messages = json["messages"] as? [[String: Any]],
+            let lastMessage = messages.last,
+            let inputText = lastMessage["content"] as? String
+        {
+            return """
+                {
+                    "id": "chatcmpl-mock",
+                    "choices": [{"finish_reason": "stop", "index": 0, "message": {"content": "Mock response for: \(inputText)", "role": "assistant"}}],
+                    "created": 1234567890,
+                    "model": "google.gemma-3-27b-it",
+                    "object": "chat.completion",
+                    "usage": {"completion_tokens": 10, "prompt_tokens": 5, "total_tokens": 15}
                 }
                 """.data(using: .utf8)!
         } else {

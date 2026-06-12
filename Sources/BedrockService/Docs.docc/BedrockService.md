@@ -22,6 +22,7 @@ BedrockService is a lightweight layer on top of the AWS SDK for Swift that provi
 
 ### Core Features
 
+- <doc:ChatCompletions>
 - <doc:Converse>
 - <doc:Messages>
 - <doc:Responses>
