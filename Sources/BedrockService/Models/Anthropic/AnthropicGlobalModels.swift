@@ -305,3 +305,43 @@ struct Claude_Fable_v5: TextModality, ConverseModality, ConverseStreamingModalit
         try anthropicText.getTextResponseBody(from: data)
     }
 }
+
+struct Claude_Mythos_v5: TextModality, MessagesModality {
+    private let anthropicText: AnthropicText
+
+    init(parameters: TextGenerationParameters, features: [ConverseFeature], maxReasoningTokens: Parameter<Int>) {
+        self.anthropicText = AnthropicText(
+            parameters: parameters,
+            features: features,
+            maxReasoningTokens: maxReasoningTokens
+        )
+    }
+
+    func getName() -> String { anthropicText.getName() }
+    func getParameters() -> TextGenerationParameters { anthropicText.getParameters() }
+    func getMessagesPath() -> String { "/anthropic/v1/messages" }
+
+    func getTextRequestBody(
+        prompt: String,
+        maxTokens: Int?,
+        temperature: Double?,
+        topP: Double?,
+        topK: Int?,
+        stopSequences: [String]?,
+        serviceTier: ServiceTier
+    ) throws -> BedrockBodyCodable {
+        try anthropicText.getTextRequestBody(
+            prompt: prompt,
+            maxTokens: maxTokens,
+            temperature: temperature,
+            topP: topP,
+            topK: topK,
+            stopSequences: stopSequences,
+            serviceTier: serviceTier
+        )
+    }
+
+    func getTextResponseBody(from data: Data) throws -> ContainsTextCompletion {
+        try anthropicText.getTextResponseBody(from: data)
+    }
+}

@@ -109,7 +109,7 @@ jobs:
       # We pass the list of examples here, but we can't pass an array as argument
       # Instead, we pass a String with a valid JSON array.
       # The workaround is mentioned here https://github.com/orgs/community/discussions/11692
-      examples: "[ 'anthropic-messages', 'api-key', 'converse', 'converse-stream', 'embeddings', 'google-gemma', 'openai-bedrock', 'openai-responses', 'retrieve', 'stability-image', 'structured-output', 'text_chat' ]"
+      examples: "[ 'anthropic-messages', 'anthropic-mythos-messages', 'api-key', 'converse', 'converse-stream', 'embeddings', 'google-gemma', 'openai-bedrock', 'openai-responses', 'retrieve', 'stability-image', 'structured-output', 'text_chat' ]"
 
   swift-6-language-mode:
     name: Swift 6 Language Mode
