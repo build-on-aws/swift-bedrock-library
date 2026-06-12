@@ -137,6 +137,13 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
         case BedrockModel.openai_gpt_oss_120b.id: self = BedrockModel.openai_gpt_oss_120b
         case BedrockModel.openai_gpt_5_5.id: self = BedrockModel.openai_gpt_5_5
         case BedrockModel.openai_gpt_5_4.id: self = BedrockModel.openai_gpt_5_4
+        // google
+        case BedrockModel.gemma4_31b.id: self = BedrockModel.gemma4_31b
+        case BedrockModel.gemma4_26b_a4b.id: self = BedrockModel.gemma4_26b_a4b
+        case BedrockModel.gemma4_e2b.id: self = BedrockModel.gemma4_e2b
+        case BedrockModel.gemma3_27b_it.id: self = BedrockModel.gemma3_27b_it
+        case BedrockModel.gemma3_12b_it.id: self = BedrockModel.gemma3_12b_it
+        case BedrockModel.gemma3_4b_it.id: self = BedrockModel.gemma3_4b_it
         // stability
         case BedrockModel.stable_image_core.id: self = BedrockModel.stable_image_core
         case BedrockModel.stable_image_ultra.id: self = BedrockModel.stable_image_ultra
@@ -314,6 +321,27 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
             )
         }
         return responsesModality
+    }
+
+    // MARK - Chat Completions
+
+    /// Checks if the model supports the Chat Completions API (bedrock-mantle)
+    /// - Returns: True if the model supports the Chat Completions API
+    public func hasChatCompletionsModality() -> Bool {
+        modality as? any ChatCompletionsModality != nil
+    }
+
+    /// Checks if the model supports the Chat Completions API and returns ChatCompletionsModality
+    /// - Returns: ChatCompletionsModality if the model supports the Chat Completions API
+    public func getChatCompletionsModality() throws -> any ChatCompletionsModality {
+        guard let chatCompletionsModality = modality as? any ChatCompletionsModality else {
+            throw BedrockLibraryError.invalidModality(
+                self,
+                modality,
+                "Model \(id) does not support the Chat Completions API"
+            )
+        }
+        return chatCompletionsModality
     }
 
     // MARK - Converse
