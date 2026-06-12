@@ -52,22 +52,19 @@ extension BedrockService {
         let encoder = JSONEncoder()
         let bodyData = try encoder.encode(requestBody)
 
-        let urlString = "https://bedrock-mantle.\(region.rawValue).api.aws\(path)"
-        guard let url = URL(string: urlString, encodingInvalidCharacters: false) else {
-            throw BedrockLibraryError.invalidURI(urlString)
-        }
+        let url = try makeMantleURL(path: path)
 
         logger.trace(
             "Creating response via bedrock-mantle",
             metadata: [
                 "model.id": .string(model.id),
-                "url": .string(urlString),
+                "url": .string(url.absoluteString),
             ]
         )
 
         let mantleAuth = try await resolveMantleAuthentication(authentication)
 
-        let client = mantleClient ?? BedrockMantleClient(region: region.rawValue, logger: self.logger)
+        let client = makeMantleClient(override: mantleClient)
         let responseData = try await client.sendRequest(
             body: bodyData,
             url: url,
