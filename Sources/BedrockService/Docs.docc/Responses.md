@@ -1,21 +1,25 @@
-# OpenAI Responses API
+# Responses API
 
-Use OpenAI models on Amazon Bedrock via the Responses API
+Use OpenAI, Google Gemma, and xAI Grok models on Amazon Bedrock via the Responses API
 
 ## Overview
 
-The Responses API provides access to OpenAI models hosted on Amazon Bedrock through the `bedrock-mantle` endpoint. This API uses a different protocol than the Converse API and supports models like GPT 5.5 and GPT 5.4.
+The Responses API provides access to OpenAI-compatible models hosted on Amazon Bedrock through the `bedrock-mantle` endpoint. This API uses a different protocol than the Converse API and supports models like GPT 5.5, GPT 5.4, Gemma 4, and Grok 4.3.
 
 The Responses API requires explicit authentication — you pass a ``BedrockAuthentication`` value directly to the call, supporting both API key (Bearer token) and SigV4 credential-based authentication.
 
 ## Supported Models
 
-The following OpenAI models support the Responses API:
+The following models support the Responses API:
 
 | Model | Identifier |
 |-------|-----------|
 | GPT 5.5 | `.openai_gpt_5_5` |
 | GPT 5.4 | `.openai_gpt_5_4` |
+| Gemma 4 31B | `.gemma4_31b` |
+| Gemma 4 26B-A4B | `.gemma4_26b_a4b` |
+| Gemma 4 E2B | `.gemma4_e2b` |
+| xAI Grok 4.3 | `.grok_4_3` |
 
 ## Basic Usage
 

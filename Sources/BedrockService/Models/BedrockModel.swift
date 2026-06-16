@@ -144,6 +144,8 @@ public struct BedrockModel: Hashable, Sendable, Equatable, RawRepresentable {
         case BedrockModel.gemma3_27b_it.id: self = BedrockModel.gemma3_27b_it
         case BedrockModel.gemma3_12b_it.id: self = BedrockModel.gemma3_12b_it
         case BedrockModel.gemma3_4b_it.id: self = BedrockModel.gemma3_4b_it
+        // xai
+        case BedrockModel.grok_4_3.id: self = BedrockModel.grok_4_3
         // stability
         case BedrockModel.stable_image_core.id: self = BedrockModel.stable_image_core
         case BedrockModel.stable_image_ultra.id: self = BedrockModel.stable_image_ultra

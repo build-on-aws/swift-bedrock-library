@@ -1,10 +1,10 @@
 # Chat Completions API
 
-Use Google Gemma models on Amazon Bedrock via the OpenAI-compatible Chat Completions API
+Use Google Gemma and xAI Grok models on Amazon Bedrock via the OpenAI-compatible Chat Completions API
 
 ## Overview
 
-The Chat Completions API provides access to Google Gemma models hosted on Amazon Bedrock through the `bedrock-mantle` endpoint. This API uses the OpenAI-compatible chat completions protocol and supports multi-turn conversations.
+The Chat Completions API provides access to Google Gemma and xAI Grok models hosted on Amazon Bedrock through the `bedrock-mantle` endpoint. This API uses the OpenAI-compatible chat completions protocol and supports multi-turn conversations.
 
 Like the Responses and Messages APIs, the Chat Completions API requires explicit authentication — you pass a ``BedrockAuthentication`` value directly to the call.
 
@@ -18,8 +18,9 @@ Like the Responses and Messages APIs, the Chat Completions API requires explicit
 | Gemma 3 27B IT | `.gemma3_27b_it` | `/v1/chat/completions` |
 | Gemma 3 12B IT | `.gemma3_12b_it` | `/v1/chat/completions` |
 | Gemma 3 4B IT | `.gemma3_4b_it` | `/v1/chat/completions` |
+| xAI Grok 4.3 | `.grok_4_3` | `/openai/v1/chat/completions` |
 
-> Note: Gemma 4 models are **mantle-only** — they support Chat Completions and Responses APIs but not InvokeModel or Converse. Gemma 3 models support Chat Completions, InvokeModel (``BedrockService/completeText(_:with:maxTokens:temperature:topP:topK:stopSequences:serviceTier:)``), and the Converse API.
+> Note: Gemma 4 and Grok 4.3 are **mantle-only** — they support Chat Completions and Responses APIs but not InvokeModel or Converse. Gemma 3 models support Chat Completions, InvokeModel (``BedrockService/completeText(_:with:maxTokens:temperature:topP:topK:stopSequences:serviceTier:)``), and the Converse API. Grok 4.3 is currently available only in `us-west-2`.
 
 ## Basic Usage
 
@@ -135,11 +136,22 @@ let reply = try await bedrock.completeChatCompletion(
 
 > Important: Temperature and top-p are mutually exclusive. Providing both throws a `notSupported` error. Top-k is not supported for Gemma models.
 
+Gemma parameter ranges and defaults:
+
 | Parameter | Range | Default |
 |-----------|-------|---------|
 | temperature | 0 – 2 | 1 |
 | maxTokens | 1 – 8192 | 8192 |
 | topP | 0 – 1 | 1 |
+| topK | — | Not supported |
+
+Grok 4.3 has different defaults (matching xAI's published values):
+
+| Parameter | Range | Default |
+|-----------|-------|---------|
+| temperature | 0 – 2 | 0.7 |
+| maxTokens | 1 – 131072 | 131072 |
+| topP | 0 – 1 | 0.95 |
 | topK | — | Not supported |
 
 ## Response Structure

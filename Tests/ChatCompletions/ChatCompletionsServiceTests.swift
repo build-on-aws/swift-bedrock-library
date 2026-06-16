@@ -145,4 +145,23 @@ struct ChatCompletionsServiceTests {
             )
         }
     }
+
+    // MARK: - completeChatCompletion (Grok 4.3)
+
+    @Test("completeChatCompletion with Grok 4.3 returns correct output")
+    func completeChatCompletionGrok43() async throws {
+        let output = try await bedrock.completeChatCompletion(
+            "Hello from Grok",
+            with: .grok_4_3,
+            authentication: .apiKey(key: "test-key"),
+            mantleClient: MockBedrockMantleChatCompletionsClient()
+        )
+
+        #expect(output.text == "Mock completion for: Hello from Grok")
+        #expect(output.model == "xai.grok-4.3")
+        #expect(output.id == "chatcmpl-mock")
+        #expect(output.usage.promptTokens == 5)
+        #expect(output.usage.completionTokens == 10)
+        #expect(output.usage.totalTokens == 15)
+    }
 }

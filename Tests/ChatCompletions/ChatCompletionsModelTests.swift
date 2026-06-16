@@ -478,4 +478,69 @@ struct ChatCompletionsModelTests {
             }
         }
     }
+
+    // MARK: - xAI Grok 4.3
+
+    @Test("Grok 4.3 has correct model ID")
+    func grok43ModelId() {
+        #expect(BedrockModel.grok_4_3.id == "xai.grok-4.3")
+    }
+
+    @Test("Grok 4.3 has correct name")
+    func grok43ModelName() {
+        #expect(BedrockModel.grok_4_3.name == "xAI Grok 4.3")
+    }
+
+    @Test("Grok 4.3 has chat completions modality")
+    func grok43HasChatCompletionsModality() {
+        #expect(BedrockModel.grok_4_3.hasChatCompletionsModality())
+    }
+
+    @Test("Grok 4.3 has responses modality")
+    func grok43HasResponsesModality() {
+        #expect(BedrockModel.grok_4_3.hasResponsesModality())
+    }
+
+    @Test("Grok 4.3 does not have text, converse, messages, or image modality")
+    func grok43NoOtherModalities() {
+        #expect(!BedrockModel.grok_4_3.hasTextModality())
+        #expect(!BedrockModel.grok_4_3.hasConverseModality())
+        #expect(!BedrockModel.grok_4_3.hasMessagesModality())
+        #expect(!BedrockModel.grok_4_3.hasImageModality())
+    }
+
+    @Test("Grok 4.3 uses /openai/v1/chat/completions path")
+    func grok43ChatCompletionsPath() throws {
+        let modality = try BedrockModel.grok_4_3.getChatCompletionsModality()
+        #expect(modality.getChatCompletionsPath() == "/openai/v1/chat/completions")
+    }
+
+    @Test("Grok 4.3 uses /openai/v1/responses path")
+    func grok43ResponsesPath() throws {
+        let modality = try BedrockModel.grok_4_3.getResponsesModality()
+        #expect(modality.getResponsesPath() == "/openai/v1/responses")
+    }
+
+    @Test("Grok 4.3 is resolvable from rawValue")
+    func grok43RawValue() {
+        let model = BedrockModel(rawValue: "xai.grok-4.3")
+        #expect(model != nil)
+        #expect(model?.name == "xAI Grok 4.3")
+    }
+
+    @Test("Grok 4.3 parameter defaults match model card")
+    func grok43ParameterDefaults() throws {
+        let modality = try BedrockModel.grok_4_3.getChatCompletionsModality()
+        let params = modality.getTextGenerationParameters()
+        #expect(params.temperature.defaultValue == 0.7)
+        #expect(params.temperature.minValue == 0)
+        #expect(params.temperature.maxValue == 2)
+        #expect(params.topP.defaultValue == 0.95)
+        #expect(params.topP.minValue == 0)
+        #expect(params.topP.maxValue == 1)
+        #expect(params.maxTokens.defaultValue == 131_072)
+        #expect(params.maxTokens.minValue == 1)
+        #expect(params.maxTokens.maxValue == 131_072)
+        #expect(!params.topK.isSupported)
+    }
 }

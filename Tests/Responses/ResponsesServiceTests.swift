@@ -84,4 +84,20 @@ struct ResponsesServiceTests {
             )
         }
     }
+
+    @Test("createResponse with Grok 4.3 returns text")
+    func createResponseGrok43() async throws {
+        let output = try await bedrock.createResponse(
+            "Tell me about Grok",
+            with: .grok_4_3,
+            authentication: .apiKey(key: "test-key"),
+            mantleClient: MockBedrockMantleClient()
+        )
+
+        #expect(output.text == "Mock response for: Tell me about Grok")
+        #expect(output.model == .grok_4_3)
+        #expect(output.id == "resp_mock_123")
+        #expect(output.usage.inputTokens == 10)
+        #expect(output.usage.outputTokens == 20)
+    }
 }
