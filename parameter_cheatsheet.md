@@ -127,6 +127,24 @@
 | ------------- | ------------- | ------------- |
 | stopSequences | Not supported | Not supported |
 
+### xAI Grok
+
+[user guide](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-xai-grok-4-3.html)
+
+Grok 4.3 is mantle-only (Chat Completions + Responses APIs). Currently available in `us-west-2` only. Context window: 1,000,000 tokens.
+
+| parameter   | minValue      | maxValue      | defaultValue  | optional or required |
+| ----------- | ------------- | ------------- | ------------- | -------------------- |
+| temperature | 0             | 2             | 0.7           | optional             |
+| maxTokens   | 1             | 131_072       | 131_072       | optional             |
+| topP        | 0             | 1             | 0.95          | optional             |
+| topK        | Not supported | Not supported | Not supported | optional             |
+
+
+| parameter     | maxSequences  | defaultVal    |
+| ------------- | ------------- | ------------- |
+| stopSequences | Not supported | Not supported |
+
 
 ## Image Generation parameters
 
