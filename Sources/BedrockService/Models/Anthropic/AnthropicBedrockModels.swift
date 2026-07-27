@@ -315,4 +315,20 @@ extension BedrockModel {
             maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
         )
     )
+    public static let claude_opus_v5: BedrockModel = BedrockModel(
+        id: "anthropic.claude-opus-5",
+        name: "Claude Opus 5",
+        modality: Claude_Fable_v5(
+            parameters: TextGenerationParameters(
+                temperature: Parameter(.temperature, minValue: 0, maxValue: 1, defaultValue: 1),
+                maxTokens: Parameter(.maxTokens, minValue: 1, maxValue: 128_000, defaultValue: 8_192),
+                topP: Parameter(.topP, minValue: 0, maxValue: 1, defaultValue: 0.999),
+                topK: Parameter(.topK, minValue: 0, maxValue: 500, defaultValue: 0),
+                stopSequences: StopSequenceParams(maxSequences: 8191, defaultValue: []),
+                maxPromptSize: 1_000_000
+            ),
+            features: [.textGeneration, .systemPrompts, .document, .vision, .toolUse, .reasoning, .structuredOutput],
+            maxReasoningTokens: Parameter(.maxReasoningTokens, minValue: 1_024, maxValue: 8_191, defaultValue: 4_096)
+        )
+    )
 }
